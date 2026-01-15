@@ -1,0 +1,1450 @@
+# ===================================================================
+# DYNAMIC CONFIGURATION - V6.0 - HIGH VOLUME & STRESS TEST EDITION
+# ===================================================================
+
+general_settings:
+  output_directory: "ediscovery_dataset_stress_test"
+
+  # Scenario Filter: Control which investigation scenarios to include
+  # Options:
+  #   'all'              - Include all scenarios (default)
+  #   'antitrust'        - Price-fixing investigation (S1, S1A, S1B) + noise + privilege
+  #   'safety_fraud'     - Product safety fraud investigation (S2) + noise + privilege
+  #   'hr_misconduct'    - HR/workplace investigation + noise + privilege
+  #   'antitrust_only'   - Only S1 scenarios, NO noise or privilege (use '_only' suffix)
+  #   ['antitrust', 'safety_fraud'] - Multiple investigation types (list format)
+  #
+  # Note: Attorney-client privilege (S3) is now included with ALL investigations
+  # as it's a review/screening task, not an investigation type.
+  #
+  # Contextual noise (S3-S15) includes: Privilege docs, HR announcements,
+  # project management, personal emails, meeting scheduling, etc.
+  #
+  # RECOMMENDED: For focused EAIDA demos, use single investigation type
+  # EXAMPLE: scenario_filter: 'antitrust'
+  scenario_filter: 'all'
+
+# --- Attachments with Scenario Restrictions & Stress Tests ---
+attachments:
+  types:
+    # 1. Standard Documents (Context Aware)
+    - name: "contract"
+      limit_to_scenarios: 
+        - "(S1) Price-fixing discussion with coded language"
+      probability: 0.1
+      filenames: ["NDA_Draft_v{version}.pdf", "Master_Services_Agreement_{date}.pdf", "SOW_{date}.pdf"]
+      mime_type: "application/pdf"
+      content_description: "This is a draft of the confidential Non-Disclosure Agreement..."
+      
+    - name: "spreadsheet"
+      limit_to_scenarios: 
+        - "(S1) Price-fixing discussion with coded language"
+      probability: 0.15
+      filenames: ["Q{quarter}_Pricing_Strategy.xlsx", "Market_Analysis_{date}.xlsx"]
+      mime_type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+      content_description: "Contains projected Q{quarter} pricing data..."
+
+    - name: "word_document"
+      limit_to_scenarios: 
+        - "(S2) Urgent: Discussion about hiding safety test results"
+      probability: 0.1
+      filenames: ["Project_Phoenix_Meeting_Notes_{date}.docx", "Internal_Memo_v{version}.docx"]
+      mime_type: "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+      content_description: "Internal meeting notes discussing the recent test results..."
+
+    - name: "test_report"
+      limit_to_scenarios: 
+        - "(S2) Urgent: Discussion about hiding safety test results"
+      probability: 0.2
+      filenames: ["Phoenix_Test_Results_Final.pdf", "Project_Phoenix_QA_Report_{date}.pdf"]
+      mime_type: "application/pdf"
+      content_description: "Project Phoenix Final Stress Test Results..."
+
+    # 2. Stress Test Files (Mathematical Generation - No LLM)
+    
+    # Small Log (1 MB Fixed)
+    - name: "small_debug_log"
+      limit_to_scenarios: ["(S4) Generic project management emails"]
+      probability: 0.1
+      filenames: ["debug_trace_{date}.log"]
+      mime_type: "text/x-log"
+      fixed_size_mb: 1
+
+    # Medium Log (15 MB Fixed)
+    - name: "medium_server_log"
+      limit_to_scenarios: ["(S13) Meeting scheduling back-and-forth", "(S5) Generic HR or admin announcements"]
+      probability: 0.05
+      filenames: ["server_daily_{date}.log"]
+      mime_type: "text/x-log"
+      fixed_size_mb: 15
+
+    # Large Log (User Defined Size at Runtime)
+    - name: "stress_test_dump"
+      limit_to_scenarios: ["(S4) Generic project management emails"]
+      probability: 0.02
+      filenames: ["CRITICAL_CORE_DUMP_{date}.log"]
+      mime_type: "text/x-log"
+      # No 'fixed_size_mb' here, so it uses the User Input (e.g., 500MB)
+
+company_profiles:
+  - name: "ACME Inc."
+    domain: "acmeinc.com"
+    personnel:
+      # --- Executive Team (5) ---
+      - name: "Taylor L. Brooks"
+        title: "CEO"
+        email: "taylor.brooks@acmeinc.com"
+        style: "Formal, professional, and slightly verbose. Often starts emails with 'Team,' or 'All,'. Uses full sentences and proper grammar."
+        signature: |
+          Taylor L. Brooks
+          Chief Executive Officer | ACME Inc.
+      - name: "Casey J. Bennett"
+        title: "CFO"
+        email: "casey.bennett@acmeinc.com"
+        style: "Extremely blunt, concise, and often demanding. Avoids greetings and pleasantries. Uses short, declarative sentences. Prone to typos when angry."
+        signature: |
+          Casey J. Bennett
+          CFO, ACME Inc.
+      - name: "Jordan M. Lee"
+        title: "COO"
+        email: "jordan.lee@acmeinc.com"
+        style: "Operational and process-oriented. Uses terms like 'efficiency', 'streamline', and 'metrics'. Often sends summary reports."
+        signature: |
+          Jordan M. Lee
+          Chief Operating Officer | ACME Inc.
+      - name: "Alex N. Rivera"
+        title: "CTO"
+        email: "alex.rivera@acmeinc.com"
+        style: "Visionary and technical. Discusses 'roadmaps', 'architecture', and 'innovation'. Communicates clearly to both technical and non-technical audiences."
+        signature: |
+          Alex N. Rivera
+          Chief Technology Officer | ACME Inc.
+      - name: "Drew S. Foster"
+        title: "General Counsel"
+        email: "drew.foster@acmeinc.com"
+        style: "Formal, precise, and measured. Uses legalistic phrasing and is careful with wording. Often includes confidentiality notices."
+        signature: |
+          Drew S. Foster
+          General Counsel | ACME Inc.
+          **CONFIDENTIALITY NOTICE:** This message is intended only for the use of the individual or entity to which it is addressed...
+
+      # --- R&D / Engineering / Product (10) ---
+      - name: "Morgan K. Singh"
+        title: "VP of Engineering"
+        email: "morgan.singh@acmeinc.com"
+        style: "Strategic and high-level technical leader. Focuses on team performance, project milestones, and cross-departmental collaboration. Rarely delves into code-level details."
+        signature: |
+          Morgan K. Singh
+          VP of Engineering | ACME Inc.
+      - name: "Casey Q. Mitchell"
+        title: "R&D Lead Engineer"
+        email: "casey.mitchell@acmeinc.com"
+        style: "Technical and direct. Often uses bullet points or numbered lists to convey information. Avoids emotional language."
+        signature: |
+          Casey Q. Mitchell
+          R&D Lead Engineer, Project Phoenix
+      - name: "Peyton I. Parker"
+        title: "QA Specialist"
+        email: "peyton.parker@acmeinc.com"
+        style: "Detail-oriented and slightly anxious. Often asks clarifying questions and uses cautious phrasing like 'It seems that...' or 'My concern is...'"
+        signature: |
+          Peyton I. Parker
+          Quality Assurance Specialist
+      - name: "Riley P. Jones"
+        title: "Senior Software Engineer"
+        email: "riley.jones@acmeinc.com"
+        style: "Pragmatic and focused. Writes concise emails often containing code snippets or links to bug trackers. Values clarity over pleasantries."
+        signature: |
+          Riley P. Jones
+          Senior Software Engineer | ACME Inc.
+      - name: "Devin C. Patel"
+        title: "Software Engineer"
+        email: "devin.patel@acmeinc.com"
+        style: "Collaborative and inquisitive. Asks questions in team channels and provides detailed updates on their work."
+        signature: |
+          Devin C. Patel
+          Software Engineer | ACME Inc.
+      - name: "Skyler G. Williams"
+        title: "UX Designer"
+        email: "skyler.williams@acmeinc.com"
+        style: "Creative and user-focused. Emails often contain links to Figma mockups or discuss user feedback. Very visual language."
+        signature: |
+          Skyler G. Williams
+          UX Designer | ACME Inc.
+      - name: "Jordan V. Kim"
+        title: "Product Manager"
+        email: "j.kim@acmeinc.com"
+        style: "Organized and persuasive. Writes detailed feature requirements and user stories. Constantly trying to align teams on priorities."
+        signature: |
+          Jordan Kim
+          Product Manager, Project Phoenix
+      - name: "Cameron T. Ortiz"
+        title: "Director of QA"
+        email: "cameron.ortiz@acmeinc.com"
+        style: "Process-driven and risk-averse. Focuses on test plans, bug metrics, and release readiness. Formal and thorough in communication."
+        signature: |
+          Cameron T. Ortiz
+          Director of Quality Assurance | ACME Inc.
+      - name: "Kai B. Zhang"
+        title: "DevOps Engineer"
+        email: "kai.zhang@acmeinc.com"
+        style: "Concise and technical. Sends alerts about server status or deployment notifications. Often uses jargon like 'CI/CD', 'pipeline', and 'infra'."
+        signature: |
+          Kai B. Zhang
+          DevOps Engineer | ACME Inc.
+      - name: "Rowan D. Evans"
+        title: "Junior QA Tester"
+        email: "rowan.evans@acmeinc.com"
+        style: "Eager and methodical. Files detailed bug reports and asks clarifying questions about expected behavior."
+        signature: |
+          Rowan D. Evans
+          QA Tester | ACME Inc.
+
+      # --- Sales & Marketing (10) ---
+      - name: "Harley R. Garcia"
+        title: "VP of Sales"
+        email: "harley.garcia@acmeinc.com"
+        style: "Results-driven and motivational. Sends emails with sales figures, quarterly goals, and competitive analysis. Often uses bold text and exclamation points."
+        signature: |
+          Harley R. Garcia
+          VP of Sales | ACME Inc.
+      - name: "Avery T. Martinez"
+        title: "Chief Marketing Officer"
+        email: "avery.martinez@acmeinc.com"
+        style: "Brand-focused and data-driven. Discusses campaign ROI, market trends, and brand positioning. Professional and polished communication."
+        signature: |
+          Avery T. Martinez
+          Chief Marketing Officer | ACME Inc.
+      - name: "Jamie T. Chen"
+        title: "Regional Sales Director"
+        email: "jamie.chen@acmeinc.com"
+        style: "Friendly, informal, and sales-oriented. Often uses emojis and exclamation points. Greetings are casual, like 'Hey team' or 'Hi Rachel'."
+        signature: |
+          Jamie Chen
+          Regional Sales Director (East) | ACME Inc.
+          M: (617) 555-0185
+      - name: "Dakota F. Rodriguez"
+        title: "Sales Manager"
+        email: "dakota.rodriguez@acmeinc.com"
+        style: "Direct and numbers-focused. Asks for pipeline updates and deal statuses. Often forwards emails from leadership to the team."
+        signature: |
+          Dakota F. Rodriguez
+          Sales Manager (West) | ACME Inc.
+      - name: "Logan H. Lewis"
+        title: "Account Executive"
+        email: "logan.lewis@acmeinc.com"
+        style: "Persistent and customer-focused. Writes follow-up emails, sends proposals, and schedules demos."
+        signature: |
+          Logan H. Lewis
+          Account Executive | ACME Inc.
+      - name: "Remi J. Walker"
+        title: "Account Executive"
+        email: "remi.walker@acmeinc.com"
+        style: "Enthusiastic and relationship-driven. Often mentions personal details about clients. Very positive and upbeat."
+        signature: |
+          Remi J. Walker
+          Account Executive | ACME Inc.
+      - name: "Charlie P. Hall"
+        title: "Director of Marketing"
+        email: "charlie.hall@acmeinc.com"
+        style: "Creative and collaborative. Proposes new campaigns and content ideas. Often asks for feedback from the sales team."
+        signature: |
+          Charlie P. Hall
+          Director of Marketing | ACME Inc.
+      - name: "Finley S. Allen"
+        title: "Marketing Specialist"
+        email: "finley.allen@acmeinc.com"
+        style: "Detail-oriented and analytical. Sends reports on website traffic and campaign performance. Uses marketing jargon like 'CTR', 'SEO', and 'conversion rates'."
+        signature: |
+          Finley S. Allen
+          Marketing Specialist | ACME Inc.
+      - name: "Emerson B. Young"
+        title: "Social Media Manager"
+        email: "emerson.young@acmeinc.com"
+        style: "Trendy and informal. Shares links to social media posts and talks about 'engagement' and 'influencers'."
+        signature: |
+          Emerson B. Young
+          Social Media Manager | ACME Inc.
+      - name: "Quinn A. Scott"
+        title: "Sales Development Representative"
+        email: "quinn.scott@acmeinc.com"
+        style: "Polite but persistent. Sends cold outreach emails and follows up on leads. Very template-driven communication."
+        signature: |
+          Quinn A. Scott
+          Sales Development Representative | ACME Inc.
+
+      # --- Finance & Accounting (5) ---
+      - name: "Kendall W. Adams"
+        title: "Controller"
+        email: "kendall.adams@acmeinc.com"
+        style: "Meticulous and formal. Sends emails about financial reporting deadlines, audits, and compliance. Extremely detail-oriented."
+        signature: |
+          Kendall W. Adams
+          Controller | ACME Inc.
+      - name: "Hayden G. Baker"
+        title: "Financial Analyst"
+        email: "hayden.baker@acmeinc.com"
+        style: "Analytical and data-focused. Emails often contain spreadsheets or charts. Asks clarifying questions to ensure data accuracy."
+        signature: |
+          Hayden G. Baker
+          Financial Analyst | ACME Inc.
+      - name: "Parker L. Nelson"
+        title: "Senior Accountant"
+        email: "parker.nelson@acmeinc.com"
+        style: "Process-oriented and direct. Sends reminders about expense reports and invoices. Communication is transactional and to the point."
+        signature: |
+          Parker L. Nelson
+          Senior Accountant | ACME Inc.
+      - name: "Sawyer M. Carter"
+        title: "Accounts Payable Clerk"
+        email: "sawyer.carter@acmeinc.com"
+        style: "Polite and procedural. Inquires about invoice approvals and payment statuses. Follows up consistently."
+        signature: |
+          Sawyer M. Carter
+          Accounts Payable | ACME Inc.
+      - name: "Blake E. Green"
+        title: "Customer Success Manager"
+        email: "blake.green@acmeinc.com"
+        style: "Helpful and proactive. Checks in with clients, offers training, and resolves issues. Very positive and supportive tone."
+        signature: |
+          Blake E. Green
+          Customer Success Manager | ACME Inc.
+
+      # --- Legal & Compliance (3) ---
+      - name: "Ryan F. Hill"
+        title: "Associate General Counsel"
+        email: "ryan.hill@acmeinc.com"
+        style: "Cautious and thorough. Reviews contracts and policies. Often suggests edits or raises potential legal issues. More collaborative than the General Counsel."
+        signature: |
+          Ryan F. Hill
+          Associate General Counsel | ACME Inc.
+      - name: "Jessie V. Roberts"
+        title: "Paralegal"
+        email: "jessie.roberts@acmeinc.com"
+        style: "Organized and efficient. Sends documents for signature, schedules legal meetings, and manages case files. Very professional and detail-oriented."
+        signature: |
+          Jessie V. Roberts
+          Paralegal, Legal Department | ACME Inc.
+      - name: "Sidney H. Phillips"
+        title: "Compliance Officer"
+        email: "sidney.phillips@acmeinc.com"
+        style: "Formal and policy-focused. Sends out reminders about mandatory training and updates to company policies. Very by-the-book."
+        signature: |
+          Sidney H. Phillips
+          Compliance Officer | ACME Inc.
+
+      # --- Human Resources (4) ---
+      - name: "Reese P. Turner"
+        title: "VP of Human Resources"
+        email: "reese.turner@acmeinc.com"
+        style: "Diplomatic and confidential. Handles sensitive employee relations issues. Communication is carefully worded and professional."
+        signature: |
+          Reese P. Turner
+          VP of Human Resources | ACME Inc.
+      - name: "Elliot K. Campbell"
+        title: "HR Manager"
+        email: "elliot.campbell@acmeinc.com"
+        style: "Helpful and approachable. Answers questions about benefits, payroll, and company policy. Balances being friendly with being formal."
+        signature: |
+          Elliot K. Campbell
+          Human Resources Manager | ACME Inc.
+      - name: "Tatum D. Parker"
+        title: "Recruiter"
+        email: "tatum.parker@acmeinc.com"
+        style: "Upbeat and persuasive. Communicates with candidates and hiring managers. Very positive and sales-like in communication."
+        signature: |
+          Tatum D. Parker
+          Talent Acquisition | ACME Inc.
+      - name: "Milan C. Edwards"
+        title: "HR Generalist"
+        email: "milan.edwards@acmeinc.com"
+        style: "Procedural and informative. Manages onboarding for new hires and processes paperwork. Sends checklists and welcome emails."
+        signature: |
+          Milan C. Edwards
+          HR Generalist | ACME Inc.
+
+      # --- IT & Operations (5) ---
+      - name: "Sage R. Collins"
+        title: "Director of IT"
+        email: "sage.collins@acmeinc.com"
+        style: "Strategic and budget-conscious. Discusses system upgrades, vendor contracts, and IT security policies. High-level view of technology."
+        signature: |
+          Sage R. Collins
+          Director of Information Technology | ACME Inc.
+      - name: "Frankie T. Stewart"
+        title: "IT Support Manager"
+        email: "frankie.stewart@acmeinc.com"
+        style: "Problem-solver. Manages the helpdesk team. Communication is often related to ticket escalations and system outages."
+        signature: |
+          Frankie T. Stewart
+          IT Support Manager | ACME Inc.
+      - name: "Shiloh B. Morris"
+        title: "IT Support Specialist"
+        email: "shiloh.morris@acmeinc.com"
+        style: "Helpful and patient. Responds to support tickets with clear instructions. Often uses phrases like 'Have you tried turning it off and on again?'"
+        signature: |
+          Shiloh B. Morris
+          IT Help Desk | ACME Inc.
+          Submit a ticket at http://acme-helpdesk
+      - name: "Armani N. Sanchez"
+        title: "Network Administrator"
+        email: "armani.sanchez@acmeinc.com"
+        style: "Technical and direct. Sends notifications about network maintenance or security patches. Very little fluff."
+        signature: |
+          Armani N. Sanchez
+          Network Administrator | ACME Inc.
+      - name: "Haven O. Cook"
+        title: "Facilities Manager"
+        email: "haven.cook@acmeinc.com"
+        style: "Practical and informative. Sends building-wide announcements about maintenance, office moves, or safety drills."
+        signature: |
+          Haven O. Cook
+          Facilities Manager | ACME Inc.
+
+      # --- EXPANSION PERSONNEL (50 New Profiles for High Volume) ---
+      - name: "Elena Rostova"
+        title: "Senior Data Architect"
+        email: "elena.rostova@acmeinc.com"
+        style: "Extremely technical and precise. Corrects people's terminology. Uses words like 'schema', 'latency', and 'redundancy'."
+        signature: "Elena Rostova | Data Architecture"
+      - name: "Marcus J. Dillon"
+        title: "Facilities Coordinator"
+        email: "marcus.dillon@acmeinc.com"
+        style: "Casual and tired. Sends emails about broken elevators, coffee machines, and parking. Often lowercase subject lines."
+        signature: "Marcus - Facilities"
+      - name: "Sarah Jenkins"
+        title: "Junior Copywriter"
+        email: "sarah.jenkins@acmeinc.com"
+        style: "Overly enthusiastic and uses too many exclamation points!! Loves buzzwords like 'synergy' and 'ideation'."
+        signature: "Sarah Jenkins | Marketing Team ✨"
+      - name: "Dr. Aris Thorne"
+        title: "Research Scientist"
+        email: "aris.thorne@acmeinc.com"
+        style: "Academic and verbose. Writes long paragraphs explaining the theoretical basis of features. Hard for sales to understand."
+        signature: "Aris Thorne, PhD | R&D Division"
+      - name: "Kevin O'Connor"
+        title: "Inside Sales Rep"
+        email: "kevin.oconnor@acmeinc.com"
+        style: "Aggressive and short. Focused purely on quota and call volume. 'Did they sign yet?'"
+        signature: "Kevin O'Connor | Sales"
+      - name: "Priya Desai"
+        title: "Compliance Auditor"
+        email: "priya.desai@acmeinc.com"
+        style: "Strict and formal. Flags policy violations. Uses red text for emphasis."
+        signature: "Priya Desai | Internal Audit & Compliance"
+      - name: "Tom Wozniak"
+        title: "Legacy Systems Admin"
+        email: "tom.wozniak@acmeinc.com"
+        style: "Grumpy veteran. Hates cloud updates. Complains about 'the old mainframe' working better."
+        signature: "Tom W. | SysAdmin"
+      - name: "Lisa Wong"
+        title: "Event Planner"
+        email: "lisa.wong@acmeinc.com"
+        style: "Frantic and detailed. Worried about catering counts and room bookings. ALWAYS marks emails as High Importance."
+        signature: "Lisa Wong | Corporate Events"
+      - name: "Brandon Hayes"
+        title: "Intern"
+        email: "brandon.hayes@acmeinc.com"
+        style: "Deferential and nervous. Apologizes constantly. 'Sorry to bother you', 'Just checking in'."
+        signature: "Brandon Hayes | Summer Intern"
+      - name: "Fatima Al-Sayed"
+        title: "UX Researcher"
+        email: "fatima.alsayed@acmeinc.com"
+        style: "Empathetic and user-focused. Quotes customer feedback directly. 'The user feels frustrated when...'"
+        signature: "Fatima | User Experience"
+      - name: "Greg 'Mac' MacIntyre"
+        title: "Warehouse Foreman"
+        email: "greg.macintyre@acmeinc.com"
+        style: "Blunt and practical. Discusses shipping delays, forklifts, and inventory counts. No fluff."
+        signature: "Mac | Shipping & Receiving"
+      - name: "Jenny Kim"
+        title: "Payroll Specialist"
+        email: "jenny.kim@acmeinc.com"
+        style: "Procedural. Only emails about timesheets, tax forms, and direct deposit. Very transactional."
+        signature: "Jenny Kim | Payroll"
+      - name: "Oscar Martinez"
+        title: "Graphic Designer"
+        email: "oscar.martinez@acmeinc.com"
+        style: "Visual and brief. Sends links to large files. Complains about font usage."
+        signature: "Oscar M. | Design"
+      - name: "Rachel Green"
+        title: "Executive Assistant"
+        email: "rachel.green@acmeinc.com"
+        style: "Gatekeeper. Scheduling meetings for VPs. Polite but firm about availability."
+        signature: "Rachel Green | EA to VP of Engineering"
+      - name: "David Mueller"
+        title: "Security Ops Center (SOC)"
+        email: "david.mueller@acmeinc.com"
+        style: "Paranoid and urgent. Sends alerts about phishing, firewalls, and patches."
+        signature: "D. Mueller | InfoSec"
+      - name: "Samantha Power"
+        title: "Benefits Coordinator"
+        email: "samantha.power@acmeinc.com"
+        style: "Helpful and informative. Explains health insurance and 401k details."
+        signature: "Sam Power | HR Benefits"
+      - name: "Ian Fletcher"
+        title: "DevOps Engineer"
+        email: "ian.fletcher@acmeinc.com"
+        style: "Sarcastic and brief. 'It works on my machine.' 'Check the logs.'"
+        signature: "Ian | DevOps"
+      - name: "Holly Vance"
+        title: "Social Media Manager"
+        email: "holly.vance@acmeinc.com"
+        style: "Trendy. Uses hashtags and discusses 'engagement metrics' and 'brand voice'."
+        signature: "Holly Vance | Social"
+      - name: "Victor Krum"
+        title: "Regional Sales Director (EU)"
+        email: "victor.krum@acmeinc.com"
+        style: "Formal. often mentions time zones and travel schedules. Focused on the European market."
+        signature: "Victor Krum | Director of Sales, EMEA"
+      - name: "Alice Chen"
+        title: "Frontend Developer"
+        email: "alice.chen@acmeinc.com"
+        style: "Detail oriented. Discusses pixels, browsers, and CSS frameworks."
+        signature: "Alice Chen | UI Dev"
+      - name: "Bob Drax"
+        title: "Database Admin"
+        email: "bob.drax@acmeinc.com"
+        style: "Protective. Rejects bad queries. 'Do not run this in production'."
+        signature: "Bob Drax | DBA"
+      - name: "Clara Oswin"
+        title: "QA Tester"
+        email: "clara.oswin@acmeinc.com"
+        style: "Inquisitive. 'I found a weird edge case'. 'Steps to reproduce:'"
+        signature: "Clara | QA"
+      - name: "Derek Shepherd"
+        title: "Solutions Architect"
+        email: "derek.shepherd@acmeinc.com"
+        style: "Big picture. Discusses integrations and API strategy. Bridges sales and tech."
+        signature: "Derek Shepherd | Solutions"
+      - name: "Erica Sinclair"
+        title: "Office Manager"
+        email: "erica.sinclair@acmeinc.com"
+        style: "Cheery organizer. Birthdays, cake, and holiday parties."
+        signature: "Erica Sinclair | Office Management"
+      - name: "Frank Castle"
+        title: "Physical Security"
+        email: "frank.castle@acmeinc.com"
+        style: "Serious. Badges, cameras, and unauthorized access."
+        signature: "F. Castle | Security"
+      - name: "Gina Linetti"
+        title: "Admin Assistant"
+        email: "gina.linetti@acmeinc.com"
+        style: "Informal and distracted. Emojis, personal gossip mixed with work."
+        signature: "Gina"
+      - name: "Harry Bosch"
+        title: "Legal Counsel (Contract)"
+        email: "harry.bosch@acmeinc.com"
+        style: "Short and guarded. 'Reviewing'. 'Approved'. 'Do not sign'."
+        signature: "H. Bosch | Legal"
+      - name: "Iris West"
+        title: "Content Marketing"
+        email: "iris.west@acmeinc.com"
+        style: "Storyteller. Blog posts, newsletters, and deadlines."
+        signature: "Iris West | Content Team"
+      - name: "Jack Reacher"
+        title: "Field Technician"
+        email: "jack.reacher@acmeinc.com"
+        style: "Mobile user. Sent from phone. Typos. 'On site now', 'Fixed it'."
+        signature: "Sent from my iPhone"
+      - name: "Kara Danvers"
+        title: "Receptionist"
+        email: "kara.danvers@acmeinc.com"
+        style: "Friendly and helpful. Visitor badges and lunch deliveries."
+        signature: "Kara | Front Desk"
+      - name: "Leonard Hofstadter"
+        title: "Experimental Physicist"
+        email: "leonard.hofstadter@acmeinc.com"
+        style: "Neurotic and explanatory. Worried about grant funding and lab equipment."
+        signature: "Dr. Hofstadter"
+      - name: "Meredith Grey"
+        title: "Corporate Health Officer"
+        email: "meredith.grey@acmeinc.com"
+        style: "Caring but busy. COVID policies, flu shots, and ergonomics."
+        signature: "Meredith Grey"
+      - name: "Natasha Romanoff"
+        title: "Competitive Intelligence"
+        email: "natasha.romanoff@acmeinc.com"
+        style: "Secretive and direct. Reports on competitor pricing and features."
+        signature: "NR | Strategy"
+      - name: "Oliver Queen"
+        title: "CSR Lead"
+        email: "oliver.queen@acmeinc.com"
+        style: "Focused on 'mission' and 'saving the city/company'. Corporate responsibility."
+        signature: "Oliver Queen"
+      - name: "Peter Parker"
+        title: "Junior Dev (Web)"
+        email: "peter.parker@acmeinc.com"
+        style: "Eager, nervous, talks too much. 'Mr. Stark said I should...' "
+        signature: "Peter Parker"
+      - name: "Quentin Beck"
+        title: "VFX / Media Specialist"
+        email: "quentin.beck@acmeinc.com"
+        style: "Grandise and illusionary. Video editing and presentation polish."
+        signature: "Beck | Media"
+      - name: "Ron Swanson"
+        title: "Director of construction"
+        email: "ron.swanson@acmeinc.com"
+        style: "Extremely brief. Hates meetings. 'No.' 'Proceed.'"
+        signature: "Ron Swanson"
+      - name: "Steve Rogers"
+        title: "Team Lead"
+        email: "steve.rogers@acmeinc.com"
+        style: "Motivational and polite. 'Language!' 'Let's work together'."
+        signature: "Steve Rogers"
+      - name: "Tony Stark"
+        title: "Consultant"
+        email: "tony.stark@acmeinc.com"
+        style: "Arrogant, brilliant, informal. Nicknames and snark."
+        signature: "Stark"
+      - name: "Ursula Buffay"
+        title: "HR Generalist"
+        email: "ursula.buffay@acmeinc.com"
+        style: "Absent minded and weird. Forgets attachments. Weird signatures."
+        signature: "Ursula"
+      - name: "Veronica Mars"
+        title: "Fraud Investigator"
+        email: "veronica.mars@acmeinc.com"
+        style: "Suspicious and sharp. Asking for receipts and proof."
+        signature: "V. Mars | Internal Investigations"
+      - name: "Wade Wilson"
+        title: "Sales Rep"
+        email: "wade.wilson@acmeinc.com"
+        style: "Chaotic. Breaking the fourth wall. Inappropriate jokes."
+        signature: "Deadpool"
+      - name: "Xena Lawless"
+        title: "Security Guard"
+        email: "xena.lawless@acmeinc.com"
+        style: "Tough and action oriented. 'Perimeter secure'."
+        signature: "Xena"
+      - name: "Yennefer Vengerberg"
+        title: "Chief of Staff"
+        email: "yennefer.vengerberg@acmeinc.com"
+        style: "Commanding and impatient. Wants results yesterday."
+        signature: "Yennefer"
+      - name: "Zack Morris"
+        title: "Sales Intern"
+        email: "zack.morris@acmeinc.com"
+        style: "Scheming and charming. Trying to get out of work."
+        signature: "Zack"
+
+  - name: "Phoney Tunes Inc."
+    domain: "phoneytunes.com"
+    personnel:
+      - name: "Morgana Shaw"
+        title: "CEO"
+        email: "morgana.shaw@phoneytunes.com"
+        style: "Aggressive and demanding. A direct competitor to Taylor Brooks."
+        signature: "Morgana Shaw, CEO, Phoney Tunes Inc."
+      - name: "Rachel Quinn"
+        title: "Senior Account Executive"
+        email: "rachel.quinn@phoneytunes.com"
+        style: "Experienced and shrewd negotiator. Friendly on the surface but always focused on the deal."
+        signature: "Rachel Quinn | Senior Account Executive | Phoney Tunes"
+      - name: "Anthony Brooks"
+        title: "Account Executive"
+        email: "anthony.brooks@phoneytunes.com"
+        style: "Young, ambitious, and a bit reckless. Eager to make a name for himself."
+        signature: "Anthony Brooks, Account Executive"
+      - name: "Leo Vance"
+        title: "VP of Business Development"
+        email: "leo.vance@phoneytunes.com"
+        style: "Smooth and strategic. Looks for partnership opportunities and weaknesses in competitors."
+        signature: "Leo Vance, VP of Biz Dev, Phoney Tunes Inc."
+
+  - name: "Coyote Industries"
+    domain: "coyote-industries.com"
+    personnel:
+      - name: "Marcus Thorne"
+        title: "CEO"
+        email: "m.thorne@coyote-industries.com"
+        style: "Old-school and skeptical. A demanding but important client for ACME."
+        signature: "M. Thorne, CEO, Coyote Industries"
+      - name: "Rebecca J. Turner"
+        title: "Director of Procurement"
+        email: "r.turner@coyote-industries.com"
+        style: "By-the-book and focused on contracts and deliverables. Her job is to hold vendors accountable."
+        signature: "Rebecca J. Turner | Director of Procurement"
+      - name: "Samuel Cole"
+        title: "Lead Engineer"
+        email: "s.cole@coyote-industries.com"
+        style: "Technical and detail-oriented. The primary user of ACME's 'Project Phoenix' and will notice any issues."
+        signature: "Samuel Cole, Lead Engineer, Coyote Industries"
+
+  - name: "Wright & Lee LLP"
+    domain: "wrightlee-law.com"
+    personnel:
+      - name: "Eleanor Vance"
+        title: "Partner (External Counsel)"
+        email: "e.vance@wrightlee-law.com"
+        style: "Brilliant, no-nonsense legal mind. Hired by ACME for sensitive matters. Communication is precise, privileged, and expensive."
+        signature: |
+          Eleanor Vance, Esq.
+          Partner | Wright & Lee LLP
+          ATTORNEY-CLIENT PRIVILEGED COMMUNICATION
+      - name: "Julian Assad"
+        title: "Associate Attorney"
+        email: "j.assad@wrightlee-law.com"
+        style: "Diligent and thorough. Handles discovery requests and legal research. Often communicates with ACME's paralegals."
+        signature: "Julian Assad, Associate, Wright & Lee LLP"
+
+# ===================================================================
+# SCENARIOS
+# ===================================================================
+scenarios:
+
+  # --- SCENARIO 1: Price-Fixing Thread ---
+  - type: "thread"
+    description: "(S1) Price-fixing discussion with coded language"
+    base_filename: "S1_price_fixing_thread"
+    prompt_variables:
+      urgency: ["urgent", "time-sensitive", "when you get a chance", "ASAP", "at your earliest convenience"]
+      meeting_type: ["quick call", "brief meeting", "coffee chat", "video conference", "phone sync"]
+      tone: ["friendly and collaborative", "strictly business", "slightly demanding", "cautious and formal"]
+    prompts:
+      - prompt_templates:
+          - "Draft an email from Jamie Chen (ACME) to Rachel/Anthony (Phoney Tunes) proposing a 'shared game plan for the season' to keep 'ticket prices' stable. Make it sound {urgency} and adopt a {tone} tone."
+          - "Jamie Chen wants to collude with Phoney Tunes on pricing. Write the first email to Rachel/Anthony suggesting they create a 'shared game plan' for 'ticket prices'. The tone should be {tone} and {urgency}."
+      - prompt_templates:
+          - "Draft Rachel Quinn's enthusiastic reply, agreeing that a 'consistent pricing strategy' is best for everyone."
+          - "Rachel Quinn loves the idea. Write her positive response to Jamie, agreeing that a 'consistent pricing strategy' is smart."
+      - prompt_templates:
+          - "Draft Jamie Chen's reply to schedule a {meeting_type} to discuss details."
+          - "Jamie Chen wants to set up a meeting. Write his email proposing a {meeting_type}."
+        probability: 0.9
+      - prompt_templates:
+          - "Draft a follow-up from Anthony Brooks after the call, summarizing their agreement on 'maintaining the 15% baseline' and calling it 'our arrangement'."
+          - "Anthony Brooks needs to send a summary email after their meeting. It should mention their agreement to 'maintain the 15% baseline' and refer to it as 'our arrangement'."
+      - prompt_templates:
+          - "Draft an email from Jamie Chen to Anthony Brooks asking for clarification. He misremembers if they agreed to '15% or 12%'."
+          - "Jamie Chen is having second thoughts and wants to confirm the number. Write an email from him to Anthony Brooks asking if the agreement was for '15% or 12%'."
+        probability: 0.5
+      - prompt_templates:
+          - "Draft Anthony Brooks' reply, confidently correcting Jamie that the agreement was for 15%."
+          - "Anthony Brooks needs to correct Jamie. Write his confident reply stating the agreement was for 15%."
+        probability: 0.5
+      - prompt_templates:
+          - "Draft an internal ACME email from Jamie Chen to Taylor Brooks, vaguely stating he has 'established a friendly rapport with Phoney Tunes that should stabilize the market'. Secretly BCC Casey Bennett on the email."
+          - "Jamie Chen is reporting his success to the CEO. Write the internal email to Taylor Brooks about the 'friendly rapport' with Phoney Tunes that will 'stabilize the market'. Make sure to BCC the CFO, Casey Bennett."
+      - prompt_templates:
+          - "Draft a later email from Rachel Quinn to Jamie Chen, nervously asking if they are 'still holding the line' on pricing."
+          - "Rachel Quinn is getting nervous. Write her email to Jamie asking if they are 'still holding the line' on their pricing agreement."
+        probability: 0.4
+      - prompt_templates:
+          - "Draft Jamie Chen's reassuring reply that 'the game plan hasn't changed'."
+          - "Jamie Chen needs to reassure Rachel. Write a brief reply stating that 'the game plan hasn't changed'."
+        probability: 0.4
+
+  # --- SCENARIO 1A: Calendar Invite for Price-Fixing Meeting ---
+  - type: "calendar_event"
+    description: "(S1A) Calendar invite for the price-fixing meeting"
+    base_filename: "S1A_price_fixing_meeting"
+    prompts:
+      - prompt_templates:
+          - "Draft a calendar event from Jamie Chen to Rachel Quinn and Anthony Brooks. The summary should be 'Strategy Sync' and the description should be a vague reference to 'Discussing our seasonal game plan.' The meeting should be for an hour."
+
+  # --- SCENARIO 1B: Teams Chat - Price Fixing (RSMF Generation) ---
+  - type: "chat"
+    description: "(S1B) Teams Chat: Informal price-fixing discussion"
+    # UPDATED: Renamed to avoid confusion with "Teams" visual format in Slack exports
+    base_filename: "project-pricing-sync" 
+    prompts:
+      - prompt_templates:
+          - "Generate a Microsoft Teams chat history between Jamie Chen (ACME) and Rachel Quinn (Phoney Tunes). They should be discussing the 'ticket prices' casually. Jamie should suggest they 'sync up' their numbers. Rachel should agree but use emojis to be subtle. The conversation should be about 8-10 messages long, rapid-fire, and informal."
+
+  # --- SCENARIO 2: Safety Fraud Thread ---
+  - type: "thread"
+    description: "(S2) Urgent: Discussion about hiding safety test results"
+    base_filename: "S2_safety_fraud_thread"
+    prompts:
+      - prompt_templates:
+          - "Draft an email from Peyton Parker to Casey Mitchell expressing alarm about the 'catastrophic failure' in the latest 'Project Phoenix' stress test."
+          - "Peyton Parker needs to alert Casey Mitchell about a major problem. Write an email detailing the 'catastrophic failure' from the recent 'Project Phoenix' stress test."
+      - prompt_templates:
+          - "Draft Casey Mitchell's blunt reply, saying 'this data cannot leave this room. We need a solution, not a problem'."
+          - "Casey Mitchell needs to shut this down fast. Write the reply to Peyton: 'this data cannot leave this room. We need a solution, not a problem'."
+      - prompt_templates:
+          - "Draft Peyton Parker's reply, proposing to 're-calibrate the sensor data' and 'exclude the outlier results'."
+          - "Peyton Parker suggests a cover-up. Write the email proposing to 're-calibrate the sensor data' and 'exclude the outlier results'."
+      - prompt_templates:
+          - "Draft Casey Mitchell's reply, approving the plan and instructing Peyton to 'shred all original test logs'. CC Taylor Brooks on this email."
+          - "Casey Mitchell agrees. Write the email approving the plan and ordering Peyton to 'shred all original test logs'. Taylor Brooks must be CC'd."
+      - prompt_templates:
+          - "Draft a follow-up from Peyton Parker asking: 'Just to be certain, the logs on the main server or the local backups too?'"
+          - "Peyton Parker is nervous and wants to be absolutely sure. Write the clarifying question about whether to shred the main server logs or the local backups too."
+        probability: 0.6
+      - prompt_templates:
+          - "Draft Casey Mitchell's impatient reply: 'Peyton, I mean ALL of them. No traces.'"
+          - "Casey Mitchell is getting angry. Write the impatient response: 'Peyton, I mean ALL of them. No traces.'"
+        probability: 0.5
+      - prompt_templates:
+          - "Draft an email from Rebecca Turner (Coyote) to Casey Mitchell asking for the final safety report for Project Phoenix."
+          - "Rebecca Turner from Coyote Industries needs the final safety report for Project Phoenix. Write her request email to Casey Mitchell."
+        probability: 0.7
+      - prompt_templates:
+          - "Draft Casey Mitchell's reply to Rebecca Turner, attaching the falsified safety report and saying 'Here are the final results. Everything looks great.'"
+          - "Casey Mitchell sends the fake report to the client. Write his email to Rebecca Turner with the falsified safety report, saying everything passed with flying colors."
+        probability: 0.7
+
+  # --- SCENARIO 3: Legal Privilege ---
+  - type: "thread"
+    description: "(S3) Confidential legal consultation with privilege"
+    base_filename: "S3_legal_privilege_thread"
+    prompts:
+      - prompt_templates:
+          - "Draft an email from Taylor Brooks to Drew Foster with subject 'CONFIDENTIAL AND PRIVILEGED' asking for urgent advice on a sensitive disclosure obligation."
+      - prompt_templates:
+          - "Draft Drew Foster's reply, advising Taylor to 'not put anything further in writing' and suggesting they immediately engage external counsel."
+      - prompt_templates:
+          - "Draft Drew Foster's email to Eleanor Vance at Wright & Lee, cc'ing Taylor, with subject 'Attorney-Client Communication', briefly explaining the need for her expertise."
+      - prompt_templates:
+          - "Draft Eleanor Vance's reply, confirming the engagement and suggesting a call."
+
+  # ===================================================================
+  # HR MISCONDUCT SCENARIOS (S_HR)
+  # ===================================================================
+
+  # --- SCENARIO HR1: Workplace Harassment Thread ---
+  - type: "thread"
+    description: "(S_HR) Workplace harassment communications"
+    base_filename: "S_HR_harassment_thread"
+    prompts:
+      - prompt_templates:
+          - "Draft an email from Peyton Parker to Drew Foster (General Counsel) with subject 'Confidential HR Matter - Need Advice'. Peyton reports feeling uncomfortable with repeated inappropriate comments from Jamie Chen about Peyton's appearance and personal life. The tone should be professional but clearly distressed."
+      - prompt_templates:
+          - "Draft Drew Foster's immediate reply, acknowledging the seriousness, asking Peyton to document specific incidents with dates and times, and assuring confidentiality."
+      - prompt_templates:
+          - "Draft Peyton Parker's follow-up email providing three specific incidents: 1) Jamie commenting on Peyton's clothing in a team meeting, 2) Jamie sending personal text messages after hours asking about dating life, 3) Jamie making a joke about Peyton's body during a lunch outing. Each incident should have approximate dates."
+        probability: 0.9
+      - prompt_templates:
+          - "Draft an email from Drew Foster to Taylor Brooks (CEO) with subject 'URGENT - HR Investigation Required'. Drew summarizes the allegations without naming Peyton initially, states this requires immediate action, and recommends bringing in external HR consultant."
+      - prompt_templates:
+          - "Draft Taylor Brooks' reply expressing concern, approving the investigation, and asking Drew to keep this matter strictly confidential until investigation is complete."
+        probability: 0.8
+      - prompt_templates:
+          - "Draft an email from Drew Foster to Jamie Chen requesting a meeting to 'discuss some workplace conduct concerns'. The tone should be formal but not accusatory, requesting Jamie's availability within 24 hours."
+        probability: 0.7
+      - prompt_templates:
+          - "Draft Jamie Chen's confused and defensive reply, saying 'I'm not sure what this is about but I'm happy to meet. Is everything okay?'"
+        probability: 0.7
+
+  # --- SCENARIO HR2: HR Investigation Documentation ---
+  - type: "standalone"
+    description: "(S_HR) HR investigation case file email"
+    base_filename: "S_HR_investigation_docs"
+    prompts:
+      - prompt_templates:
+          - "Draft an email from Drew Foster to Taylor Brooks attaching 'HR Investigation Report - Case #2025-003 - CONFIDENTIAL'. The email summarizes findings: multiple witnesses corroborated the allegations, Jamie Chen admitted to some comments but claimed they were 'just joking', recommendation is termination for policy violations. Attach a formal investigation summary."
+
+  # --- SCENARIO HR3: Witness Statements ---
+  - type: "standalone"
+    description: "(S_HR) Witness statement about harassment"
+    base_filename: "S_HR_witness_statement"
+    prompts:
+      - prompt_templates:
+          - "Draft an email from Casey Mitchell to Drew Foster in response to a request for information. Casey confirms witnessing Jamie Chen make inappropriate comments about Peyton Parker's appearance during a team lunch in October. Casey states feeling uncomfortable but not knowing how to intervene. The tone should be factual and somewhat reluctant."
+
+  # --- SCENARIO HR4: HR Policy Violation Chat ---
+  - type: "chat"
+    description: "(S_HR) Slack/Teams chat showing inappropriate behavior"
+    base_filename: "hr-inappropriate-chat"
+    prompts:
+      - prompt_templates:
+          - "Generate a Microsoft Teams chat history between Jamie Chen and Peyton Parker. Jamie sends several messages that cross professional boundaries: complimenting appearance excessively, asking personal questions about dating life, making jokes about going out for drinks. Peyton's responses should be brief, polite, and deflective, showing discomfort. The chat should be about 10-12 messages total over a 2-hour period after work hours."
+
+  # --- SCENARIO 4: Routine Project Management (Expanded Variables) ---
+  - type: "standalone"
+    description: "(S4) Generic project management emails"
+    base_filename: "noise_project_mgmt"
+    near_duplicate_probability: 0.15 
+    prompt_variables:
+      topic:
+        - "Phoenix project weekly status"
+        - "Q4 marketing deliverables"
+        - "budget for contractor services"
+        - "technical specification doc"
+        - "user acceptance testing timeline"
+        - "feature requirement clarification"
+        - "standup meeting reschedule"
+        - "project retrospective link"
+        - "current sprint blockers"
+        - "additional testing resources"
+        - "architecture review notes"
+        - "staging environment readiness"
+        - "project management tool access"
+        - "user story #247 acceptance criteria"
+        - "milestone definition of done"
+        - "updated Gantt chart"
+        - "pull request code review"
+        - "API documentation ETA"
+        - "caching layer approach"
+        - "vendor integration dependency"
+        - "database schema migration"
+        - "front-end CSS misalignment"
+        - "backend latency issues"
+        - "mobile app crash logs"
+        - "security audit findings"
+        - "third-party library updates"
+        - "cloud infrastructure costs"
+        - "data backup verification"
+        - "disaster recovery drill"
+        - "legacy code refactoring"
+        - "new microservice deployment"
+        - "single sign-on integration"
+        - "automated test coverage"
+        - "performance benchmarking"
+        - "accessibility compliance check"
+        - "internationalization support"
+        - "gdpr compliance review"
+        - "server load balancing"
+        - "memory leak investigation"
+        - "critical bug hotfix"
+        - "Kubernetes cluster upgrade"
+        - "Elasticsearch indexing error"
+        - "AWS cost spike investigation"
+        - "Docker container orchestration"
+        - "Python version migration (3.9 to 3.11)"
+        - "React component library depreciation"
+        - "SQL query optimization for reporting"
+        - "Redis cache eviction policy"
+        - "GraphQL endpoint security"
+        - "OAuth2 token refresh failure"
+        - "VPN connectivity for remote teams"
+        - "Jira workflow transition issues"
+        - "Confluence page permission audit"
+        - "Git merge conflict resolution"
+        - "Jenkins build pipeline failure"
+        - "Terraform state file corruption"
+        - "SSL certificate renewal"
+        - "Domain name DNS propagation"
+        - "Load balancer health check failures"
+        - "Firewall rule change request"
+        - "Zero-day vulnerability patch"
+        - "Penetration test scheduling"
+        - "SOC2 compliance evidence"
+        - "Data retention policy update"
+        - "Archive storage tiering"
+        - "Log aggregation in Splunk"
+        - "Prometheus alert fatigue"
+        - "Grafana dashboard visualization"
+        - "Mobile notch UI layout issues"
+        - "Dark mode theme inconsistencies"
+        - "Cross-browser compatibility (Safari)"
+        - "Email transactional service (SendGrid) quota"
+        - "SMS gateway latency"
+        - "Payment gateway (Stripe) webhook errors"
+        - "User session timeout Logic"
+        - "Two-factor authentication SMS delays"
+        - "Password complexity requirement change"
+        - "LDAP synchronization errors"
+        - "Active Directory group cleanup"
+        - "Laptop provisioning delays"
+        - "Software license audit (Adobe)"
+        - "Zoom integration with Outlook"
+        - "Slack bot permission scope"
+        - "GitHub Copilot license assignment"
+        - "Figma design system versioning"
+        - "Wireframe approval workflow"
+        - "A/B testing platform setup"
+        - "Google Analytics 4 migration"
+        - "SEO meta tag automation"
+        - "Sitemap generation failure"
+        - "Robots.txt configuration"
+        - "CDN cache invalidation"
+        - "Video compression for landing page"
+        - "Image optimization pipeline"
+        - "Font licensing compliance"
+        - "Copy text translation (Spanish)"
+        - "Localization key missing"
+        - "Currency formatting bug"
+        - "Timezone calculation error"
+    prompts:
+      - prompt_templates:
+          - "Invent a specific, realistic software engineering or project management problem related to '{topic}'. Then draft a standalone email between relevant ACME employees discussing this specific problem and proposing a solution."
+
+  # --- SCENARIO 5: HR & Admin (Expanded Variables) ---
+  - type: "standalone"
+    description: "(S5) Generic HR or admin announcements"
+    base_filename: "noise_hr_admin"
+    prompt_variables:
+      topic:
+        - "upcoming office holiday closure"
+        - "open enrollment for health benefits"
+        - "weekend server maintenance"
+        - "welcome message for new hires"
+        - "employee handbook update"
+        - "charity food drive"
+        - "timesheet submission reminder"
+        - "parking lot assignment update"
+        - "fire drill schedule"
+        - "company all-hands meeting"
+        - "security badge pickup"
+        - "VPN connection procedures"
+        - "kitchen refrigerator cleanout"
+        - "mandatory compliance training"
+        - "IT help desk closure"
+        - "expense reporting policy"
+        - "office supplies order"
+        - "emergency contact form"
+        - "employee satisfaction survey"
+        - "elevator maintenance"
+        - "flu shot clinic"
+        - "gym membership discount"
+        - "lost and found items"
+        - "clean desk policy"
+        - "password reset requirement"
+        - "phishing simulation alert"
+        - "visitor policy update"
+        - "conference room booking etiquette"
+        - "recycling program guidelines"
+        - "w-2 form availability"
+        - "annual performance review cycle"
+        - "summer hours schedule"
+        - "remote work policy refresh"
+        - "commuter benefits program"
+        - "standing desk requests"
+        - "office plant care"
+        - "coffee machine maintenance"
+        - "noise complaint in open office"
+        - "suspicious email alert"
+        - "new slack channel guidelines"
+        - "HVAC temperature complaints (too cold)"
+        - "HVAC temperature complaints (too hot)"
+        - "broken dishwasher in breakroom"
+        - "mold in the 4th floor bathroom"
+        - "smell coming from the microwave"
+        - "leftover catering in the kitchen"
+        - "expired milk in the fridge"
+        - "request for oat milk stocking"
+        - "broken ergonomic chair"
+        - "flickering light in conference room B"
+        - "stained carpet in reception"
+        - "window blinds stuck"
+        - "soap dispenser empty"
+        - "paper jam in printer 4"
+        - "toner replacement request"
+        - "shredder overheating"
+        - "water cooler empty"
+        - "coffee bean selection vote"
+        - "holiday party theme voting"
+        - "Halloween costume contest rules"
+        - "Secret Santa sign up"
+        - "Bring Your Dog to Work Day"
+        - "Bring Your Child to Work Day"
+        - "wellness wednesday yoga"
+        - "meditation app subscription"
+        - "mental health day policy"
+        - "bereavement leave policy"
+        - "jury duty procedure"
+        - "voting time off"
+        - "parental leave handbook"
+        - "nursing room reservation"
+        - "bike rack security"
+        - "electric vehicle charging stations"
+        - "carpooling spreadsheet"
+        - "lost badge replacement fee"
+        - "found keys in parking lot"
+        - "found umbrella in lobby"
+        - "unclaimed packages in mailroom"
+        - "fedex pickup deadline"
+        - "notary public availability"
+        - "passport photo service"
+        - "corporate credit card application"
+        - "travel booking portal downtime"
+        - "concur expense login issues"
+        - "mileage reimbursement rate change"
+        - "per diem rate update"
+        - "hotel corporate codes"
+        - "rental car insurance policy"
+        - "uber for business account"
+        - "diversity and inclusion workshop"
+        - "unconscious bias training"
+        - "sexual harassment prevention training"
+        - "data privacy certification"
+        - "insider trading policy acknowledgment"
+        - "conflict of interest declaration"
+        - "intellectual property agreement"
+        - "exit interview scheduling"
+        - "resignation acknowledgment"
+        - "retirement party for Bob"
+        - "service anniversary awards"
+        - "employee of the month nomination"
+        - "referral bonus program"
+    prompts:
+      - prompt_templates:
+          - "Draft a routine company-wide announcement from HR, IT, or Facilities at ACME Inc. regarding '{topic}'. Feel free to invent specific details (dates, times, locations) to make the email sound authentic and unique."
+
+  # --- SCENARIO 6: Client Communications ---
+  - type: "thread"
+    description: "(S6) Routine conversation with Coyote Industries"
+    base_filename: "noise_client_comms"
+    prompts:
+      - prompt_templates:
+          - "Draft an email from Rebecca Turner (Coyote) to Jamie Chen (ACME) asking about the status of purchase order #4521."
+      - prompt_templates:
+          - "Draft Jamie Chen's polite reply with shipping details for PO #4521."
+
+  # --- SCENARIO 7: Sales Team Chatter (Expanded Variables) ---
+  - type: "standalone"
+    description: "(S7) Generic sales team emails"
+    base_filename: "noise_sales_chatter"
+    prompt_variables:
+      topic:
+        - "weekly sales report deadline"
+        - "new CRM feature question"
+        - "team lunch planning"
+        - "congratulations on big deal"
+        - "successful sales tactic share"
+        - "difficult prospect advice"
+        - "customer testimonial share"
+        - "custom quote approval"
+        - "commission structure question"
+        - "sales meeting agenda"
+        - "updated pricing sheets"
+        - "demo environment access"
+        - "competitive intel share"
+        - "territory coverage during vacation"
+        - "marketing collateral request"
+        - "sales technique article"
+        - "product training request"
+        - "end-of-quarter push strategy"
+        - "lead qualification criteria"
+        - "cold calling script feedback"
+        - "contract negotiation tip"
+        - "client entertainment budget"
+        - "travel expense reimbursement"
+        - "competitor price undercut"
+        - "lost deal analysis"
+        - "referral program details"
+        - "upsell opportunity identification"
+        - "churn prevention strategy"
+        - "sales kickoff event ideas"
+        - "quarterly business review prep"
+        - "Salesforce login failure"
+        - "HubSpot integration error"
+        - "ZoomInfo credits running low"
+        - "LinkedIn Sales Navigator tips"
+        - "Gong call recording review"
+        - "DocuSign envelope voided"
+        - "PandaDoc template broken"
+        - "Calendly link not working"
+        - "Slack notification for closed won"
+        - "duplicate lead in system"
+        - "wrong account owner assigned"
+        - "territory dispute with East Coast team"
+        - "commission payout discrepancy"
+        - "SPIFF bonus clarification"
+        - "President's Club eligibility"
+        - "quota relief request"
+        - "discount approval over 20%"
+        - "net 60 payment terms request"
+        - "legal redlines on MSA"
+        - "procurement portal hurdles"
+        - "security questionnaire help"
+        - "RFP response deadline"
+        - "SOC2 report request for client"
+        - "competitor FUD (Fear Uncertainty Doubt)"
+        - "Phoney Tunes pricing rumors"
+        - "Coyote Industries renewal risk"
+        - "ghosted by prospect after demo"
+        - "gatekeeper blocking access to decision maker"
+        - "champion left the company"
+        - "budget freeze at client"
+        - "competitor offering free trial"
+        - "feature gap objection handling"
+        - "roadmap promise to close deal"
+        - "executive sponsorship request"
+        - "reference customer needed"
+        - "case study approval"
+        - "logo usage rights"
+        - "press release for new partnership"
+        - "swag bag for client visit"
+        - "dinner reservation for client meeting"
+        - "golf outing expensing"
+        - "tickets to the game for prospect"
+        - "flight delay causing missed meeting"
+        - "rental car upgrade"
+        - "hotel receipt lost"
+        - "per diem overage"
+        - "conference booth staffing"
+        - "trade show lead scanning"
+        - "webinar attendance low"
+        - "email open rates dropping"
+        - "cold email subject line testing"
+        - "voicemail drop recording"
+        - "SMS outreach compliance"
+        - "bad data in lead list"
+        - "wrong phone number for CEO"
+        - "bounced emails cleanup"
+    prompts:
+      - prompt_templates:
+          - "Draft a routine email between ACME sales team members about {topic}."
+
+  # --- SCENARIO 8: Personal/Non-Work ---
+  - type: "standalone"
+    description: "(S8) Personal, non-work emails (Name Normalization)"
+    base_filename: "noise_personal"
+    prompt_variables:
+      employee_pool:
+        # Taylor L. Brooks variations
+        - "Taylor Brooks"
+        - "T. Brooks"
+        - "Brooks, Taylor"
+        - "Taylor"
+        # Casey J. Bennett (CFO) variations
+        - "Casey Bennett"
+        - "C.J. Bennett"
+        - "Bennett, Casey"
+        - "Mr. Bennett"
+        # Casey Q. Mitchell (Engineer)
+        - "Casey Mitchell"
+        - "C. Mitchell"
+        - "Casey M."
+        # Jamie Chen variations
+        - "Jamie"
+        - "J. Chen"
+        - "Chen, Jamie"
+        # Peyton Parker variations
+        - "Peyton"
+        - "P. Parker"
+        - "Ms. Parker"
+        # Others
+        - "Drew Foster"
+        - "D. Foster"
+        - "Riley Jones"
+        - "Jones, Riley"
+      topic:
+        - "weekend golf game"
+        - "fantasy football league"
+        - "basketball game recap"
+        - "team coffee run"
+        - "happy hour organization"
+        - "hiking trip photos"
+        - "board game night invite"
+        - "ski trip planning"
+        - "World Cup match watch party"
+        - "true crime podcast discussion"
+        - "mobile game tips"
+        - "running trail recommendations"
+        - "bowling night organization"
+        - "camping trip planning"
+        - "Marvel movie discussion"
+        - "streaming show recommendation"
+        - "softball league team"
+        - "state fair trip"
+        - "TV series finale discussion"
+        - "anniversary dinner recommendation"
+        - "lunch spot recommendation"
+        - "potluck recipe share"
+        - "Friday team lunch"
+        - "office coffee complaint"
+        - "taco truck run"
+        - "homemade cookies share"
+        - "birthday potluck"
+        - "pizza place recommendation"
+        - "weekend recipe share"
+        - "Italian restaurant dinner"
+        - "office temperature complaint"
+        - "phone charger borrow"
+        - "carpool coordination"
+        - "lost jacket in breakroom"
+        - "flat tire help"
+        - "funny meme share"
+        - "funny news article"
+        - "weekend plans check"
+        - "commute complaint"
+        - "ride home request"
+        - "birthday gift collection"
+        - "vacation coverage thanks"
+        - "HVAC noise complaint"
+        - "parking situation complaint"
+        - "baby shower gift"
+        - "retirement party planning"
+        - "sympathy card collection"
+        - "new house congratulations"
+        - "babysitter recommendation"
+        - "engagement news"
+        - "milestone birthday planning"
+        - "furniture for sale"
+        - "mechanic recommendation"
+        - "book recommendation"
+        - "tech gadget review"
+        - "house cleaner recommendation"
+        - "store sale alert"
+        - "vet recommendation"
+        - "charity drive discussion"
+        - "volunteer day organization"
+        - "charity run sponsor"
+        - "food bank donation"
+        - "tech meetup attendance"
+        - "community cleanup"
+        - "local news story"
+        - "traffic discussion"
+        - "music festival details"
+        - "new puppy picture"
+        - "family vacation advice"
+        - "home renovation discussion"
+        - "Kickstarter campaign share"
+        - "gym membership buddy"
+        - "online course share"
+        - "secret santa confirmation"
+        - "daycare recommendation"
+        - "concert excitement"
+        - "plant care advice"
+        - "productivity article share"
+        - "mover recommendation"
+        - "WFH with kids strategy"
+        - "yoga class recommendation"
+        - "marathon training tips"
+        - "new restaurant opening"
+        - "video game release hype"
+        - "podcast episode recommendation"
+        - "holiday gift ideas"
+        - "summer camp for kids"
+        - "weekend weather forecast"
+        - "office chair ergonomics"
+        - "standing desk converter review"
+        - "best noise cancelling headphones"
+        - "meal prep ideas"
+        - "keto diet recipes"
+        - "vegan restaurant suggestion"
+        - "local brewery visit"
+        - "wine tasting event"
+        - "art gallery opening"
+        - "museum exhibit"
+        - "hiking gear advice"
+        - "camping spot suggestion"
+        - "fishing trip plan"
+    prompts:
+      - prompt_templates:
+          - "Draft a clearly personal, non-work related email between {sender} and {recipient} about {topic}. Feel free to invent personal details to make it unique. IMPORTANT: Use the sender name variation provided (e.g., if the placeholder is 'T. Brooks', the email must be signed 'T. Brooks')."
+
+  # --- SCENARIO 9: Email Fragments ---
+  - type: "standalone"
+    description: "(S9) Low-quality email fragments (Name Normalization)"
+    base_filename: "noise_fragments"
+    prompt_variables:
+      employee_pool: ["T. Brooks", "C. Bennett", "Jamie", "Casey M.", "Peyton", "Riley", "D. Foster"]
+      fragment_type:
+        - "Draft a one-line reply from {sender} to {recipient}: 'Got it, thanks'"
+        - "Draft a one-line reply from {sender} to {recipient}: 'Will do'"
+        - "Draft a one-line reply from {sender} to {recipient}: 'Sounds good'"
+        - "Draft a one-line reply from {sender} to {recipient}: 'Perfect, thanks!'"
+        - "Draft a one-line reply from {sender} to {recipient}: 'Approved'"
+        - "Draft a one-line reply from {sender} to {recipient}: 'Done'"
+        - "Draft a one-line reply from {sender} to {recipient}: 'On it'"
+        - "Draft a one-line reply from {sender} to {recipient}: 'Thanks for the update'"
+        - "Draft a one-line reply from {sender} to {recipient}: 'Noted'"
+        - "Draft a one-line reply from {sender} to {recipient}: 'LGTM' (looks good to me)"
+    prompts:
+      - prompt_templates:
+          - "{fragment_type}"
+
+  # --- SCENARIO 10: Typos and Errors ---
+  - type: "standalone"
+    description: "(S10) Emails with realistic typos and name errors"
+    base_filename: "noise_typos"
+    prompt_variables:
+      # Intentional misspellings of names for processing tools to catch
+      employee_pool: 
+        - "Taylor Brook"
+        - "Casey Benett"
+        - "Jamei Chen"
+        - "Peyton Paker"
+        - "Riley Jone"
+      task:
+        - "Draft a brief email from {sender} to {recipient} asking for 'teh report' (typo for 'the report')"
+        - "Draft a brief email from {sender} to {recipient} saying 'Can you send me hte file?' (typo)"
+        - "Draft a brief email from {sender} to {recipient} with 'Let me know fi you need anything' (typo)"
+        - "Draft a brief email from {sender} to {recipient} asking 'Did you recieve my last email?' (typo)"
+        - "Draft a brief email from {sender} to {recipient} saying 'I'll folow up tomorrow' (typo)"
+    prompts:
+      - prompt_templates:
+          - "{task}"
+
+  # --- SCENARIO 11: Vague/Ambiguous Emails ---
+  - type: "standalone"
+    description: "(S11) Vague or unclear emails"
+    base_filename: "noise_vague"
+    prompt_variables:
+      employee_pool: ["Taylor L. Brooks", "Casey J. Bennett", "Jamie T. Chen", "Casey Q. Mitchell", "Peyton I. Parker"]
+      task:
+        - "Draft a vague email from {sender} to {recipient} with subject 'update' and body 'Here is the update we discussed'"
+        - "Draft a vague email from {sender} to {recipient} saying 'See attached' but mentioning no specific document"
+        - "Draft a brief email from {sender} to {recipient} saying only 'Can we talk?'"
+        - "Draft a brief email from {sender} to {recipient} with subject 'FYI' and a brief generic statement"
+        - "Draft an email from {sender} to {recipient} saying 'Per our conversation' without specifics"
+    prompts:
+      - prompt_templates:
+          - "{task}"
+
+  # --- SCENARIO 12: Auto-Replies ---
+  - type: "standalone"
+    description: "(S12) Out-of-office auto-replies"
+    base_filename: "noise_autoreply"
+    prompt_variables:
+      employee_pool: ["Taylor L. Brooks", "Casey J. Bennett", "Jamie T. Chen", "Casey Q. Mitchell", "Peyton I. Parker", "Drew S. Foster"]
+      reason:
+        - "on vacation"
+        - "out of the office at a conference"
+        - "on parental leave"
+        - "out sick"
+        - "working remotely with limited email access"
+    prompts:
+      - prompt_templates:
+          - "Draft an out-of-office auto-reply message from {sender} saying they are {reason} and will respond when they return."
+
+  # --- SCENARIO 13: Meeting Coordination ---
+  - type: "standalone"
+    description: "(S13) Meeting scheduling back-and-forth"
+    base_filename: "noise_meetings"
+    prompt_variables:
+      employee_pool: ["Taylor", "Casey", "Jamie", "C. Mitchell", "P. Parker", "Drew", "T. Brooks", "C.J. Bennett"]
+      topic:
+        - "proposing times for a sync meeting next week"
+        - "asking to reschedule Friday's meeting due to a conflict"
+        - "confirming attendance for tomorrow's planning session"
+        - "requesting a 15-minute 1:1 to discuss a project concern"
+        - "asking if Thursday at 2pm works for everyone"
+        - "sending a calendar invite for next Monday's retrospective"
+        - "canceling today's meeting due to an emergency"
+        - "asking for the Zoom link for the meeting that's starting now"
+        - "requesting to push back the start time by 30 minutes"
+    prompts:
+      - prompt_templates:
+          - "Draft a brief email from {sender} to {recipient} about {topic}. Use the short names provided."
+
+  # --- SCENARIO 14: Foreign Language Communications ---
+  - type: "standalone"
+    description: "(S14) Noise: Foreign language business communications"
+    base_filename: "noise_foreign_language"
+    prompt_variables:
+      employee_pool: ["Jamie T. Chen", "Logan H. Lewis", "Harley R. Garcia", "Leo Fowler", "Rebecca J. Turner"]
+      language: ["Spanish", "German", "French", "Portuguese", "Mandarin (Pinyin and Characters)", "Japanese"]
+      topic:
+        - "international shipping logistics"
+        - "marketing email for regional launch"
+        - "quote for potential new client"
+        - "meeting confirmation with local partner"
+        - "request for product documentation"
+        - "invoice discrepancy discussion"
+        - "contract translation request"
+        - "holiday greeting to overseas office"
+    prompts:
+      - prompt_templates:
+          - "Draft a professional email from {sender} to {recipient} regarding {topic}. IMPORTANT: The entire email, including the subject and body, must be written entirely in {language}."
+
+  # --- SCENARIO 15: Stress Test - Blast Email (Recipient Injection) ---
+  - type: "standalone"
+    description: "(S15) Blast email with 500+ recipients"
+    base_filename: "stress_test_blast_email" # 'blast_email' in name triggers Python logic
+    prompt_variables:
+      employee_pool: ["Taylor L. Brooks", "Avery T. Martinez", "Reese P. Turner"]
+      topic:
+        - "Company-wide Q3 Town Hall Invitation"
+        - "Urgent Security Patch Notification - Action Required"
+        - "Annual Employee Satisfaction Survey"
+        - "New Office Policies Effective Immediately"
+    prompts:
+      - prompt_templates:
+          - "Draft a formal, company-wide broadcast email from {sender} regarding '{topic}'. The email should be addressed to 'All Employees' and contain standard corporate announcement language."

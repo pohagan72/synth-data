@@ -1,0 +1,734 @@
+# ===================================================================
+# PRODUCT SAFETY FRAUD DATASET - FOCUSED CONFIGURATION
+# ===================================================================
+# This config generates a focused dataset for product liability and
+# safety fraud investigations. Perfect for EAIDA demos of regulatory
+# violations and test result manipulation.
+#
+# Key Scenarios (NOW AVAILABLE):
+# - Project Phoenix safety test failure coverup (S2)
+# - Email thread about hiding catastrophic test results
+# - Data manipulation and evidence destruction orders
+# - Falsified safety reports sent to clients (Coyote Industries)
+# - Executive involvement (CEO CC'd on destruction order)
+# - Attorney-client privilege documents (S3 - automatic with all investigations)
+# - R&D/engineering contextual noise for realism (S4-S13)
+#
+# Investigation Narrative:
+# Casey Mitchell (R&D Lead) and Peyton Parker (QA Specialist) discover
+# catastrophic failure in Project Phoenix safety tests. Instead of reporting,
+# they agree to hide evidence, manipulate sensor data, and send falsified
+# report to client Coyote Industries. CEO Taylor Brooks is CC'd on key emails.
+# ===================================================================
+
+general_settings:
+  output_directory: "demo_product_safety_fraud"
+
+  # SCENARIO FILTER: Set to 'safety_fraud' to focus on safety fraud investigation
+  # This includes S2 (safety fraud) + privilege (S3) + noise (S4-S13) + client comms (S6)
+  scenario_filter: 'safety_fraud'
+
+# --- Attachments with Scenario Restrictions & Stress Tests ---
+attachments:
+  types:
+    # 1. Safety Fraud Investigation Documents
+    - name: "test_report"
+      limit_to_scenarios: ["(S2) Urgent: Discussion about hiding safety test results", "(S6) Routine conversation with Coyote Industries"]
+      probability: 0.25
+      filenames: ["Phoenix_Test_Results_Final.pdf", "Project_Phoenix_QA_Report_{date}.pdf", "Safety_Stress_Test_Report_{date}.pdf"]
+      mime_type: "application/pdf"
+      content_description: "Project Phoenix Final Stress Test Results showing catastrophic failure data..."
+
+    - name: "engineering_notes"
+      limit_to_scenarios: ["(S2) Urgent: Discussion about hiding safety test results", "(S4) Generic project management emails"]
+      probability: 0.15
+      filenames: ["Project_Phoenix_Meeting_Notes_{date}.docx", "Internal_Engineering_Memo_{date}.docx", "QA_Review_Notes_{date}.docx"]
+      mime_type: "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+      content_description: "Internal meeting notes discussing safety test results and corrective actions..."
+
+    - name: "technical_specs"
+      limit_to_scenarios: ["(S2) Urgent: Discussion about hiding safety test results", "(S4) Generic project management emails"]
+      probability: 0.12
+      filenames: ["Phoenix_Technical_Specifications_{date}.pdf", "Safety_Requirements_Doc_{date}.pdf"]
+      mime_type: "application/pdf"
+      content_description: "Technical specifications and safety requirements for Project Phoenix..."
+
+    - name: "test_data_spreadsheet"
+      limit_to_scenarios: ["(S2) Urgent: Discussion about hiding safety test results"]
+      probability: 0.18
+      filenames: ["Raw_Test_Data_{date}.xlsx", "Sensor_Calibration_Data_{date}.xlsx", "Failure_Analysis_{date}.xlsx"]
+      mime_type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+      content_description: "Raw sensor data and test results showing stress test failures and outlier measurements..."
+
+    - name: "client_contract"
+      limit_to_scenarios: ["(S6) Routine conversation with Coyote Industries"]
+      probability: 0.1
+      filenames: ["Coyote_Industries_Contract_{date}.pdf", "Master_Services_Agreement_{date}.pdf", "SOW_Phoenix_{date}.pdf"]
+      mime_type: "application/pdf"
+      content_description: "Contract and statement of work between ACME and Coyote Industries for Project Phoenix..."
+
+    # 2. Stress Test Files (Logs)
+    - name: "small_debug_log"
+      limit_to_scenarios: ["(S4) Generic project management emails"]
+      probability: 0.1
+      filenames: ["debug_trace_{date}.log"]
+      mime_type: "text/x-log"
+      fixed_size_mb: 1
+
+    - name: "medium_server_log"
+      limit_to_scenarios: ["(S12) Meeting scheduling back-and-forth", "(S5) Generic HR or admin announcements"]
+      probability: 0.05
+      filenames: ["server_daily_{date}.log"]
+      mime_type: "text/x-log"
+      fixed_size_mb: 15
+
+    - name: "stress_test_dump"
+      limit_to_scenarios: ["(S4) Generic project management emails"]
+      probability: 0.02
+      filenames: ["CRITICAL_CORE_DUMP_{date}.log"]
+      mime_type: "text/x-log"
+      # User defined size
+
+company_profiles:
+  - name: "ACME Inc."
+    domain: "acmeinc.com"
+    personnel:
+      # --- THE CORE 5 CUSTODIANS ONLY ---
+      - name: "Taylor L. Brooks"
+        title: "CEO"
+        email: "taylor.brooks@acmeinc.com"
+        style: "Formal, professional, and slightly verbose. Often starts emails with 'Team,' or 'All,'. Uses full sentences."
+        signature: |
+          Taylor L. Brooks
+          Chief Executive Officer | ACME Inc.
+
+      - name: "Jamie T. Chen"
+        title: "Regional Sales Director"
+        email: "jamie.chen@acmeinc.com"
+        style: "Friendly, informal, and sales-oriented. Often uses emojis. Greetings are casual, like 'Hey team'."
+        signature: |
+          Jamie Chen
+          Regional Sales Director (East) | ACME Inc.
+
+      - name: "Casey Q. Mitchell"
+        title: "R&D Lead Engineer"
+        email: "casey.mitchell@acmeinc.com"
+        style: "Technical and direct. Blunt. Uses bullet points. Avoids emotional language."
+        signature: |
+          Casey Q. Mitchell
+          R&D Lead Engineer, Project Phoenix
+
+      - name: "Peyton I. Parker"
+        title: "QA Specialist"
+        email: "peyton.parker@acmeinc.com"
+        style: "Detail-oriented and slightly anxious. Often asks clarifying questions."
+        signature: |
+          Peyton I. Parker
+          Quality Assurance Specialist
+
+      - name: "Drew S. Foster"
+        title: "General Counsel"
+        email: "drew.foster@acmeinc.com"
+        style: "Formal, precise, and measured. Uses legalistic phrasing. Often includes confidentiality notices."
+        signature: |
+          Drew S. Foster
+          General Counsel | ACME Inc.
+          **CONFIDENTIALITY NOTICE:** This message is intended only for the use of the individual or entity...
+
+  # --- EXTERNAL PARTIES (Required for Safety Fraud Scenarios) ---
+  - name: "Coyote Industries"
+    domain: "coyote-industries.com"
+    personnel:
+      - name: "Rebecca J. Turner"
+        title: "Director of Procurement"
+        email: "r.turner@coyote-industries.com"
+        style: "By-the-book and focused on contracts."
+        signature: "Rebecca J. Turner | Director of Procurement"
+
+  - name: "Wright & Lee LLP"
+    domain: "wrightlee-law.com"
+    personnel:
+      - name: "Eleanor Vance"
+        title: "Partner (External Counsel)"
+        email: "e.vance@wrightlee-law.com"
+        style: "Brilliant, no-nonsense legal mind."
+        signature: "Eleanor Vance, Esq. | Partner | Wright & Lee LLP"
+
+# ===================================================================
+# SCENARIOS
+# ===================================================================
+scenarios:
+
+  # --- SCENARIO 2: Safety Fraud Thread ---
+  - type: "thread"
+    description: "(S2) Urgent: Discussion about hiding safety test results"
+    base_filename: "S2_safety_fraud_thread"
+    prompts:
+      - prompt_templates:
+          - "Draft an email from Peyton Parker to Casey Mitchell expressing alarm about the 'catastrophic failure'..."
+      - prompt_templates:
+          - "Draft Casey Mitchell's blunt reply, saying 'this data cannot leave this room'..."
+      - prompt_templates:
+          - "Draft Peyton Parker's reply, proposing to 're-calibrate the sensor data'..."
+      - prompt_templates:
+          - "Draft Casey Mitchell's reply, approving the plan. CC Taylor Brooks."
+      - prompt_templates:
+          - "Draft a follow-up from Peyton Parker asking: 'Just to be certain, the logs on the main server or the local backups too?'"
+        probability: 0.6
+      - prompt_templates:
+          - "Draft Casey Mitchell's impatient reply: 'Peyton, I mean ALL of them. No traces.'"
+        probability: 0.5
+      - prompt_templates:
+          - "Draft an email from Rebecca Turner (Coyote) to Casey Mitchell asking for the final safety report..."
+        probability: 0.7
+      - prompt_templates:
+          - "Draft Casey Mitchell's reply to Rebecca Turner, attaching the falsified safety report..."
+        probability: 0.7
+
+  # --- SCENARIO 3: Legal Privilege ---
+  - type: "thread"
+    description: "(S3) Confidential legal consultation with privilege"
+    base_filename: "S3_legal_privilege_thread"
+    prompts:
+      - prompt_templates:
+          - "Draft an email from Taylor Brooks to Drew Foster with subject 'CONFIDENTIAL AND PRIVILEGED'..."
+      - prompt_templates:
+          - "Draft Drew Foster's reply, advising Taylor to 'not put anything further in writing'..."
+      - prompt_templates:
+          - "Draft Drew Foster's email to Eleanor Vance at Wright & Lee, cc'ing Taylor..."
+      - prompt_templates:
+          - "Draft Eleanor Vance's reply, confirming the engagement and suggesting a call."
+
+  # --- SCENARIO 3B: Subtle Privilege (No Header Markers) ---
+  - type: "thread"
+    description: "(S3) Subtle privilege consultation without obvious markers"
+    base_filename: "S3B_subtle_privilege_thread"
+    prompts:
+      - prompt_templates:
+          - "Draft an email from Taylor Brooks to Drew Foster with subject 'Need your advice on Phoenix test results'. The email should ask Drew (General Counsel) for confidential legal advice about potential regulatory disclosure obligations related to Phoenix product safety test failures. DO NOT use the words 'privileged', 'confidential', or 'attorney-client' in the subject line. The body should make it clear Taylor is seeking legal counsel from Drew in his capacity as General Counsel."
+      - prompt_templates:
+          - "Draft Drew Foster's reply providing legal analysis about FDA reporting requirements and product liability exposure, mentioning that this conversation is protected by attorney-client privilege and suggesting they discuss further in person. Include specific legal analysis."
+
+  # --- SCENARIO 3C: Privilege by Recipient (Email to GC) ---
+  - type: "thread"
+    description: "(S3) Business email to General Counsel becomes privileged"
+    base_filename: "S3C_privilege_by_recipient"
+    prompts:
+      - prompt_templates:
+          - "Draft an email from Peyton Parker to Drew Foster with subject 'Question about test failure documentation'. Peyton explains discovering concerning Phoenix test results and asks Drew for guidance on how to handle documentation and whether this needs to be reported. The tone is business-casual, seeking advice from the GC."
+      - prompt_templates:
+          - "Draft Drew Foster's reply stating this communication is attorney-client privileged, providing legal analysis of FDA reporting obligations and document retention requirements, and recommending they engage external regulatory counsel immediately."
+
+  # --- SCENARIO 3D: Mixed Privilege Thread (Becomes Privileged Mid-Thread) ---
+  - type: "thread"
+    description: "(S3) Email thread starts non-privileged, becomes privileged mid-conversation"
+    base_filename: "S3D_mixed_privilege_thread"
+    prompts:
+      - prompt_templates:
+          - "Draft an email from Peyton Parker to Casey Mitchell with subject 'Phoenix Test Run #4 anomaly' discussing unexpected test results. This is routine engineering discussion, no legal tone."
+      - prompt_templates:
+          - "Draft Casey Mitchell's reply adding Drew Foster to the thread, saying 'Drew, can you advise on our obligations here? I'm concerned about regulatory reporting requirements.'"
+      - prompt_templates:
+          - "Draft Drew Foster's reply (keeping all recipients) with subject line changed to 'Re: Phoenix Test Run #4 anomaly - ATTORNEY-CLIENT PRIVILEGED'. Drew provides legal analysis of FDA reporting obligations and states this communication is now protected by privilege. He advises limiting further written discussion and preserving all test documentation."
+
+  # --- SCENARIO 3E: Privilege Waiver (Forwarding to Non-Attorney) ---
+  - type: "thread"
+    description: "(S3) Privileged email forwarded to non-attorney (waiver scenario)"
+    base_filename: "S3E_privilege_waiver"
+    prompts:
+      - prompt_templates:
+          - "Draft an email from Drew Foster to Taylor Brooks with subject 'ATTORNEY-CLIENT PRIVILEGED - Phoenix Regulatory Analysis'. Drew provides detailed legal analysis of potential FDA violations and product liability exposure related to Phoenix safety test failures. Mark this clearly as privileged communication."
+      - prompt_templates:
+          - "Draft Taylor Brooks forwarding Drew's privileged email to the entire Phoenix engineering team (Casey Mitchell, Peyton Parker, and others) with a message: 'Team - FYI, here's the legal analysis. Please review and let me know if you have questions.' This is a privilege waiver scenario due to disclosure to non-legal personnel not necessary for the representation."
+
+  # --- SCENARIO 4: Routine Project Management ---
+  # NOTE: The LLM will naturally select Casey Mitchell or Peyton Parker due to context
+  - type: "standalone"
+    description: "(S4) Generic project management emails"
+    base_filename: "noise_project_mgmt"
+    near_duplicate_probability: 0.15 
+    prompt_variables:
+      topic:
+        - "Phoenix project weekly status"
+        - "Q4 marketing deliverables"
+        - "budget for contractor services"
+        - "technical specification doc"
+        - "user acceptance testing timeline"
+        - "standup meeting reschedule"
+        - "project retrospective link"
+        - "current sprint blockers"
+        - "staging environment readiness"
+        - "mobile app crash logs"
+        - "security audit findings"
+        - "cloud infrastructure costs"
+        - "API rate limiting implementation"
+        - "database migration rollback"
+        - "Docker container memory leak"
+        - "Redis cache invalidation bug"
+        - "webhook delivery failure"
+        - "OAuth token refresh issue"
+        - "S3 bucket permission denied"
+        - "CloudFront CDN cache miss"
+        - "Lambda cold start latency"
+        - "RDS connection pool exhausted"
+        - "ElasticSearch query timeout"
+        - "Kafka consumer lag spike"
+        - "GraphQL N+1 query problem"
+        - "Terraform state file conflict"
+        - "Jenkins pipeline failure"
+        - "GitHub Actions workflow broken"
+        - "Kubernetes pod restart loop"
+        - "Nginx reverse proxy config"
+        - "SSL certificate expiration"
+        - "DNS propagation delay"
+        - "load balancer health check fail"
+        - "CORS preflight error"
+        - "CSRF token mismatch"
+        - "XSS vulnerability in form"
+        - "SQL injection false positive"
+        - "dependency version conflict"
+        - "npm package audit warning"
+        - "Python virtual environment broken"
+        - "Go module checksum mismatch"
+        - "Rust compile time regression"
+        - "TypeScript strict mode error"
+        - "ESLint rule disagreement"
+        - "Prettier formatting conflict"
+        - "Git merge conflict in lockfile"
+        - "Stale PR needs rebase"
+        - "code review turnaround time"
+        - "pair programming session"
+        - "tech debt backlog prioritization"
+        - "legacy codebase refactor plan"
+        - "feature flag rollout strategy"
+        - "blue-green deployment issue"
+        - "canary release monitoring"
+        - "A/B test statistical significance"
+        - "user session replay analysis"
+        - "error tracking alert fatigue"
+        - "APM dashboard interpretation"
+        - "log aggregation query"
+        - "metrics correlation analysis"
+        - "incident postmortem write-up"
+        - "on-call rotation schedule"
+        - "PagerDuty escalation policy"
+        - "Slack incident channel cleanup"
+        - "Jira ticket backlog grooming"
+        - "Sprint planning estimation"
+        - "Story point inflation concern"
+        - "velocity trending downward"
+        - "retrospective action item follow-up"
+        - "Definition of Done update"
+        - "acceptance criteria clarity"
+        - "QA environment flakiness"
+        - "E2E test intermittent failure"
+        - "unit test coverage threshold"
+        - "integration test data setup"
+        - "mock API response update"
+        - "test fixture maintenance"
+        - "CI/CD pipeline optimization"
+        - "build artifact caching"
+        - "deployment rollback procedure"
+        - "database backup verification"
+        - "disaster recovery drill"
+        - "security penetration test findings"
+        - "GDPR compliance checklist"
+        - "SOC2 audit preparation"
+        - "vendor security questionnaire"
+        - "third-party API deprecation"
+        - "mobile app store rejection"
+        - "browser compatibility issue"
+        - "accessibility audit findings"
+        - "internationalization string missing"
+        - "timezone calculation error"
+        - "date formatting inconsistency"
+        - "currency conversion rounding"
+        - "responsive design breakpoint"
+        - "dark mode styling bug"
+        - "email template rendering"
+        - "PDF generation timeout"
+        - "CSV export character encoding"
+        - "file upload size limit"
+        - "image optimization pipeline"
+        - "video transcoding queue backup"
+        - "search index rebuild"
+        - "recommendation algorithm tuning"
+        - "machine learning model drift"
+        - "data pipeline failure"
+    prompts:
+      - prompt_templates:
+          - "Invent a specific, realistic software engineering or project management problem related to '{topic}'. Then draft a standalone email between relevant ACME employees discussing this specific problem and proposing a solution."
+
+  # --- SCENARIO 5: HR & Admin ---
+  - type: "standalone"
+    description: "(S5) Generic HR or admin announcements"
+    base_filename: "noise_hr_admin"
+    prompt_variables:
+      topic:
+        - "upcoming office holiday closure"
+        - "open enrollment for health benefits"
+        - "weekend server maintenance"
+        - "fire drill schedule"
+        - "company all-hands meeting"
+        - "expense reporting policy"
+        - "clean desk policy"
+        - "annual performance review cycle"
+        - "new hire onboarding checklist"
+        - "exit interview scheduling"
+        - "employee referral bonus program"
+        - "401k match increase announcement"
+        - "updated PTO accrual policy"
+        - "parental leave policy update"
+        - "wellness program launch"
+        - "gym membership reimbursement"
+        - "mental health resources"
+        - "employee assistance program (EAP)"
+        - "diversity and inclusion training"
+        - "unconscious bias workshop"
+        - "sexual harassment prevention training"
+        - "workplace safety seminar"
+        - "ergonomic assessment offering"
+        - "standing desk request process"
+        - "remote work policy update"
+        - "hybrid schedule guidelines"
+        - "office attendance expectations"
+        - "WFH equipment stipend"
+        - "home internet reimbursement"
+        - "coworking space allowance"
+        - "business travel approval process"
+        - "T&E system migration"
+        - "corporate card policy"
+        - "mileage reimbursement rate"
+        - "per diem updates"
+        - "travel booking tool change"
+        - "preferred hotel program"
+        - "TSA PreCheck reimbursement"
+        - "passport renewal assistance"
+        - "international travel insurance"
+        - "IT security policy update"
+        - "password complexity requirements"
+        - "2FA enforcement deadline"
+        - "phishing test announcement"
+        - "laptop refresh cycle"
+        - "software license renewal"
+        - "Zoom meeting etiquette"
+        - "Slack channel naming convention"
+        - "email signature standardization"
+        - "confidential data handling"
+        - "BYOD policy update"
+        - "VPN access instructions"
+        - "Wi-Fi password change"
+        - "printer/copier maintenance"
+        - "desk phone system upgrade"
+        - "mobile phone stipend"
+        - "office supplies ordering"
+        - "kitchen supplies restocking"
+        - "coffee machine repair"
+        - "HVAC maintenance notice"
+        - "elevator inspection"
+        - "parking lot resurfacing"
+        - "building access card replacement"
+        - "visitor check-in procedure"
+        - "mail room hours change"
+        - "office closure for weather"
+        - "power outage notification"
+        - "water shut-off for repairs"
+        - "construction noise warning"
+        - "office relocation update"
+        - "new conference room naming"
+        - "hot desk reservation system"
+        - "lactation room availability"
+        - "quiet room etiquette"
+        - "bike storage access"
+        - "carpool matching program"
+        - "public transit subsidy"
+        - "EV charging station installation"
+        - "recycling program expansion"
+        - "composting initiative"
+        - "Earth Day volunteer event"
+        - "company charity drive"
+        - "blood drive scheduling"
+        - "holiday party save-the-date"
+        - "summer picnic planning"
+        - "team building activity"
+        - "volunteer time off policy"
+        - "community service day"
+        - "Bring Your Kids to Work Day"
+        - "Bring Your Dog to Work Day"
+        - "Halloween costume contest"
+        - "Thanksgiving potluck"
+        - "Secret Santa sign-up"
+        - "Year-end office closure"
+        - "New Year kickoff meeting"
+        - "Q1 planning session"
+        - "mid-year review process"
+        - "performance calibration meetings"
+        - "compensation review cycle"
+        - "promotion nomination deadline"
+        - "employee satisfaction survey"
+        - "exit interview feedback summary"
+        - "org chart update"
+        - "reporting structure change"
+        - "new department creation"
+        - "retirement party for Bob"
+        - "farewell lunch for departing colleague"
+    prompts:
+      - prompt_templates:
+          - "Draft a routine company-wide announcement from HR, IT, or Facilities at ACME Inc. regarding '{topic}'. Feel free to invent specific details (dates, times, locations) to make the email sound authentic and unique."
+
+  # --- SCENARIO 6: Client Communications ---
+  - type: "thread"
+    description: "(S6) Routine conversation with Coyote Industries"
+    base_filename: "noise_client_comms"
+    prompts:
+      - prompt_templates:
+          - "Draft an email from Rebecca Turner (Coyote) to Jamie Chen (ACME) asking about the status of purchase order #4521."
+      - prompt_templates:
+          - "Draft Jamie Chen's polite reply with shipping details for PO #4521."
+
+  # --- SCENARIO 7: Engineering Team Communications ---
+  - type: "standalone"
+    description: "(S7) Generic engineering team emails"
+    base_filename: "noise_engineering_chatter"
+    prompt_variables:
+      topic:
+        - "Phoenix project weekly status"
+        - "code review request"
+        - "technical design discussion"
+        - "deployment planning"
+        - "bug triage meeting"
+        - "architecture decision"
+        - "performance optimization"
+        - "integration testing timeline"
+        - "API endpoint versioning strategy"
+        - "database schema migration plan"
+        - "microservices communication pattern"
+        - "service mesh implementation"
+        - "circuit breaker configuration"
+        - "distributed tracing setup"
+        - "observability dashboard design"
+        - "logging format standardization"
+        - "metrics collection strategy"
+        - "alerting threshold tuning"
+        - "incident response playbook"
+        - "postmortem action items"
+        - "technical debt prioritization"
+        - "refactoring scope discussion"
+        - "code coverage improvement"
+        - "test automation framework"
+        - "E2E testing flakiness"
+        - "load testing results"
+        - "stress testing scenario"
+        - "capacity planning analysis"
+        - "scalability bottleneck investigation"
+        - "caching strategy evaluation"
+        - "CDN configuration optimization"
+        - "database query performance"
+        - "index optimization review"
+        - "connection pooling tuning"
+        - "async processing implementation"
+        - "event-driven architecture design"
+        - "message queue selection"
+        - "data pipeline architecture"
+        - "batch processing optimization"
+        - "real-time data streaming"
+        - "API rate limiting policy"
+        - "authentication mechanism upgrade"
+        - "authorization model refactor"
+        - "security vulnerability remediation"
+        - "dependency upgrade strategy"
+        - "breaking change management"
+        - "backward compatibility approach"
+        - "feature flag rollout plan"
+        - "A/B testing infrastructure"
+        - "canary deployment procedure"
+        - "blue-green deployment setup"
+        - "rollback automation"
+        - "CI/CD pipeline improvement"
+        - "build time optimization"
+        - "artifact repository cleanup"
+        - "container image optimization"
+        - "Kubernetes resource limits"
+        - "pod autoscaling configuration"
+        - "service discovery setup"
+        - "ingress controller config"
+        - "network policy definition"
+        - "secrets management approach"
+        - "infrastructure as code review"
+        - "Terraform module design"
+        - "cloud cost optimization"
+        - "resource tagging strategy"
+        - "monitoring alert fatigue"
+        - "on-call rotation fairness"
+        - "documentation improvement"
+        - "API documentation generation"
+        - "architecture decision record"
+        - "onboarding guide update"
+        - "coding standards discussion"
+        - "pull request template revision"
+        - "branch strategy debate"
+        - "Git workflow optimization"
+        - "monorepo vs polyrepo discussion"
+        - "service ownership model"
+        - "team topology adjustment"
+    prompts:
+      - prompt_templates:
+          - "Invent a specific, realistic software engineering or project management problem related to '{topic}'. Then draft a standalone email between relevant ACME employees discussing this specific problem and proposing a solution."
+
+  # --- SCENARIO 8: Personal/Non-Work (Restricted to Core 5) ---
+  - type: "standalone"
+    description: "(S8) Personal, non-work emails"
+    base_filename: "noise_personal"
+    prompt_variables:
+      # ONLY THE CORE 5
+      employee_pool:
+        - "Taylor Brooks"
+        - "T. Brooks"
+        - "Jamie Chen"
+        - "J. Chen"
+        - "Casey Mitchell"
+        - "Peyton Parker"
+        - "Drew Foster"
+      topic:
+        - "weekend golf game"
+        - "fantasy football league"
+        - "basketball game recap"
+        - "team coffee run"
+        - "happy hour organization"
+        - "hiking trip photos"
+        - "board game night invite"
+        - "ski trip planning"
+        - "World Cup match watch party"
+        - "true crime podcast discussion"
+        - "mobile game tips"
+        - "running trail recommendations"
+        - "bowling night organization"
+        - "camping trip planning"
+        - "Marvel movie discussion"
+        - "streaming show recommendation"
+        - "softball league team"
+        - "state fair trip"
+        - "TV series finale discussion"
+        - "anniversary dinner recommendation"
+        - "lunch spot recommendation"
+        - "potluck recipe share"
+        - "Friday team lunch"
+        - "office coffee complaint"
+        - "taco truck run"
+        - "homemade cookies share"
+        - "birthday potluck"
+        - "pizza place recommendation"
+        - "weekend recipe share"
+        - "Italian restaurant dinner"
+        - "office temperature complaint"
+        - "phone charger borrow"
+        - "carpool coordination"
+        - "lost jacket in breakroom"
+        - "flat tire help"
+        - "funny meme share"
+        - "funny news article"
+        - "weekend plans check"
+        - "commute complaint"
+        - "ride home request"
+        - "birthday gift collection"
+        - "vacation coverage thanks"
+        - "HVAC noise complaint"
+        - "parking situation complaint"
+        - "baby shower gift"
+        - "retirement party planning"
+        - "sympathy card collection"
+        - "new house congratulations"
+        - "babysitter recommendation"
+    prompts:
+      - prompt_templates:
+          - "Draft a clearly personal email between {sender} and {recipient} about {topic}."
+
+  # --- SCENARIO 9: Email Fragments ---
+  - type: "standalone"
+    description: "(S9) Low-quality email fragments"
+    base_filename: "noise_fragments"
+    prompt_variables:
+      employee_pool: ["Taylor Brooks", "Jamie Chen", "Casey Mitchell", "Peyton Parker", "Drew Foster"]
+      fragment_type:
+        - "Draft a one-line reply from {sender} to {recipient}: 'Got it, thanks'"
+        - "Draft a one-line reply from {sender} to {recipient}: 'Will do'"
+        - "Draft a one-line reply from {sender} to {recipient}: 'Sounds good'"
+        - "Draft a one-line reply from {sender} to {recipient}: 'Done'"
+    prompts:
+      - prompt_templates:
+          - "{fragment_type}"
+
+  # --- SCENARIO 10: Typos and Errors ---
+  - type: "standalone"
+    description: "(S10) Emails with realistic typos"
+    base_filename: "noise_typos"
+    prompt_variables:
+      # Intentional misspellings of Core 5 names
+      employee_pool: 
+        - "Taylor Brook"
+        - "Jamei Chen"
+        - "Peyton Paker"
+        - "Drew Fostr"
+      task:
+        - "Draft a brief email from {sender} to {recipient} asking for 'teh report' (typo for 'the report')"
+        - "Draft a brief email from {sender} to {recipient} saying 'Can you send me hte file?' (typo)"
+    prompts:
+      - prompt_templates:
+          - "{task}"
+
+  # --- SCENARIO 11: Vague/Ambiguous Emails ---
+  - type: "standalone"
+    description: "(S11) Vague or unclear emails"
+    base_filename: "noise_vague"
+    prompt_variables:
+      employee_pool: ["Taylor Brooks", "Jamie Chen", "Casey Mitchell", "Peyton Parker"]
+      task:
+        - "Draft a vague email from {sender} to {recipient} with subject 'update' and body 'Here is the update we discussed'"
+        - "Draft a brief email from {sender} to {recipient} saying only 'Can we talk?'"
+    prompts:
+      - prompt_templates:
+          - "{task}"
+
+  # --- SCENARIO 12: Auto-Replies ---
+  - type: "standalone"
+    description: "(S12) Out-of-office auto-replies"
+    base_filename: "noise_autoreply"
+    prompt_variables:
+      employee_pool: ["Taylor Brooks", "Jamie Chen", "Casey Mitchell", "Peyton Parker", "Drew Foster"]
+      reason:
+        - "on vacation"
+        - "out of the office at a conference"
+        - "out sick"
+    prompts:
+      - prompt_templates:
+          - "Draft an out-of-office auto-reply message from {sender} saying they are {reason}."
+
+  # --- SCENARIO 13: Meeting Coordination ---
+  - type: "standalone"
+    description: "(S13) Meeting scheduling back-and-forth"
+    base_filename: "noise_meetings"
+    prompt_variables:
+      employee_pool: ["Taylor", "Jamie", "Casey", "Peyton", "Drew"]
+      topic:
+        - "proposing times for a sync meeting next week"
+        - "asking to reschedule Friday's meeting"
+        - "confirming attendance"
+    prompts:
+      - prompt_templates:
+          - "Draft a brief email from {sender} to {recipient} about {topic}."
+
+  # --- SCENARIO 13: Stress Test - Blast Email (Modified for Density) ---
+  - type: "standalone"
+    description: "(S13) Blast email (Expanded Headers)"
+    base_filename: "stress_test_blast_email"
+    prompt_variables:
+      # Since we don't have 500 people, the code will just repeat these 5 people 100 times in the header.
+      # This still works for stress testing header length.
+      employee_pool: ["Taylor L. Brooks"]
+      topic:
+        - "Urgent Security Patch Notification"
+        - "Company-Wide Safety Compliance Training"
+        - "Engineering All-Hands Meeting Announcement"
+    prompts:
+      - prompt_templates:
+          - "Draft a broadcast email from {sender} regarding '{topic}'."

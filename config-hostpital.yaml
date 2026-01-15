@@ -1,0 +1,31 @@
+general_settings:
+  output_directory: "generated_hospital_emails"
+
+company_profiles:
+  - name: "HealthCorp Medical Center"
+    domain: "healthcorp-mc.org"
+    personnel:
+      - name: "Dr. Eleanor Vance"
+        title: "Chief Medical Officer"
+        email: "e.vance@healthcorp-mc.org"
+      - name: "David Chen"
+        title: "IT Director"
+        email: "d.chen@healthcorp-mc.org"
+      - name: "Maria Garcia"
+        title: "Compliance Officer"
+        email: "m.garcia@healthcorp-mc.org"
+
+scenarios:
+  - type: "thread"
+    description: "Discussion about a potential patient data breach."
+    base_filename: "thread1_hipaa_breach"
+    prompts:
+      - "Draft an urgent email from David Chen to Dr. Vance and Maria Garcia, notifying them of an unauthorized access event on a patient records server."
+      - "Draft Maria Garcia's reply, asking for a detailed incident report and emphasizing the need to follow HIPAA breach notification protocol."
+      - "Draft Dr. Vance's reply, expressing concern for patient safety and asking for an immediate meeting to coordinate a response."
+
+  - type: "standalone"
+    description: "A hospital-wide memo about a new scheduling system."
+    base_filename: "memo_new_scheduling_system.eml"
+    prompts:
+      - "Draft a hospital-wide memo from Dr. Eleanor Vance to 'all.staff@healthcorp-mc.org' announcing the rollout of a new scheduling system and outlining the training dates."

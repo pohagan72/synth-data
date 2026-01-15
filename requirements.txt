@@ -1,0 +1,6 @@
+openai
+python-dotenv
+PyYAML
+docx
+openpyxl
+python-docx

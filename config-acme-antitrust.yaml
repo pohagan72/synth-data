@@ -1,0 +1,736 @@
+# ===================================================================
+# ANTITRUST INVESTIGATION DATASET - FOCUSED CONFIGURATION
+# ===================================================================
+# This config generates a focused dataset for antitrust/price-fixing
+# investigations. Perfect for EAIDA demos of collusion detection.
+#
+# Key Scenarios (NOW AVAILABLE):
+# - Price-fixing email threads between ACME and Phoney Tunes (S1)
+# - Calendar invites for collusion meetings (S1A)
+# - Teams/Slack chats discussing pricing coordination (S1B)
+# - Attorney-client privilege documents (S3 - automatic with all investigations)
+# - Realistic business noise for context (S4-S13)
+#
+# Investigation Narrative:
+# Jamie Chen (ACME Sales Director) colludes with Rachel Quinn and Anthony Brooks
+# (Phoney Tunes competitors) to fix "ticket prices" and maintain market stability.
+# Uses coded language like "shared game plan" and "holding the line."
+# ===================================================================
+
+general_settings:
+  output_directory: "demo_antitrust_investigation"
+
+  # SCENARIO FILTER: Set to 'antitrust' to focus on price-fixing investigation
+  # This includes S1, S1A, S1B (price-fixing scenarios) + privilege (S3) + noise (S4-S13)
+  scenario_filter: 'antitrust'
+
+# --- Attachments with Scenario Restrictions & Stress Tests ---
+attachments:
+  types:
+    # 1. Antitrust Investigation Documents
+    - name: "pricing_agreement"
+      limit_to_scenarios: ["(S1) Price-fixing discussion with coded language"]
+      probability: 0.2
+      filenames: ["Pricing_Agreement_DRAFT_{date}.pdf", "NDA_PhoneyTunes_ACME_{date}.pdf", "Partnership_Terms_Draft.pdf"]
+      mime_type: "application/pdf"
+      content_description: "Confidential pricing agreement draft between ACME Inc. and Phoney Tunes outlining territorial pricing strategies..."
+
+    - name: "pricing_spreadsheet"
+      limit_to_scenarios: ["(S1) Price-fixing discussion with coded language", "(S1B) Teams Chat: Informal price-fixing discussion"]
+      probability: 0.15
+      filenames: ["Market_Pricing_Analysis_{date}.xlsx", "Q4_Sales_Targets_Confidential.xlsx", "Competitor_Price_Comparison_{date}.xlsx"]
+      mime_type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+      content_description: "Detailed pricing breakdown by region, including comparative analysis of ACME and Phoney Tunes pricing structures..."
+
+    - name: "meeting_notes"
+      limit_to_scenarios: ["(S1) Price-fixing discussion with coded language", "(S1A) Calendar invite for the price-fixing meeting"]
+      probability: 0.12
+      filenames: ["Strategy_Meeting_Notes_{date}.docx", "Pricing_Discussion_Summary_{date}.docx", "Competitor_Meeting_Notes_{date}.docx"]
+      mime_type: "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+      content_description: "Meeting notes from pricing strategy discussion including attendees from ACME and Phoney Tunes competitors..."
+
+    - name: "market_analysis"
+      limit_to_scenarios: ["(S1) Price-fixing discussion with coded language", "(S4) Generic project management emails"]
+      probability: 0.08
+      filenames: ["Market_Strategy_Presentation_{date}.pptx", "Pricing_Overview_Q4_{date}.pptx", "Competitive_Analysis_{date}.pptx"]
+      mime_type: "application/vnd.openxmlformats-officedocument.presentationml.presentation"
+      content_description: "Strategic pricing presentation for executive review, outlining competitive positioning and market share targets..."
+
+    # 2. Stress Test Files (Logs)
+    - name: "small_debug_log"
+      limit_to_scenarios: ["(S4) Generic project management emails"]
+      probability: 0.1
+      filenames: ["debug_trace_{date}.log"]
+      mime_type: "text/x-log"
+      fixed_size_mb: 1
+
+    - name: "medium_server_log"
+      limit_to_scenarios: ["(S12) Meeting scheduling back-and-forth", "(S5) Generic HR or admin announcements"]
+      probability: 0.05
+      filenames: ["server_daily_{date}.log"]
+      mime_type: "text/x-log"
+      fixed_size_mb: 15
+
+    - name: "stress_test_dump"
+      limit_to_scenarios: ["(S4) Generic project management emails"]
+      probability: 0.02
+      filenames: ["CRITICAL_CORE_DUMP_{date}.log"]
+      mime_type: "text/x-log"
+      # User defined size
+
+company_profiles:
+  - name: "ACME Inc."
+    domain: "acmeinc.com"
+    personnel:
+      # --- THE CORE 5 CUSTODIANS ONLY ---
+      - name: "Taylor L. Brooks"
+        title: "CEO"
+        email: "taylor.brooks@acmeinc.com"
+        style: "Formal, professional, and slightly verbose. Often starts emails with 'Team,' or 'All,'. Uses full sentences."
+        signature: |
+          Taylor L. Brooks
+          Chief Executive Officer | ACME Inc.
+
+      - name: "Jamie T. Chen"
+        title: "Regional Sales Director"
+        email: "jamie.chen@acmeinc.com"
+        style: "Friendly, informal, and sales-oriented. Often uses emojis. Greetings are casual, like 'Hey team'."
+        signature: |
+          Jamie Chen
+          Regional Sales Director (East) | ACME Inc.
+
+      - name: "Casey Q. Mitchell"
+        title: "R&D Lead Engineer"
+        email: "casey.mitchell@acmeinc.com"
+        style: "Technical and direct. Blunt. Uses bullet points. Avoids emotional language."
+        signature: |
+          Casey Q. Mitchell
+          R&D Lead Engineer, Project Phoenix
+
+      - name: "Peyton I. Parker"
+        title: "QA Specialist"
+        email: "peyton.parker@acmeinc.com"
+        style: "Detail-oriented and slightly anxious. Often asks clarifying questions."
+        signature: |
+          Peyton I. Parker
+          Quality Assurance Specialist
+
+      - name: "Drew S. Foster"
+        title: "General Counsel"
+        email: "drew.foster@acmeinc.com"
+        style: "Formal, precise, and measured. Uses legalistic phrasing. Often includes confidentiality notices."
+        signature: |
+          Drew S. Foster
+          General Counsel | ACME Inc.
+          **CONFIDENTIALITY NOTICE:** This message is intended only for the use of the individual or entity...
+
+  # --- EXTERNAL PARTIES (Required for Legal Scenarios) ---
+  - name: "Phoney Tunes Inc."
+    domain: "phoneytunes.com"
+    personnel:
+      - name: "Rachel Quinn"
+        title: "Senior Account Executive"
+        email: "rachel.quinn@phoneytunes.com"
+        style: "Experienced and shrewd negotiator."
+        signature: "Rachel Quinn | Senior Account Executive | Phoney Tunes"
+      - name: "Anthony Brooks"
+        title: "Account Executive"
+        email: "anthony.brooks@phoneytunes.com"
+        style: "Young, ambitious, and a bit reckless."
+        signature: "Anthony Brooks, Account Executive"
+
+  - name: "Wright & Lee LLP"
+    domain: "wrightlee-law.com"
+    personnel:
+      - name: "Eleanor Vance"
+        title: "Partner (External Counsel)"
+        email: "e.vance@wrightlee-law.com"
+        style: "Brilliant, no-nonsense legal mind."
+        signature: "Eleanor Vance, Esq. | Partner | Wright & Lee LLP"
+
+# ===================================================================
+# SCENARIOS
+# ===================================================================
+scenarios:
+
+  # --- SCENARIO 1: Price-Fixing Thread ---
+  - type: "thread"
+    description: "(S1) Price-fixing discussion with coded language"
+    base_filename: "S1_price_fixing_thread"
+    prompt_variables:
+      urgency: ["urgent", "time-sensitive", "when you get a chance", "ASAP"]
+      meeting_type: ["quick call", "brief meeting", "coffee chat"]
+      tone: ["friendly and collaborative", "strictly business", "slightly demanding"]
+    prompts:
+      - prompt_templates:
+          - "Draft an email from Jamie Chen (ACME) to Rachel/Anthony (Phoney Tunes) proposing a 'shared game plan'..."
+      - prompt_templates:
+          - "Draft Rachel Quinn's enthusiastic reply..."
+      - prompt_templates:
+          - "Draft Jamie Chen's reply to schedule a {meeting_type}..."
+        probability: 0.9
+      - prompt_templates:
+          - "Draft a follow-up from Anthony Brooks after the call, summarizing their agreement..."
+      - prompt_templates:
+          - "Draft an email from Jamie Chen to Anthony Brooks asking for clarification..."
+        probability: 0.5
+      - prompt_templates:
+          - "Draft Anthony Brooks' reply, confidently correcting Jamie..."
+        probability: 0.5
+      - prompt_templates:
+          - "Draft an internal ACME email from Jamie Chen to Taylor Brooks, vaguely stating he has 'established a friendly rapport'..."
+      - prompt_templates:
+          - "Draft a later email from Rachel Quinn to Jamie Chen, nervously asking if they are 'still holding the line'..."
+        probability: 0.4
+      - prompt_templates:
+          - "Draft Jamie Chen's reassuring reply that 'the game plan hasn't changed'."
+        probability: 0.4
+
+  # --- SCENARIO 1A: Calendar Invite for Price-Fixing Meeting ---
+  - type: "calendar_event"
+    description: "(S1A) Calendar invite for the price-fixing meeting"
+    base_filename: "S1A_price_fixing_meeting"
+    prompts:
+      - prompt_templates:
+          - "Draft a calendar event from Jamie Chen to Rachel Quinn and Anthony Brooks. Summary: 'Strategy Sync'."
+
+  # --- SCENARIO 1B: Teams Chat - Price Fixing ---
+  - type: "chat"
+    description: "(S1B) Teams Chat: Informal price-fixing discussion"
+    base_filename: "project-pricing-sync"
+    prompts:
+      - prompt_templates:
+          - "Generate a Microsoft Teams chat history between Jamie Chen (ACME) and Rachel Quinn (Phoney Tunes)."
+
+  # --- SCENARIO 3: Legal Privilege ---
+  - type: "thread"
+    description: "(S3) Confidential legal consultation with privilege"
+    base_filename: "S3_legal_privilege_thread"
+    prompts:
+      - prompt_templates:
+          - "Draft an email from Taylor Brooks to Drew Foster with subject 'CONFIDENTIAL AND PRIVILEGED'..."
+      - prompt_templates:
+          - "Draft Drew Foster's reply, advising Taylor to 'not put anything further in writing'..."
+      - prompt_templates:
+          - "Draft Drew Foster's email to Eleanor Vance at Wright & Lee, cc'ing Taylor..."
+      - prompt_templates:
+          - "Draft Eleanor Vance's reply, confirming the engagement and suggesting a call."
+
+  # --- SCENARIO 3B: Subtle Privilege (No Header Markers) ---
+  - type: "thread"
+    description: "(S3) Subtle privilege consultation without obvious markers"
+    base_filename: "S3B_subtle_privilege_thread"
+    prompts:
+      - prompt_templates:
+          - "Draft an email from Taylor Brooks to Drew Foster with subject 'Need your advice on pricing discussions'. The email should ask Drew (General Counsel) for confidential legal advice about potential antitrust issues related to pricing coordination discussions. DO NOT use the words 'privileged', 'confidential', or 'attorney-client' in the subject line. The body should make it clear Taylor is seeking legal counsel from Drew in his capacity as General Counsel."
+      - prompt_templates:
+          - "Draft Drew Foster's reply providing legal advice about antitrust compliance, mentioning that this conversation is protected by attorney-client privilege and suggesting they discuss further in person. Include specific legal analysis."
+
+  # --- SCENARIO 3C: Privilege by Recipient (Email to GC) ---
+  - type: "thread"
+    description: "(S3) Business email to General Counsel becomes privileged"
+    base_filename: "S3C_privilege_by_recipient"
+    prompts:
+      - prompt_templates:
+          - "Draft an email from Jamie Chen to Drew Foster with subject 'Question about recent industry meeting'. Jamie explains attending a pricing discussion at a trade conference and asks Drew for guidance on whether this raises any concerns. The tone is business-casual, seeking advice from the GC."
+      - prompt_templates:
+          - "Draft Drew Foster's reply stating this communication is attorney-client privileged, providing legal analysis of potential antitrust exposure, and recommending immediate cessation of such discussions."
+
+  # --- SCENARIO 3D: Mixed Privilege Thread (Becomes Privileged Mid-Thread) ---
+  - type: "thread"
+    description: "(S3) Email thread starts non-privileged, becomes privileged mid-conversation"
+    base_filename: "S3D_mixed_privilege_thread"
+    prompts:
+      - prompt_templates:
+          - "Draft an email from Taylor Brooks to Jamie Chen and Casey Mitchell with subject 'Phoenix pricing feedback' discussing customer reactions to pricing changes. This is routine business discussion, no legal tone."
+      - prompt_templates:
+          - "Draft Jamie Chen's reply adding Drew Foster to the thread, saying 'Drew, can you weigh in on the legal implications here? I'm concerned about the coordination aspects.'"
+      - prompt_templates:
+          - "Draft Drew Foster's reply (keeping all recipients) with subject line changed to 'Re: Phoenix pricing feedback - ATTORNEY-CLIENT PRIVILEGED'. Drew provides legal analysis and states this communication is now protected by privilege. He advises limiting further written discussion."
+
+  # --- SCENARIO 3E: Privilege Waiver (Forwarding to Non-Attorney) ---
+  - type: "thread"
+    description: "(S3) Privileged email forwarded to non-attorney (waiver scenario)"
+    base_filename: "S3E_privilege_waiver"
+    prompts:
+      - prompt_templates:
+          - "Draft an email from Drew Foster to Taylor Brooks with subject 'ATTORNEY-CLIENT PRIVILEGED - Antitrust Risk Analysis'. Drew provides detailed legal analysis of potential Sherman Act violations related to pricing discussions. Mark this clearly as privileged communication."
+      - prompt_templates:
+          - "Draft Taylor Brooks forwarding Drew's privileged email to Rachel Quinn at PhoneyTunes (external competitor) with a message: 'Rachel - FYI, here's what our legal team is saying about these discussions. Thought you should see this.' This is a privilege waiver scenario."
+
+  # --- SCENARIO 4: Routine Project Management (Expanded Variables) ---
+  # NOTE: The LLM will naturally select Casey Mitchell or Peyton Parker due to context
+  - type: "standalone"
+    description: "(S4) Generic project management emails"
+    base_filename: "noise_project_mgmt"
+    near_duplicate_probability: 0.15
+    prompt_variables:
+      topic:
+        - "Phoenix project weekly status"
+        - "Q4 marketing deliverables"
+        - "budget for contractor services"
+        - "technical specification doc"
+        - "user acceptance testing timeline"
+        - "feature requirement clarification"
+        - "standup meeting reschedule"
+        - "project retrospective link"
+        - "current sprint blockers"
+        - "additional testing resources"
+        - "architecture review notes"
+        - "staging environment readiness"
+        - "project management tool access"
+        - "user story #247 acceptance criteria"
+        - "milestone definition of done"
+        - "updated Gantt chart"
+        - "pull request code review"
+        - "API documentation ETA"
+        - "caching layer approach"
+        - "vendor integration dependency"
+        - "database schema migration"
+        - "front-end CSS misalignment"
+        - "backend latency issues"
+        - "mobile app crash logs"
+        - "security audit findings"
+        - "third-party library updates"
+        - "cloud infrastructure costs"
+        - "data backup verification"
+        - "disaster recovery drill"
+        - "legacy code refactoring"
+        - "new microservice deployment"
+        - "single sign-on integration"
+        - "automated test coverage"
+        - "performance benchmarking"
+        - "accessibility compliance check"
+        - "internationalization support"
+        - "gdpr compliance review"
+        - "server load balancing"
+        - "memory leak investigation"
+        - "critical bug hotfix"
+        - "Kubernetes cluster upgrade"
+        - "Elasticsearch indexing error"
+        - "AWS cost spike investigation"
+        - "Docker container orchestration"
+        - "Python version migration (3.9 to 3.11)"
+        - "React component library depreciation"
+        - "SQL query optimization for reporting"
+        - "Redis cache eviction policy"
+        - "GraphQL endpoint security"
+        - "OAuth2 token refresh failure"
+        - "VPN connectivity for remote teams"
+        - "Jira workflow transition issues"
+        - "Confluence page permission audit"
+        - "Git merge conflict resolution"
+        - "Jenkins build pipeline failure"
+        - "Terraform state file corruption"
+        - "SSL certificate renewal"
+        - "Domain name DNS propagation"
+        - "Load balancer health check failures"
+        - "Firewall rule change request"
+        - "Zero-day vulnerability patch"
+        - "Penetration test scheduling"
+        - "SOC2 compliance evidence"
+        - "Data retention policy update"
+        - "Archive storage tiering"
+        - "Log aggregation in Splunk"
+        - "Prometheus alert fatigue"
+        - "Grafana dashboard visualization"
+        - "Mobile notch UI layout issues"
+        - "Dark mode theme inconsistencies"
+        - "Cross-browser compatibility (Safari)"
+        - "Email transactional service (SendGrid) quota"
+        - "SMS gateway latency"
+        - "Payment gateway (Stripe) webhook errors"
+        - "User session timeout Logic"
+        - "Two-factor authentication SMS delays"
+        - "Password complexity requirement change"
+        - "LDAP synchronization errors"
+        - "Active Directory group cleanup"
+        - "Laptop provisioning delays"
+        - "Software license audit (Adobe)"
+        - "Zoom integration with Outlook"
+        - "Slack bot permission scope"
+        - "GitHub Copilot license assignment"
+        - "Figma design system versioning"
+        - "Wireframe approval workflow"
+        - "A/B testing platform setup"
+        - "Google Analytics 4 migration"
+        - "SEO meta tag automation"
+        - "Sitemap generation failure"
+        - "Robots.txt configuration"
+        - "CDN cache invalidation"
+        - "Video compression for landing page"
+        - "Image optimization pipeline"
+        - "Font licensing compliance"
+        - "Copy text translation (Spanish)"
+        - "Localization key missing"
+        - "Currency formatting bug"
+        - "Timezone calculation error"
+    prompts:
+      - prompt_templates:
+          - "Invent a specific, realistic software engineering or project management problem related to '{topic}'. Then draft a standalone email between relevant ACME employees discussing this specific problem and proposing a solution."
+
+  # --- SCENARIO 5: HR & Admin (Expanded Variables) ---
+  - type: "standalone"
+    description: "(S5) Generic HR or admin announcements"
+    base_filename: "noise_hr_admin"
+    prompt_variables:
+      topic:
+        - "upcoming office holiday closure"
+        - "open enrollment for health benefits"
+        - "weekend server maintenance"
+        - "welcome message for new hires"
+        - "employee handbook update"
+        - "charity food drive"
+        - "timesheet submission reminder"
+        - "parking lot assignment update"
+        - "fire drill schedule"
+        - "company all-hands meeting"
+        - "security badge pickup"
+        - "VPN connection procedures"
+        - "kitchen refrigerator cleanout"
+        - "mandatory compliance training"
+        - "IT help desk closure"
+        - "expense reporting policy"
+        - "office supplies order"
+        - "emergency contact form"
+        - "employee satisfaction survey"
+        - "elevator maintenance"
+        - "flu shot clinic"
+        - "gym membership discount"
+        - "lost and found items"
+        - "clean desk policy"
+        - "password reset requirement"
+        - "phishing simulation alert"
+        - "visitor policy update"
+        - "conference room booking etiquette"
+        - "recycling program guidelines"
+        - "w-2 form availability"
+        - "annual performance review cycle"
+        - "summer hours schedule"
+        - "remote work policy refresh"
+        - "commuter benefits program"
+        - "standing desk requests"
+        - "office plant care"
+        - "coffee machine maintenance"
+        - "noise complaint in open office"
+        - "suspicious email alert"
+        - "new slack channel guidelines"
+        - "HVAC temperature complaints (too cold)"
+        - "HVAC temperature complaints (too hot)"
+        - "broken dishwasher in breakroom"
+        - "mold in the 4th floor bathroom"
+        - "smell coming from the microwave"
+        - "leftover catering in the kitchen"
+        - "expired milk in the fridge"
+        - "request for oat milk stocking"
+        - "broken ergonomic chair"
+        - "flickering light in conference room B"
+        - "stained carpet in reception"
+        - "window blinds stuck"
+        - "soap dispenser empty"
+        - "paper jam in printer 4"
+        - "toner replacement request"
+        - "shredder overheating"
+        - "water cooler empty"
+        - "coffee bean selection vote"
+        - "holiday party theme voting"
+        - "Halloween costume contest rules"
+        - "Secret Santa sign up"
+        - "Bring Your Dog to Work Day"
+        - "Bring Your Child to Work Day"
+        - "wellness wednesday yoga"
+        - "meditation app subscription"
+        - "mental health day policy"
+        - "bereavement leave policy"
+        - "jury duty procedure"
+        - "voting time off"
+        - "parental leave handbook"
+        - "nursing room reservation"
+        - "bike rack security"
+        - "electric vehicle charging stations"
+        - "carpooling spreadsheet"
+        - "lost badge replacement fee"
+        - "found keys in parking lot"
+        - "found umbrella in lobby"
+        - "unclaimed packages in mailroom"
+        - "fedex pickup deadline"
+        - "notary public availability"
+        - "passport photo service"
+        - "corporate credit card application"
+        - "travel booking portal downtime"
+        - "concur expense login issues"
+        - "mileage reimbursement rate change"
+        - "per diem rate update"
+        - "hotel corporate codes"
+        - "rental car insurance policy"
+        - "uber for business account"
+        - "diversity and inclusion workshop"
+        - "unconscious bias training"
+        - "sexual harassment prevention training"
+        - "data privacy certification"
+        - "insider trading policy acknowledgment"
+        - "conflict of interest declaration"
+        - "intellectual property agreement"
+        - "exit interview scheduling"
+        - "resignation acknowledgment"
+        - "retirement party for Bob"
+        - "service anniversary awards"
+        - "employee of the month nomination"
+        - "referral bonus program"
+    prompts:
+      - prompt_templates:
+          - "Draft a routine company-wide announcement from HR, IT, or Facilities at ACME Inc. regarding '{topic}'. Feel free to invent specific details (dates, times, locations) to make the email sound authentic and unique."
+
+  # --- SCENARIO 6: Sales Team Chatter (Restricted to Jamie and Taylor) ---
+  - type: "standalone"
+    description: "(S6) Generic sales team emails"
+    base_filename: "noise_sales_chatter"
+    prompt_variables:
+      topic:
+        - "weekly sales report deadline"
+        - "new CRM feature question"
+        - "team lunch planning"
+        - "congratulations on big deal"
+        - "successful sales tactic share"
+        - "difficult prospect advice"
+        - "customer testimonial share"
+        - "custom quote approval"
+        - "commission structure question"
+        - "sales meeting agenda"
+        - "updated pricing sheets"
+        - "demo environment access"
+        - "competitive intel share"
+        - "territory coverage during vacation"
+        - "marketing collateral request"
+        - "sales technique article"
+        - "product training request"
+        - "end-of-quarter push strategy"
+        - "lead qualification criteria"
+        - "cold calling script feedback"
+        - "contract negotiation tip"
+        - "client entertainment budget"
+        - "travel expense reimbursement"
+        - "competitor price undercut"
+        - "lost deal analysis"
+        - "referral program details"
+        - "upsell opportunity identification"
+        - "churn prevention strategy"
+        - "sales kickoff event ideas"
+        - "quarterly business review prep"
+        - "Salesforce login failure"
+        - "HubSpot integration error"
+        - "ZoomInfo credits running low"
+        - "LinkedIn Sales Navigator tips"
+        - "Gong call recording review"
+        - "DocuSign envelope voided"
+        - "PandaDoc template broken"
+        - "Calendly link not working"
+        - "Slack notification for closed won"
+        - "duplicate lead in system"
+        - "wrong account owner assigned"
+        - "territory dispute with East Coast team"
+        - "commission payout discrepancy"
+        - "SPIFF bonus clarification"
+        - "President's Club eligibility"
+        - "quota relief request"
+        - "discount approval over 20%"
+        - "net 60 payment terms request"
+        - "legal redlines on MSA"
+        - "procurement portal hurdles"
+        - "security questionnaire help"
+        - "RFP response deadline"
+        - "SOC2 report request for client"
+        - "competitor FUD (Fear Uncertainty Doubt)"
+        - "Phoney Tunes pricing rumors"
+        - "Coyote Industries renewal risk"
+        - "ghosted by prospect after demo"
+        - "gatekeeper blocking access to decision maker"
+        - "champion left the company"
+        - "budget freeze at client"
+        - "competitor offering free trial"
+        - "feature gap objection handling"
+        - "roadmap promise to close deal"
+        - "executive sponsorship request"
+        - "reference customer needed"
+        - "case study approval"
+        - "logo usage rights"
+        - "press release for new partnership"
+        - "swag bag for client visit"
+        - "dinner reservation for client meeting"
+        - "golf outing expensing"
+        - "tickets to the game for prospect"
+        - "flight delay causing missed meeting"
+        - "rental car upgrade"
+        - "hotel receipt lost"
+        - "per diem overage"
+        - "conference booth staffing"
+        - "trade show lead scanning"
+        - "webinar attendance low"
+        - "email open rates dropping"
+        - "cold email subject line testing"
+        - "voicemail drop recording"
+        - "SMS outreach compliance"
+        - "bad data in lead list"
+        - "wrong phone number for CEO"
+        - "bounced emails cleanup"
+    prompts:
+      - prompt_templates:
+          - "Draft a routine email from Jamie Chen to Taylor Brooks about {topic}."
+
+  # --- SCENARIO 7: Personal/Non-Work (Restricted to Core 5) ---
+  - type: "standalone"
+    description: "(S7) Personal, non-work emails"
+    base_filename: "noise_personal"
+    prompt_variables:
+      # ONLY THE CORE 5
+      employee_pool:
+        - "Taylor Brooks"
+        - "T. Brooks"
+        - "Jamie Chen"
+        - "J. Chen"
+        - "Casey Mitchell"
+        - "Peyton Parker"
+        - "Drew Foster"
+      topic:
+        - "weekend golf game"
+        - "fantasy football league"
+        - "basketball game recap"
+        - "team coffee run"
+        - "happy hour organization"
+        - "hiking trip photos"
+        - "board game night invite"
+        - "ski trip planning"
+        - "World Cup match watch party"
+        - "true crime podcast discussion"
+        - "mobile game tips"
+        - "running trail recommendations"
+        - "bowling night organization"
+        - "camping trip planning"
+        - "Marvel movie discussion"
+        - "streaming show recommendation"
+        - "softball league team"
+        - "state fair trip"
+        - "TV series finale discussion"
+        - "anniversary dinner recommendation"
+        - "lunch spot recommendation"
+        - "potluck recipe share"
+        - "Friday team lunch"
+        - "office coffee complaint"
+        - "taco truck run"
+        - "homemade cookies share"
+        - "birthday potluck"
+        - "pizza place recommendation"
+        - "weekend recipe share"
+        - "Italian restaurant dinner"
+        - "office temperature complaint"
+        - "phone charger borrow"
+        - "carpool coordination"
+        - "lost jacket in breakroom"
+        - "flat tire help"
+        - "funny meme share"
+        - "funny news article"
+        - "weekend plans check"
+        - "commute complaint"
+        - "ride home request"
+        - "birthday gift collection"
+        - "vacation coverage thanks"
+        - "HVAC noise complaint"
+        - "parking situation complaint"
+        - "baby shower gift"
+        - "retirement party planning"
+        - "sympathy card collection"
+        - "new house congratulations"
+        - "babysitter recommendation"
+    prompts:
+      - prompt_templates:
+          - "Draft a clearly personal email between {sender} and {recipient} about {topic}."
+
+  # --- SCENARIO 8: Email Fragments ---
+  - type: "standalone"
+    description: "(S8) Low-quality email fragments"
+    base_filename: "noise_fragments"
+    prompt_variables:
+      employee_pool: ["Taylor Brooks", "Jamie Chen", "Casey Mitchell", "Peyton Parker", "Drew Foster"]
+      fragment_type:
+        - "Draft a one-line reply from {sender} to {recipient}: 'Got it, thanks'"
+        - "Draft a one-line reply from {sender} to {recipient}: 'Will do'"
+        - "Draft a one-line reply from {sender} to {recipient}: 'Sounds good'"
+        - "Draft a one-line reply from {sender} to {recipient}: 'Done'"
+    prompts:
+      - prompt_templates:
+          - "{fragment_type}"
+
+  # --- SCENARIO 9: Typos and Errors ---
+  - type: "standalone"
+    description: "(S9) Emails with realistic typos"
+    base_filename: "noise_typos"
+    prompt_variables:
+      # Intentional misspellings of Core 5 names
+      employee_pool: 
+        - "Taylor Brook"
+        - "Jamei Chen"
+        - "Peyton Paker"
+        - "Drew Fostr"
+      task:
+        - "Draft a brief email from {sender} to {recipient} asking for 'teh report' (typo for 'the report')"
+        - "Draft a brief email from {sender} to {recipient} saying 'Can you send me hte file?' (typo)"
+    prompts:
+      - prompt_templates:
+          - "{task}"
+
+  # --- SCENARIO 10: Vague/Ambiguous Emails ---
+  - type: "standalone"
+    description: "(S10) Vague or unclear emails"
+    base_filename: "noise_vague"
+    prompt_variables:
+      employee_pool: ["Taylor Brooks", "Jamie Chen", "Casey Mitchell", "Peyton Parker"]
+      task:
+        - "Draft a vague email from {sender} to {recipient} with subject 'update' and body 'Here is the update we discussed'"
+        - "Draft a brief email from {sender} to {recipient} saying only 'Can we talk?'"
+    prompts:
+      - prompt_templates:
+          - "{task}"
+
+  # --- SCENARIO 11: Auto-Replies ---
+  - type: "standalone"
+    description: "(S11) Out-of-office auto-replies"
+    base_filename: "noise_autoreply"
+    prompt_variables:
+      employee_pool: ["Taylor Brooks", "Jamie Chen", "Casey Mitchell", "Peyton Parker", "Drew Foster"]
+      reason:
+        - "on vacation"
+        - "out of the office at a conference"
+        - "out sick"
+    prompts:
+      - prompt_templates:
+          - "Draft an out-of-office auto-reply message from {sender} saying they are {reason}."
+
+  # --- SCENARIO 12: Meeting Coordination ---
+  - type: "standalone"
+    description: "(S12) Meeting scheduling back-and-forth"
+    base_filename: "noise_meetings"
+    prompt_variables:
+      employee_pool: ["Taylor", "Jamie", "Casey", "Peyton", "Drew"]
+      topic:
+        - "proposing times for a sync meeting next week"
+        - "asking to reschedule Friday's meeting"
+        - "confirming attendance"
+    prompts:
+      - prompt_templates:
+          - "Draft a brief email from {sender} to {recipient} about {topic}."
+
+  # --- SCENARIO 13: Stress Test - Blast Email (Modified for Density) ---
+  - type: "standalone"
+    description: "(S13) Blast email (Expanded Headers)"
+    base_filename: "stress_test_blast_email"
+    prompt_variables:
+      # Since we don't have 500 people, the code will just repeat these 5 people 100 times in the header.
+      # This still works for stress testing header length.
+      employee_pool: ["Taylor L. Brooks"]
+      topic:
+        - "Urgent Security Patch Notification"
+        - "Company-Wide Sales Policy Update"
+        - "Quarterly All-Hands Meeting Announcement"
+    prompts:
+      - prompt_templates:
+          - "Draft a broadcast email from {sender} regarding '{topic}'."
