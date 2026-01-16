@@ -100,7 +100,7 @@ Enter your choice: 2
 The script will:
 - Load the config
 - Apply the `safety_fraud` filter
-- Generate emails and attachments (test reports)
+- Generate emails, calendar invites, and attachments (test reports)
 - Organize by custodian folders
 
 You'll see output like:
@@ -124,6 +124,7 @@ demo_product_safety_fraud/
 │   ├── S2_safety_fraud_thread_001.eml    (Initial alarm about failure)
 │   ├── S2_safety_fraud_thread_003.eml    (Manipulation proposal)
 │   ├── S2_safety_fraud_thread_005.eml    (Clarifying question on scope)
+│   ├── S2A_safety_review_meeting_001.ics  (Urgent safety review meeting)
 │   ├── attachments/
 │   │   └── Phoenix_Test_Results_Final.pdf (Test report attachment)
 │   └── noise_project_*.eml
@@ -132,6 +133,9 @@ demo_product_safety_fraud/
 │   ├── S2_safety_fraud_thread_004.eml    (Destruction order to CEO)
 │   ├── S2_safety_fraud_thread_006.eml    (Impatient "ALL of them")
 │   ├── S2_safety_fraud_thread_008.eml    (Falsified report to client)
+│   ├── S2B_client_presentation_001.ics    (Client presentation meeting)
+│   ├── S2C_executive_decision_001.ics     (Executive decision meeting)
+│   ├── S2D_team_briefing_001.ics          (Engineering team briefing)
 │   └── noise_engineering_*.eml
 ├── taylor.brooks@acmeinc.com/       (CEO - Executive Knowledge)
 │   ├── S2_safety_fraud_thread_004.eml    (CC'd on destruction order)
@@ -148,6 +152,10 @@ demo_product_safety_fraud/
 | File Type | Description | Evidence Value |
 |-----------|-------------|----------------|
 | `S2_safety_fraud_thread_*.eml` | Email thread documenting coverup | **Hot document** |
+| `S2A_safety_review_meeting_*.ics` | Urgent safety review meeting invite | **Hot document** |
+| `S2B_client_presentation_*.ics` | Client presentation with falsified data | **Hot document** |
+| `S2C_executive_decision_*.ics` | Executive decision meeting on test results | **Hot document** |
+| `S2D_team_briefing_*.ics` | Team briefing on "revised" protocols | **Hot document** |
 | `Phoenix_Test_Results_Final.pdf` | Test report attachment | **Critical evidence** |
 | `S3_legal_privilege_*.eml` | Attorney-client communications | **Privilege screening** |
 | `noise_engineering_*.eml` | R&D project context | **Noise/context** |

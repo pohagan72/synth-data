@@ -150,6 +150,21 @@ All notable changes to the Synthetic E-Discovery Dataset Generator.
 
 ### Changed
 
+#### ⚖️ Signal/Noise Ratio Tuning Support
+- **Feature:** Configs now support adjustable signal/noise ratios for realistic "needle in haystack" testing
+- **Implementation:** Added duplicate noise scenarios in config-acme-hr-misconduct.yaml (S4 duplicated 4x)
+- **Current Ratios:**
+  - config-acme-antitrust.yaml: ~60% signal
+  - config-acme-safety-fraud.yaml: ~60% signal
+  - config-acme-hr-misconduct.yaml: ~59% signal (with S4 duplicates)
+- **Target Ratio:** ~25% signal / 75% noise for realistic e-discovery environments
+- **How to Achieve Target:**
+  - **Option 1 (Easiest):** Generate 1500-2000 items instead of 500-1000 (noise repeats more over larger datasets)
+  - **Option 2 (More Control):** Add duplicate noise scenario entries in config YAML files
+- **Why It Matters:** Real e-discovery datasets have 15-30% hot documents, rest is business context
+- **Documentation:** Added tuning guide to CONFIGS_GUIDE.md and README.md
+- **Files Modified:** `config-acme-hr-misconduct.yaml` (added S4 duplicates), `CONFIGS_GUIDE.md`, `README.md`
+
 #### 📋 Documentation Updates
 - **ARCHITECTURE.md (NEW):** Created comprehensive architecture guide covering:
   - What the tool does and why it matters (e-discovery testing challenge, EAIDA validation needs)

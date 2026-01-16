@@ -264,6 +264,13 @@ Fast dataset generation with intelligent API rate limit handling:
 - **Configurable:** Adjust `MAX_WORKERS` in app.py (line 1777) based on your Azure OpenAI quota
 - **Thread-safe:** Protected stats and counters for concurrent execution
 
+#### Signal/Noise Ratio Tuning
+Adjust the "needle in haystack" ratio for realistic e-discovery testing:
+- **Target:** ~25% signal (hot docs) / 75% noise (business context)
+- **Current ratios:** Antitrust ~27%, Safety Fraud ~40%, HR ~48% (all include calendar events)
+- **How to adjust:** Generate 1500-2000 items instead of 500 (noise repeats more), or duplicate noise scenarios in config YAML
+- **See:** [CONFIGS_GUIDE.md](CONFIGS_GUIDE.md#tune-signalnoise-ratio) for detailed tuning instructions
+
 See [CHANGELOG.md](CHANGELOG.md) and [ENHANCEMENTS_2026-01.md](ENHANCEMENTS_2026-01.md) for details.
 
 ---

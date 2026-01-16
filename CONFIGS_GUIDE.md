@@ -115,6 +115,46 @@ attachments:
       probability: 0.5  # 50% chance of attachment
 ```
 
+### Tune Signal/Noise Ratio
+
+The "needle in haystack" ratio can be adjusted for realistic e-discovery testing:
+
+**Target:** ~25% signal (hot docs) / 75% noise (contextual business communications)
+
+**Current Ratios (with S4 duplicates + calendar events):**
+- **config-acme-antitrust.yaml:** ~27% signal (6 signal / 22 total scenarios)
+- **config-acme-safety-fraud.yaml:** ~40% signal (10 signal / 25 total scenarios)
+- **config-acme-hr-misconduct.yaml:** ~48% signal (13 signal / 27 total scenarios)
+
+**Notes:**
+- **Antitrust:** Closest to target at ~27% signal (includes 1 calendar event)
+- **Safety Fraud:** Higher at ~40% signal (includes 4 calendar events for investigation meetings)
+- **HR Misconduct:** Highest at ~48% signal (includes 4 calendar events for investigation workflow)
+- All three configs now include calendar (.ics) files for realistic investigation timelines
+- Higher signal ratios still realistic for focused investigations vs. broad document collections
+
+**To further adjust signal/noise ratio:**
+
+**Option 1: Generate More Items (Recommended)**
+```bash
+# Generate 1500-2000 items instead of 500-1000
+# Noise scenarios repeat more frequently, naturally diluting the ratio
+python app.py
+# Enter: 1500 (instead of 500)
+```
+
+**Option 2: Add More Noise Scenario Duplicates**
+Add duplicate entries for noise scenarios (S5-S13) at the end of the config file:
+```yaml
+# At end of scenarios list
+  - type: "standalone"
+    description: "(S5) Generic HR or admin announcements"
+    base_filename: "noise_hr_admin_dup1"  # Must have unique base_filename
+    # ... copy all prompt_variables and prompts from original S5 ...
+```
+
+Each duplicate lowers the signal ratio further.
+
 ## Quick Reference: Scenario Tags
 
 | Tag | Description | Included In |
@@ -123,9 +163,11 @@ attachments:
 | (S1A) | Collusion meeting calendar invite | config-acme-antitrust.yaml |
 | (S1B) | Teams/Slack pricing chat | config-acme-antitrust.yaml |
 | (S2) | Safety test manipulation thread | config-acme-safety-fraud.yaml |
+| (S2A-D) | **Safety investigation calendar events** | config-acme-safety-fraud.yaml |
 | (S3) | **Attorney-client privilege** | **ALL focused configs (automatic)** |
 | (S4-S15) | Contextual noise | ALL focused configs (automatic) |
-| (S_HR) | HR misconduct (to be added) | config-acme-hr-misconduct.yaml |
+| (S_HR) | HR misconduct scenarios | config-acme-hr-misconduct.yaml |
+| (HR5-8) | **HR investigation calendar events** | config-acme-hr-misconduct.yaml |
 
 ## Examples
 

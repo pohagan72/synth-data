@@ -101,7 +101,7 @@ Enter your choice: 2
 The script will:
 - Load the config
 - Apply the `hr_misconduct` filter
-- Generate emails, chats, and documents
+- Generate emails, chats, calendar invites, and documents
 - Organize by custodian folders
 
 You'll see output like:
@@ -124,10 +124,14 @@ demo_hr_misconduct_investigation/
 ├── peyton.parker@acmeinc.com/
 │   ├── S_HR_harassment_thread_001.eml  (Initial complaint)
 │   ├── S_HR_harassment_thread_002.eml  (Detailed incidents)
+│   ├── S_HR_complaint_meeting_001.ics  (Initial complaint meeting invite)
+│   ├── S_HR_followup_meeting_001.ics   (Follow-up meeting invite)
 │   └── noise_*.eml                     (Contextual emails)
 ├── drew.foster@acmeinc.com/
 │   ├── S_HR_harassment_thread_003.eml  (Escalation to CEO)
 │   ├── S_HR_investigation_docs_001.eml (HR report)
+│   ├── S_HR_witness_interview_001.ics  (Witness interview invite)
+│   ├── S_HR_executive_review_001.ics   (Executive review meeting)
 │   └── S3_legal_privilege_*.eml        (Privilege docs)
 ├── jamie.chen@acmeinc.com/
 │   ├── S_HR_harassment_thread_007.eml  (Defensive response)
@@ -135,9 +139,11 @@ demo_hr_misconduct_investigation/
 │   └── noise_*.eml
 ├── casey.mitchell@acmeinc.com/
 │   ├── S_HR_witness_statement_001.eml  (Witness corroboration)
+│   ├── S_HR_witness_interview_001.ics  (Witness interview invite)
 │   └── noise_*.eml
 └── taylor.brooks@acmeinc.com/
     ├── S_HR_harassment_thread_004.eml  (CEO response)
+    ├── S_HR_executive_review_001.ics   (Executive decision meeting)
     └── noise_*.eml
 ```
 
@@ -146,6 +152,10 @@ demo_hr_misconduct_investigation/
 | File Type | Description | Evidence Value |
 |-----------|-------------|----------------|
 | `S_HR_harassment_thread_*.eml` | Email thread documenting the complaint and investigation | **Hot document** |
+| `S_HR_complaint_meeting_*.ics` | Initial complaint meeting calendar invite | **Hot document** |
+| `S_HR_witness_interview_*.ics` | Witness interview meeting invite | **Hot document** |
+| `S_HR_executive_review_*.ics` | Executive disciplinary decision meeting | **Hot document** |
+| `S_HR_followup_meeting_*.ics` | Follow-up meeting with complainant | **Hot document** |
 | `hr-inappropriate-chat.json` | After-hours chat with boundary violations | **Hot document** |
 | `S_HR_witness_statement_*.eml` | Corroborating witness account | **Supporting evidence** |
 | `S_HR_investigation_docs_*.eml` | Formal HR investigation findings | **Critical evidence** |
