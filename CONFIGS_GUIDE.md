@@ -144,16 +144,23 @@ python app.py
 ```
 
 **Option 2: Add More Noise Scenario Duplicates**
-Add duplicate entries for noise scenarios (S5-S13) at the end of the config file:
+
+All focused configs use **YAML anchors** for efficient scenario duplication. S4 is duplicated 4x using:
+
 ```yaml
-# At end of scenarios list
-  - type: "standalone"
-    description: "(S5) Generic HR or admin announcements"
-    base_filename: "noise_hr_admin_dup1"  # Must have unique base_filename
-    # ... copy all prompt_variables and prompts from original S5 ...
+# Define once with anchor
+- &noise_s4_template
+  type: "standalone"
+  description: "(S4) Generic project management emails"
+  base_filename: "noise_project_mgmt"
+  # ... full scenario definition ...
+
+# Reuse with just filename changes
+- <<: *noise_s4_template
+  base_filename: "noise_project_mgmt_dup1"
 ```
 
-Each duplicate lowers the signal ratio further.
+To add more duplicates, follow the same pattern for other noise scenarios (S5-S13). Each duplicate lowers the signal ratio further.
 
 ## Quick Reference: Scenario Tags
 

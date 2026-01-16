@@ -4,6 +4,24 @@ All notable changes to the Synthetic E-Discovery Dataset Generator.
 
 ---
 
+## [2.0.1] - 2026-01-15
+
+### Changed
+
+#### 🔧 YAML Configuration Refactoring
+- **Improvement:** Refactored S4 duplicate scenarios to use YAML anchors for DRY compliance
+- **Impact:** Reduced config file sizes by ~36% (450+ lines per file)
+- **Before:** Each S4 duplicate repeated 100+ topic variables (117 lines × 4 = 468 lines)
+- **After:** Single template definition with anchor references (16 lines total)
+- **Files Modified:**
+  - `config-acme-antitrust.yaml`: 1183 → 761 lines (-422 lines)
+  - `config-acme-safety-fraud.yaml`: 1260 → 804 lines (-456 lines)
+  - `config-acme-hr-misconduct.yaml`: 1249 → 801 lines (-448 lines)
+- **Benefit:** Easier maintenance, no functionality change, same signal/noise ratios
+- **Documentation:** Updated CONFIGS_GUIDE.md with YAML anchor examples
+
+---
+
 ## [2.0.0] - 2026-01-15
 
 ### Added
