@@ -4,6 +4,34 @@ All notable changes to the Synthetic E-Discovery Dataset Generator.
 
 ---
 
+## [2.0.2] - 2026-01-15
+
+### Added
+
+#### 👥 Expansion Personnel for Organizational Depth
+- **Feature:** All three focused investigation configs now include 50 total personnel (5 core + 45 expansion)
+- **Why:** Solves the "Small Universe" problem where only 5 people send all emails
+- **Impact:**
+  - Realistic organizational depth for volume testing (1000+ documents)
+  - Proper noise distribution (expansion personnel send routine business emails)
+  - Better search/filtering testing (50 names vs 5 names)
+  - Signal scenarios still focus on core 5 custodians
+- **Expansion Personnel Include:**
+  - Engineering staff (Data Architect, Developers, QA, DevOps)
+  - Operations (Facilities, Warehouse, Office Manager, Security)
+  - HR/Admin (Payroll, Benefits, Events, Receptionist)
+  - Sales/Marketing (Reps, Copywriter, Social Media, Content)
+  - IT/Security (SysAdmin, DBA, InfoSec, SOC)
+  - Specialists (Compliance, Legal, UX, Design, Consultants)
+- **Files Modified:**
+  - `config-acme-antitrust.yaml`: 5 → 50 personnel (+45)
+  - `config-acme-safety-fraud.yaml`: 5 → 50 personnel (+45)
+  - `config-acme-hr-misconduct.yaml`: 5 → 50 personnel (+45)
+- **Documentation:** Updated config headers with personnel notes
+- **Next Step:** Phase 2 will update noise scenario employee_pool to use expansion personnel
+
+---
+
 ## [2.0.1] - 2026-01-15
 
 ### Changed
