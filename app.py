@@ -631,6 +631,37 @@ def get_temperature_for_scenario(scenario_type, is_noise=False, config_temp=None
     elif scenario_type == 'chat': return 0.7  # High temp for chat spontaneity
     else: return 0.95
 
+def get_language_instruction(language_code, language_ratio=None):
+    """Returns language instruction for LLM prompt injection.
+
+    Args:
+        language_code: Language code (e.g., 'de', 'es', 'zh', 'de-en-mixed')
+        language_ratio: For mixed languages, ratio of primary language (e.g., 0.7 = 70% primary)
+
+    Returns:
+        str: Language instruction to append to system message
+    """
+    language_templates = {
+        'de': "Write this communication in German (Deutsch). Use formal business German with proper grammar.",
+        'es': "Write this communication in Spanish (Español). Use formal business Spanish with proper grammar.",
+        'zh': "Write this communication in Simplified Chinese (简体中文). Use formal business Chinese with proper grammar.",
+        'de-en-mixed': "Write this communication using CODE-SWITCHING between German and English. {ratio}% of the content should be in German, {other}% in English. Mix languages naturally within sentences and paragraphs, as international business professionals do. Use German for key business terms (e.g., 'Preisabsprache' for price-fixing, 'Vereinbarung' for agreement) and English for technical/common terms.",
+        'es-en-mixed': "Write this communication using CODE-SWITCHING between Spanish and English. {ratio}% of the content should be in Spanish, {other}% in English. Mix languages naturally within sentences and paragraphs, as bilingual professionals do. Use Spanish for culturally-specific concepts and English for technical terms.",
+        'zh-en-mixed': "Write this communication using CODE-SWITCHING between Chinese and English. {ratio}% of the content should be in Chinese characters, {other}% in English. Mix languages naturally, as international business professionals do."
+    }
+
+    template = language_templates.get(language_code, '')
+    if not template:
+        return ''
+
+    # For mixed languages, inject ratio
+    if '-mixed' in language_code and language_ratio:
+        ratio_percent = int(language_ratio * 100)
+        other_percent = 100 - ratio_percent
+        template = template.replace('{ratio}', str(ratio_percent)).replace('{other}', str(other_percent))
+
+    return f"\n\nLANGUAGE REQUIREMENT: {template}"
+
 def generate_llm_response(prompt, system_message, temperature=0.95):
     """Generic function to get a JSON response from the LLM."""
     print(f"---> Sending prompt to Azure OpenAI Model (temp={temperature:.2f})...")
@@ -649,9 +680,22 @@ def generate_llm_response(prompt, system_message, temperature=0.95):
         print(f"!!! ERROR: Failed to get valid response from LLM. Details: {e}")
         return None
 
-def generate_email_content_from_llm(prompt, temperature=0.95):
-    """Generates email content from LLM."""
+def generate_email_content_from_llm(prompt, temperature=0.95, language_code=None, language_ratio=None):
+    """Generates email content from LLM.
+
+    Args:
+        prompt: The user prompt for email generation
+        temperature: LLM temperature setting
+        language_code: Optional language code (e.g., 'de', 'es', 'zh', 'de-en-mixed')
+        language_ratio: Optional ratio for mixed languages (e.g., 0.7 = 70% primary language)
+    """
     system_message = "You are an AI assistant for generating simulated corporate emails for a fictional story. Return a single, valid JSON object and nothing else. The JSON object must have the keys: 'subject', 'body', 'sender_name', 'sender_email', 'recipients'. 'recipients' must be a list of lists, like [['Recipient Name', 'recipient@email.com']]. You can OPTIONALLY include 'cc_recipients' and 'bcc_recipients' keys, following the same format as 'recipients'. When asked to reply, your 'body' should ONLY contain the new reply content."
+
+    # Inject language instruction if specified
+    if language_code:
+        language_instruction = get_language_instruction(language_code, language_ratio)
+        system_message += language_instruction
+
     email_data = generate_llm_response(prompt, system_message, temperature)
     if email_data and all(key in email_data for key in ["subject", "body", "sender_name", "sender_email", "recipients"]):
         return email_data
@@ -669,8 +713,15 @@ def generate_calendar_content_from_llm(prompt, temperature=0.9):
         print("!!! ERROR: LLM response for calendar event was missing required keys.")
         return None
 
-def generate_chat_content_from_llm(prompt, temperature=0.7):
-    """Generates a back-and-forth chat conversation with realistic chat patterns."""
+def generate_chat_content_from_llm(prompt, temperature=0.7, language_code=None, language_ratio=None):
+    """Generates a back-and-forth chat conversation with realistic chat patterns.
+
+    Args:
+        prompt: The user prompt for chat generation
+        temperature: LLM temperature setting
+        language_code: Optional language code (e.g., 'de', 'es', 'zh', 'de-en-mixed')
+        language_ratio: Optional ratio for mixed languages (e.g., 0.7 = 70% primary language)
+    """
     system_message = (
         "You are an AI assistant for generating simulated corporate chat logs (Slack/Teams). "
         "Return a single, valid JSON object and nothing else. "
@@ -694,6 +745,12 @@ def generate_chat_content_from_llm(prompt, temperature=0.7):
         "BAD (email-style): 'Hi Jamie, I wanted to follow up on our discussion about the pricing strategy. I think we should consider...'\n"
         "GOOD (chat-style): 'hey jamie', 'following up on pricing', 'think we should revisit that 15% number', 'thoughts?'"
     )
+
+    # Inject language instruction if specified
+    if language_code:
+        language_instruction = get_language_instruction(language_code, language_ratio)
+        system_message += language_instruction
+
     chat_data = generate_llm_response(prompt, system_message, temperature)
     if chat_data and 'messages' in chat_data and isinstance(chat_data['messages'], list):
         return chat_data
@@ -1283,8 +1340,13 @@ def generate_realistic_timestamp(base_date=None, hours_offset=None, scenario_des
 
 # --- Core Generation Functions ---
 
-def generate_email_thread(prompts, base_filename, output_dir, context_block, variables, personnel_map, scenario_description, attachment_config, near_dup_prob, run_count=1, is_noise=False, stats=None, config_temp=None):
-    """Generates a threaded email conversation."""
+def generate_email_thread(prompts, base_filename, output_dir, context_block, variables, personnel_map, scenario_description, attachment_config, near_dup_prob, run_count=1, is_noise=False, stats=None, config_temp=None, language_code=None, language_ratio=None):
+    """Generates a threaded email conversation.
+
+    Args:
+        language_code: Optional language code (e.g., 'de', 'es', 'zh', 'de-en-mixed')
+        language_ratio: Optional ratio for mixed languages (e.g., 0.7 = 70% primary language)
+    """
     previous_message_id, references, generated_count = None, [], 0
     previous_email_content, previous_email_date = None, None
     temperature = get_temperature_for_scenario('thread', is_noise, config_temp)
@@ -1305,7 +1367,7 @@ def generate_email_thread(prompts, base_filename, output_dir, context_block, var
             full_prompt = f"{context_block}\n\nYou are drafting a reply to the following email:\n\n---\n{quoted_body}\n---\n\nYour task: {randomized_prompt}{style_instruction}"
         else:
             full_prompt = f"{context_block}\n\nTask: {randomized_prompt}{style_instruction}"
-        email_content = generate_email_content_from_llm(full_prompt, temperature)
+        email_content = generate_email_content_from_llm(full_prompt, temperature, language_code, language_ratio)
         if not email_content: continue
 
         if random.random() < near_dup_prob:
@@ -1350,8 +1412,13 @@ def generate_email_thread(prompts, base_filename, output_dir, context_block, var
         previous_message_id, previous_email_content, previous_email_date = current_message_id, email_content, current_email_date
     return generated_count
 
-def generate_standalone_email(prompt_template, base_filename, output_dir, context_block, variables, personnel_map, scenario_description, attachment_config, near_dup_prob, run_count=1, is_noise=False, stats=None, config_temp=None):
-    """Generates a standalone email."""
+def generate_standalone_email(prompt_template, base_filename, output_dir, context_block, variables, personnel_map, scenario_description, attachment_config, near_dup_prob, run_count=1, is_noise=False, stats=None, config_temp=None, language_code=None, language_ratio=None):
+    """Generates a standalone email.
+
+    Args:
+        language_code: Optional language code (e.g., 'de', 'es', 'zh', 'de-en-mixed')
+        language_ratio: Optional ratio for mixed languages (e.g., 0.7 = 70% primary language)
+    """
     randomized_prompt = get_randomized_prompt(prompt_template, variables, personnel_map, run_count)
     sender_name = get_sender_name_from_prompt(randomized_prompt, personnel_map)
     style_instruction = ""
@@ -1360,7 +1427,7 @@ def generate_standalone_email(prompt_template, base_filename, output_dir, contex
         style_instruction = f"\n\nIMPORTANT: Write this email in the style of {sender_name}: {style}"
     full_prompt = f"{context_block}\n\nTask: {randomized_prompt}{style_instruction}"
     temperature = get_temperature_for_scenario('standalone', is_noise, config_temp)
-    email_content = generate_email_content_from_llm(full_prompt, temperature)
+    email_content = generate_email_content_from_llm(full_prompt, temperature, language_code, language_ratio)
     if not email_content: return 0
 
     if random.random() < near_dup_prob:
@@ -1405,14 +1472,19 @@ def generate_calendar_event(prompt_template, base_filename, output_dir, context_
     create_and_save_calendar_event(filename, event_content, output_dir, event_date, stats)
     return 1
 
-def generate_chat_scenario(prompts, base_filename, output_dir, context_block, variables, personnel_map, chat_format='slack', run_count=1, is_noise=False, stats=None, config_temp=None):
-    """Orchestrates the creation of a chat/RSMF file."""
+def generate_chat_scenario(prompts, base_filename, output_dir, context_block, variables, personnel_map, chat_format='slack', run_count=1, is_noise=False, stats=None, config_temp=None, language_code=None, language_ratio=None):
+    """Orchestrates the creation of a chat/RSMF file.
+
+    Args:
+        language_code: Optional language code (e.g., 'de', 'es', 'zh', 'de-en-mixed')
+        language_ratio: Optional ratio for mixed languages (e.g., 0.7 = 70% primary language)
+    """
     prompt_obj = prompts[0]
     randomized_prompt = get_randomized_prompt(prompt_obj, variables, personnel_map, run_count)
 
     full_prompt = f"{context_block}\n\nTask: {randomized_prompt}\n\nGenerate a conversation history between these participants."
 
-    chat_content = generate_chat_content_from_llm(full_prompt, get_temperature_for_scenario('chat', is_noise, config_temp))
+    chat_content = generate_chat_content_from_llm(full_prompt, get_temperature_for_scenario('chat', is_noise, config_temp), language_code, language_ratio)
     
     if not chat_content: return 0
 
@@ -1863,6 +1935,10 @@ if __name__ == "__main__":
             if 'llm_settings' in scenario and 'temperature' in scenario['llm_settings']:
                 config_temp = scenario['llm_settings']['temperature']
 
+            # Extract language settings if present
+            language_code = scenario.get('language', None)
+            language_ratio = scenario.get('language_ratio', None)
+
             # Track stress tests
             stress_test_triggered = None
             if "blast_email" in scenario['base_filename']:
@@ -1870,13 +1946,13 @@ if __name__ == "__main__":
 
             # Generate based on scenario type
             if scenario['type'] == 'thread':
-                items_created = generate_email_thread(prompts_list, dynamic_base_filename, output_dir, context, variables, personnel_map, scenario_desc, attachment_config, near_dup_prob, current_run, is_noise, stats, config_temp)
+                items_created = generate_email_thread(prompts_list, dynamic_base_filename, output_dir, context, variables, personnel_map, scenario_desc, attachment_config, near_dup_prob, current_run, is_noise, stats, config_temp, language_code, language_ratio)
             elif scenario['type'] == 'standalone':
-                items_created = generate_standalone_email(prompts_list[0], dynamic_base_filename, output_dir, context, variables, personnel_map, scenario_desc, attachment_config, near_dup_prob, current_run, is_noise, stats, config_temp)
+                items_created = generate_standalone_email(prompts_list[0], dynamic_base_filename, output_dir, context, variables, personnel_map, scenario_desc, attachment_config, near_dup_prob, current_run, is_noise, stats, config_temp, language_code, language_ratio)
             elif scenario['type'] == 'calendar_event':
                 items_created = generate_calendar_event(prompts_list[0], dynamic_base_filename, output_dir, context, variables, personnel_map, current_run, is_noise, stats, config_temp)
             elif scenario['type'] == 'chat':
-                items_created = generate_chat_scenario(prompts_list, dynamic_base_filename, output_dir, context, variables, personnel_map, chat_format_pref, current_run, is_noise, stats, config_temp)
+                items_created = generate_chat_scenario(prompts_list, dynamic_base_filename, output_dir, context, variables, personnel_map, chat_format_pref, current_run, is_noise, stats, config_temp, language_code, language_ratio)
 
             if items_created > 0:
                 print(f"  > Generated {items_created} item(s) for this scenario.")

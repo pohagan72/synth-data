@@ -443,6 +443,24 @@ scenarios:
       - prompt_templates:
           - "Generate a Microsoft Teams chat history between Jamie Chen (ACME) and Rachel Quinn (Phoney Tunes)."
 
+  # --- SCENARIO 1C: German/English Code-Switching Price-Fixing Thread ---
+  # Tests: Language Identification (LID), Unicode/UTF-8 handling, multilingual search
+  - type: "thread"
+    description: "(S1C) German/English price-fixing coordination (multilingual)"
+    base_filename: "S1C_price_fixing_german"
+    language: "de-en-mixed"  # Code-switching between German and English
+    language_ratio: 0.7  # 70% German, 30% English
+    llm_settings:
+      temperature: 0.4  # Signal: Lower temp for consistency
+    prompts:
+      - prompt_templates:
+          - "Draft an email from Hans Gruber (ACME Berlin Office, hans.gruber@acmeinc.com) to Jamie Chen discussing the 'Preisabsprache' (price-fixing agreement) with European competitors. Use 70% German, 30% English code-switching. Hans should use formal business German for sensitive topics and English for technical terms. Mention 'Marktaufteilung' (market division) and reference the upcoming meeting in Frankfurt."
+      - prompt_templates:
+          - "Draft Jamie Chen's reply in English, acknowledging Hans's message and confirming alignment on pricing strategy. Jamie should sprinkle in basic German phrases like 'Verstanden' (understood) and 'Einverstanden' (agreed)."
+      - prompt_templates:
+          - "Draft Hans Gruber's follow-up confirming the Frankfurt meeting details. Mix German and English naturally. Include specific pricing numbers in euros (€) and reference 'Wettbewerbsverbot' (non-compete) informally."
+        probability: 0.8
+
   # --- SCENARIO 3: Legal Privilege ---
   - type: "thread"
     description: "(S3) Confidential legal consultation with privilege"

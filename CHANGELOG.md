@@ -4,6 +4,67 @@ All notable changes to the Synthetic E-Discovery Dataset Generator.
 
 ---
 
+## [2.3.0] - 2026-01-16
+
+### Added
+
+#### 🌍 Multi-Language Support (Phase 1: Foundation)
+- **Feature:** Infrastructure for generating multilingual documents with code-switching
+- **Why:** Real-world e-discovery involves international communications. Tests Language Identification (LID), Unicode/UTF-8 handling, and multilingual search in EAIDA
+- **Supported Languages:**
+  - **German (de):** Formal business German
+  - **Spanish (es):** Formal business Spanish
+  - **Chinese (zh):** Simplified Chinese
+  - **Code-Switching (de-en-mixed, es-en-mixed, zh-en-mixed):** Mixed language communications with configurable ratios
+- **Implementation:**
+  - Added `get_language_instruction()` helper function (app.py:634-663) - Maps language codes to LLM instructions
+  - Modified `generate_email_content_from_llm()` to accept `language_code` and `language_ratio` parameters (app.py:683-704)
+  - Modified `generate_chat_content_from_llm()` to accept language parameters (app.py:716-759)
+  - Updated `generate_email_thread()`, `generate_standalone_email()`, and `generate_chat_scenario()` to pass language parameters (app.py:1343-1955)
+  - Updated `process_scenario_worker()` to extract language settings from scenario YAML (app.py:1938-1940)
+- **YAML Configuration:**
+  ```yaml
+  - type: "thread"
+    description: "(S1C) German/English price-fixing coordination"
+    language: "de-en-mixed"  # Code-switching
+    language_ratio: 0.7  # 70% German, 30% English
+  ```
+- **Example Scenarios Added:**
+  - **(S1C) German/English Antitrust Coordination:** config-acme-antitrust.yaml (lines 446-462)
+    - Hans Gruber (ACME Berlin) coordinates pricing with Jamie Chen using business German
+    - Tests: European antitrust context, Preisabsprache (price-fixing), Marktaufteilung (market division)
+  - **(S_FRAUD_C2) Spanish/English Billing Concerns:** config-hospital-billing-fraud.yaml (lines 640-656)
+    - Maria Rodriguez and Carmen Gutierrez discuss fraudulent billing pressure in Spanish/English mix
+    - Tests: Bilingual healthcare workers, codificación fraudulenta (fraudulent coding)
+- **Use Cases:**
+  - **LID Testing:** Can EAIDA auto-detect that a document is 70% German?
+  - **Encoding Stress:** CJK characters test Unicode/UTF-8 handling in ingestion engines
+  - **Code-Switching:** Humans naturally mix languages mid-sentence - tests AI classifiers
+  - **Multilingual Search:** Can investigators search across German "Preisabsprache" and English "price-fixing"?
+- **Files Modified:**
+  - `app.py`: Language instruction infrastructure, LLM function updates, scenario processing
+  - `config-acme-antitrust.yaml`: Added S1C German pricing coordination scenario
+  - `config-hospital-billing-fraud.yaml`: Added S_FRAUD_C2 Spanish billing concerns scenario
+
+### Impact Summary
+
+**Before v2.3.0:**
+- Only English-language communications generated
+- No testing of Language Identification (LID) workflows
+- No stress testing of Unicode/UTF-8 character encoding
+- Limited realism for international investigations
+
+**After v2.3.0:**
+- Multilingual document generation with German, Spanish, and Chinese support
+- Code-switching scenarios test realistic bilingual communication patterns
+- EAIDA can now be tested for LID, encoding, and multilingual search capabilities
+- Antitrust investigations include European coordination scenarios
+- Healthcare investigations reflect bilingual US workforce reality
+
+**Result:** Synthetic datasets now test EAIDA's multilingual processing workflows - a critical gap in previous testing. Phase 2 (Audio Evidence) and Phase 3 (Image Evidence) planned for future releases.
+
+---
+
 ## [2.2.1] - 2026-01-16
 
 ### Added

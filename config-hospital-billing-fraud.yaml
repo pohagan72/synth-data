@@ -637,6 +637,24 @@ scenarios:
           - "Draft Michelle Baker's (HR) email to Linda Martinez (Compliance Officer) forwarding Karen's complaint and recommending compliance investigation. Notes this is not first complaint she's received about billing department pressure. Says this raises both compliance and employee relations concerns. Recommends interviewing billing staff confidentially. Tone: HR escalating to compliance."
         probability: 0.75
 
+  # --- SCENARIO S_FRAUD_C2: Spanish/English Code-Switching - Billing Staff Concerns ---
+  # Tests: Language Identification (LID), Unicode handling, multilingual search in healthcare context
+  - type: "thread"
+    description: "(S_FRAUD_C2) Spanish/English billing staff discussion (multilingual)"
+    base_filename: "S_FRAUD_C2_billing_concerns_spanish"
+    language: "es-en-mixed"  # Code-switching between Spanish and English
+    language_ratio: 0.6  # 60% Spanish, 40% English
+    llm_settings:
+      temperature: 0.4  # Signal: Lower temp for consistency
+    prompts:
+      - prompt_templates:
+          - "Draft an email from Maria Rodriguez (Medical Coder) to Carmen Gutierrez (Senior Billing Specialist) discussing concerns about Susan Walsh's (Billing Director) pressure to maximize billing codes. Use 60% Spanish, 40% English code-switching as bilingual healthcare workers would naturally communicate. Maria should express worry that they're being asked to do 'codificación fraudulenta' (fraudulent coding) and reference Medicare rules violations. Use Spanish for emotional/personal concerns and English for technical billing terms. Mention 'tengo miedo de perder mi trabajo' (I'm afraid of losing my job) but also 'esto no es correcto' (this isn't right)."
+      - prompt_templates:
+          - "Draft Carmen Gutierrez's reply in Spanish/English mix, agreeing with Maria's concerns. Carmen should mention she has 15 years experience and has never been asked to 'maximizar códigos sin documentación' (maximize codes without documentation) like this before. Use Spanish to express solidarity ('estamos en esto juntas' - we're in this together) and English for compliance references. Suggest they should talk to 'la oficial de cumplimiento' (the compliance officer) Linda Martinez."
+      - prompt_templates:
+          - "Draft Maria Rodriguez's follow-up agreeing to speak with Linda Martinez together for support. Mix Spanish expressions of nervousness with English technical terms. Reference specific examples like being told to 'siempre usar 99215' (always use 99215) even when documentation only supports 99213. Tone: concerned bilingual employees deciding to report fraud."
+        probability: 0.8
+
   # --- SCENARIO S_FRAUD_D: Destruction of Audit Evidence ---
   - type: "thread"
     description: "(S_FRAUD_D) Destruction of audit evidence"
