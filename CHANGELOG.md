@@ -4,6 +4,68 @@ All notable changes to the Synthetic E-Discovery Dataset Generator.
 
 ---
 
+## [2.1.0] - 2026-01-15
+
+### Added
+
+#### 🌡️ Temperature Control for LLM Generation
+- **Feature:** Added configurable `llm_settings.temperature` to all scenarios in YAML configs
+- **Why:** Control linguistic variety - lower temp for signal consistency, higher temp for noise diversity
+- **Implementation:**
+  - Signal scenarios (S1, S2, S_HR, S3, calendar events): `temperature: 0.4` for consistent hot docs
+  - Noise scenarios (S4-S18): `temperature: 0.95` for varied mundane communications
+  - Ultra-mundane scenarios (S16-S18): `temperature: 1.0` for maximum linguistic entropy
+- **Code Changes:**
+  - Updated `get_temperature_for_scenario()` to accept `config_temp` parameter (YAML override)
+  - Updated all generation functions to pass config temperature through call chain
+  - Backwards compatible - defaults to existing behavior if no `llm_settings` specified
+- **Files Modified:**
+  - `app.py`: Function signature updates (lines 613-632, 1240-1369, 1807-1831)
+  - `config-acme-hr-misconduct.yaml`: Added llm_settings to all 30 scenarios
+  - `config-acme-antitrust.yaml`: Added llm_settings to all 25 scenarios
+  - `config-acme-safety-fraud.yaml`: Added llm_settings to all 28 scenarios
+
+#### 📋 Ultra-Mundane Noise Scenarios (S16-S18)
+- **Feature:** Three new noise scenario types for maximum linguistic diversity
+- **Why:** Addresses feedback about "procedural template fingerprints" - adds extreme mundanity
+- **New Scenarios:**
+  - **(S16) Office Life Trivia:** 15 ultra-mundane topics (cake in breakroom, AC broken, lost badge, etc.)
+  - **(S17) IT/System Issues:** 15 common IT problems (VPN issues, login problems, printer jammed, etc.)
+  - **(S18) Micro-Collaborations:** 15 ultra-brief messages (FYI, Quick question, Thoughts?, etc.)
+- **Design:**
+  - All use `temperature: 1.0` for maximum variety
+  - Prompts request brevity (1-2 sentences or 5-10 words)
+  - Use expansion personnel appropriate to scenario type
+  - Add "linguistic drift" through rushed/casual tone
+- **Impact:**
+  - Further dilutes signal ratio if needed
+  - Adds realistic "email spam" that humans generate
+  - Tests EAIDA's ability to filter truly irrelevant content
+- **Files Modified:**
+  - `config-acme-hr-misconduct.yaml`: Added S16-S18 (lines 1048-1130)
+  - `config-acme-antitrust.yaml`: Added S16-S18 (lines 999-1081)
+  - `config-acme-safety-fraud.yaml`: Added S16-S18 (lines 1043-1125)
+
+### Impact Summary
+
+**Before v2.1.0:**
+- All LLM calls used hardcoded temperature logic (0.85 for threads, 0.95 for standalone, etc.)
+- Signal emails had same temp as some noise, reducing consistency
+- Noise had good variety but not maximum diversity
+
+**After v2.1.0:**
+- Signal scenarios use temp 0.4 → more consistent hot docs (better for training reviewers)
+- Noise scenarios use temp 0.95 → high variety in mundane business communications
+- Ultra-mundane scenarios use temp 1.0 → maximum linguistic entropy (addresses "fingerprint" concerns)
+- All configurable via YAML without code changes
+
+**New Scenario Count:**
+- HR Misconduct: 27 → 30 scenarios
+- Antitrust: 22 → 25 scenarios
+- Safety Fraud: 25 → 28 scenarios
+
+---
+
 ## [2.0.3] - 2026-01-15
 
 ### Changed

@@ -392,6 +392,8 @@ scenarios:
   - type: "thread"
     description: "(S1) Price-fixing discussion with coded language"
     base_filename: "S1_price_fixing_thread"
+    llm_settings:
+      temperature: 0.4  # Signal: Lower temp for consistency
     prompt_variables:
       urgency: ["urgent", "time-sensitive", "when you get a chance", "ASAP"]
       meeting_type: ["quick call", "brief meeting", "coffee chat"]
@@ -425,6 +427,8 @@ scenarios:
   - type: "calendar_event"
     description: "(S1A) Calendar invite for the price-fixing meeting"
     base_filename: "S1A_price_fixing_meeting"
+    llm_settings:
+      temperature: 0.4  # Signal: Lower temp for consistency
     prompts:
       - prompt_templates:
           - "Draft a calendar event from Jamie Chen to Rachel Quinn and Anthony Brooks. Summary: 'Strategy Sync'."
@@ -433,6 +437,8 @@ scenarios:
   - type: "chat"
     description: "(S1B) Teams Chat: Informal price-fixing discussion"
     base_filename: "project-pricing-sync"
+    llm_settings:
+      temperature: 0.4  # Signal: Lower temp for consistency
     prompts:
       - prompt_templates:
           - "Generate a Microsoft Teams chat history between Jamie Chen (ACME) and Rachel Quinn (Phoney Tunes)."
@@ -441,6 +447,8 @@ scenarios:
   - type: "thread"
     description: "(S3) Confidential legal consultation with privilege"
     base_filename: "S3_legal_privilege_thread"
+    llm_settings:
+      temperature: 0.4  # Signal: Lower temp for consistency
     prompts:
       - prompt_templates:
           - "Draft an email from Taylor Brooks to Drew Foster with subject 'CONFIDENTIAL AND PRIVILEGED'..."
@@ -455,6 +463,8 @@ scenarios:
   - type: "thread"
     description: "(S3) Subtle privilege consultation without obvious markers"
     base_filename: "S3B_subtle_privilege_thread"
+    llm_settings:
+      temperature: 0.4  # Signal: Lower temp for consistency
     prompts:
       - prompt_templates:
           - "Draft an email from Taylor Brooks to Drew Foster with subject 'Need your advice on pricing discussions'. The email should ask Drew (General Counsel) for confidential legal advice about potential antitrust issues related to pricing coordination discussions. DO NOT use the words 'privileged', 'confidential', or 'attorney-client' in the subject line. The body should make it clear Taylor is seeking legal counsel from Drew in his capacity as General Counsel."
@@ -465,6 +475,8 @@ scenarios:
   - type: "thread"
     description: "(S3) Business email to General Counsel becomes privileged"
     base_filename: "S3C_privilege_by_recipient"
+    llm_settings:
+      temperature: 0.4  # Signal: Lower temp for consistency
     prompts:
       - prompt_templates:
           - "Draft an email from Jamie Chen to Drew Foster with subject 'Question about recent industry meeting'. Jamie explains attending a pricing discussion at a trade conference and asks Drew for guidance on whether this raises any concerns. The tone is business-casual, seeking advice from the GC."
@@ -475,6 +487,8 @@ scenarios:
   - type: "thread"
     description: "(S3) Email thread starts non-privileged, becomes privileged mid-conversation"
     base_filename: "S3D_mixed_privilege_thread"
+    llm_settings:
+      temperature: 0.4  # Signal: Lower temp for consistency
     prompts:
       - prompt_templates:
           - "Draft an email from Taylor Brooks to Jamie Chen and Casey Mitchell with subject 'Phoenix pricing feedback' discussing customer reactions to pricing changes. This is routine business discussion, no legal tone."
@@ -487,6 +501,8 @@ scenarios:
   - type: "thread"
     description: "(S3) Privileged email forwarded to non-attorney (waiver scenario)"
     base_filename: "S3E_privilege_waiver"
+    llm_settings:
+      temperature: 0.4  # Signal: Lower temp for consistency
     prompts:
       - prompt_templates:
           - "Draft an email from Drew Foster to Taylor Brooks with subject 'ATTORNEY-CLIENT PRIVILEGED - Antitrust Risk Analysis'. Drew provides detailed legal analysis of potential Sherman Act violations related to pricing discussions. Mark this clearly as privileged communication."
@@ -499,6 +515,8 @@ scenarios:
     type: "standalone"
     description: "(S4) Generic project management emails"
     base_filename: "noise_project_mgmt"
+    llm_settings:
+      temperature: 0.95  # Noise: Higher temp for variety
     near_duplicate_probability: 0.15
     prompt_variables:
       topic:
@@ -609,6 +627,8 @@ scenarios:
   - type: "standalone"
     description: "(S5) Generic HR or admin announcements"
     base_filename: "noise_hr_admin"
+    llm_settings:
+      temperature: 0.95  # Noise: Higher temp for variety
     prompt_variables:
       topic:
         - "upcoming office holiday closure"
@@ -721,6 +741,8 @@ scenarios:
   - type: "standalone"
     description: "(S6) Generic sales team emails"
     base_filename: "noise_sales_chatter"
+    llm_settings:
+      temperature: 0.95  # Noise: Higher temp for variety
     prompt_variables:
       topic:
         - "weekly sales report deadline"
@@ -817,6 +839,8 @@ scenarios:
   - type: "standalone"
     description: "(S7) Personal, non-work emails"
     base_filename: "noise_personal"
+    llm_settings:
+      temperature: 0.95  # Noise: Higher temp for variety
     prompt_variables:
       # ONLY THE CORE 5
       employee_pool: ["Brandon Hayes", "Marcus J. Dillon", "Lisa Wong", "Oscar Martinez", "Fatima Al-Sayed", "Jack Reacher", "Kara Danvers", "Peter Parker"]
@@ -878,6 +902,8 @@ scenarios:
   - type: "standalone"
     description: "(S8) Low-quality email fragments"
     base_filename: "noise_fragments"
+    llm_settings:
+      temperature: 0.95  # Noise: Higher temp for variety
     prompt_variables:
       employee_pool: ["Marcus J. Dillon", "Greg 'Mac' MacIntyre", "Tom Wozniak", "Frank Castle", "Kara Danvers"]
       fragment_type:
@@ -893,6 +919,8 @@ scenarios:
   - type: "standalone"
     description: "(S9) Emails with realistic typos"
     base_filename: "noise_typos"
+    llm_settings:
+      temperature: 0.95  # Noise: Higher temp for variety
     prompt_variables:
       # Intentional misspellings of Core 5 names
       employee_pool: ["Brandon Hays", "Peter Parkr", "Jack Reacher", "Gina Lineti", "Zack Moris", "Wade Willson"]
@@ -907,6 +935,8 @@ scenarios:
   - type: "standalone"
     description: "(S10) Vague or unclear emails"
     base_filename: "noise_vague"
+    llm_settings:
+      temperature: 0.95  # Noise: Higher temp for variety
     prompt_variables:
       employee_pool: ["Tony Stark", "Wade Wilson", "Ursula Buffay", "Ron Swanson", "Marcus J. Dillon"]
       task:
@@ -920,6 +950,8 @@ scenarios:
   - type: "standalone"
     description: "(S11) Out-of-office auto-replies"
     base_filename: "noise_autoreply"
+    llm_settings:
+      temperature: 0.95  # Noise: Higher temp for variety
     prompt_variables:
       employee_pool: ["Victor Krum", "Lisa Wong", "Kevin O'Connor", "Samantha Power", "Iris West", "Derek Shepherd", "Dr. Aris Thorne"]
       reason:
@@ -934,6 +966,8 @@ scenarios:
   - type: "standalone"
     description: "(S12) Meeting scheduling back-and-forth"
     base_filename: "noise_meetings"
+    llm_settings:
+      temperature: 0.95  # Noise: Higher temp for variety
     prompt_variables:
       employee_pool: ["Rachel Green", "Gina Linetti", "Erica Sinclair", "Lisa Wong", "Kara Danvers"]
       topic:
@@ -948,6 +982,8 @@ scenarios:
   - type: "standalone"
     description: "(S13) Blast email (Expanded Headers)"
     base_filename: "stress_test_blast_email"
+    llm_settings:
+      temperature: 0.95  # Noise: Higher temp for variety
     prompt_variables:
       # Since we don't have 500 people, the code will just repeat these 5 people 100 times in the header.
       # This still works for stress testing header length.
@@ -959,6 +995,90 @@ scenarios:
     prompts:
       - prompt_templates:
           - "Draft a broadcast email from {sender} regarding '{topic}'."
+
+  # --- SCENARIO 16: Office Life Trivia ---
+  - type: "standalone"
+    description: "(S16) Ultra-mundane office life trivia"
+    base_filename: "noise_office_trivia"
+    llm_settings:
+      temperature: 1.0  # Maximum variety for mundane topics
+    prompt_variables:
+      employee_pool: ["Brandon Hayes", "Lisa Wong", "Oscar Martinez", "Rachel Green", "Gina Linetti", "Peter Parker", "Kara Danvers", "Marcus J. Dillon"]
+      topic:
+        - "Cake in the breakroom"
+        - "AC is freezing"
+        - "Who left dishes in sink"
+        - "Elevator B is broken"
+        - "Found a badge in lobby"
+        - "Coffee machine needs refill"
+        - "Someone parked in my spot"
+        - "Lost and found item"
+        - "Fridge cleanout Friday"
+        - "Birthday card for coworker"
+        - "Thermostat wars"
+        - "Printer is jammed again"
+        - "WiFi slow today"
+        - "Anyone have a phone charger"
+        - "Lunch recommendations near office"
+    prompts:
+      - prompt_templates:
+          - "Draft a very brief (1-2 sentences) email from {sender} to {recipient} about: {topic}. Keep it casual and mundane."
+
+  # --- SCENARIO 17: IT/System Issues ---
+  - type: "standalone"
+    description: "(S17) IT and system issues (mundane support requests)"
+    base_filename: "noise_it_issues"
+    llm_settings:
+      temperature: 1.0  # Maximum variety for mundane topics
+    prompt_variables:
+      employee_pool: ["Tom Wozniak", "Jack Reacher", "Wade Wilson", "Frank Castle", "Derek Shepherd", "Kevin O'Connor", "Brandon Hayes"]
+      issue:
+        - "Can't login to Jira"
+        - "VPN keeps disconnecting"
+        - "Mouse battery dead"
+        - "Need access to shared folder"
+        - "Laptop running slow"
+        - "Forgot password for system"
+        - "Screen went black"
+        - "Keyboard not working"
+        - "Can't connect to printer"
+        - "Email not syncing"
+        - "Teams app crashing"
+        - "Need software installed"
+        - "Computer won't wake up"
+        - "Mic not working on Zoom"
+        - "Files not saving"
+    prompts:
+      - prompt_templates:
+          - "Draft a brief (1-2 sentences) IT support request email from {sender} to {recipient} about: {issue}. Make it sound rushed or frustrated."
+
+  # --- SCENARIO 18: Micro-Collaborations ---
+  - type: "standalone"
+    description: "(S18) Ultra-brief micro-collaboration messages"
+    base_filename: "noise_micro_collab"
+    llm_settings:
+      temperature: 1.0  # Maximum variety for mundane topics
+    prompt_variables:
+      employee_pool: ["Priya Desai", "Elena Rostova", "Zoe Nakamura", "Lisa Wong", "Marcus J. Dillon", "Greg MacIntyre", "Iris West"]
+      task:
+        - "Did you see this"
+        - "Quick question"
+        - "Thoughts on attached"
+        - "Can you review"
+        - "Need your input"
+        - "FYI"
+        - "Looping you in"
+        - "Heads up"
+        - "Just checking in"
+        - "Following up"
+        - "Circling back"
+        - "Touching base"
+        - "Update when you can"
+        - "Let me know"
+        - "Sending this your way"
+    prompts:
+      - prompt_templates:
+          - "Draft an extremely brief (5-10 words max) email from {sender} to {recipient} with subject line based on: '{task}'. Body should be minimal, like 'See below' or 'Thoughts?' or just 'FYI'. Simulate someone hitting send too quickly."
 
 # ===================================================================
 # DUPLICATE NOISE SCENARIOS FOR SIGNAL/NOISE RATIO TUNING

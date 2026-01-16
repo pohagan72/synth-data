@@ -386,6 +386,8 @@ scenarios:
   - type: "thread"
     description: "(S3) Confidential legal consultation with privilege"
     base_filename: "S3_legal_privilege_thread"
+    llm_settings:
+      temperature: 0.4  # Signal: Lower temp for consistency
     prompts:
       - prompt_templates:
           - "Draft an email from Taylor Brooks to Drew Foster with subject 'CONFIDENTIAL AND PRIVILEGED' asking for urgent advice on a sensitive disclosure obligation."
@@ -400,6 +402,8 @@ scenarios:
   - type: "thread"
     description: "(S3) Subtle privilege consultation without obvious markers"
     base_filename: "S3B_subtle_privilege_thread"
+    llm_settings:
+      temperature: 0.4  # Signal: Lower temp for consistency
     prompts:
       - prompt_templates:
           - "Draft an email from Taylor Brooks to Drew Foster with subject 'Need your advice on HR situation'. The email should ask Drew (General Counsel) for confidential legal advice about potential liability related to workplace harassment complaints and investigation procedures. DO NOT use the words 'privileged', 'confidential', or 'attorney-client' in the subject line. The body should make it clear Taylor is seeking legal counsel from Drew in his capacity as General Counsel."
@@ -410,6 +414,8 @@ scenarios:
   - type: "thread"
     description: "(S3) Business email to General Counsel becomes privileged"
     base_filename: "S3C_privilege_by_recipient"
+    llm_settings:
+      temperature: 0.4  # Signal: Lower temp for consistency
     prompts:
       - prompt_templates:
           - "Draft an email from Peyton Parker to Drew Foster with subject 'Question about harassment complaint process'. Peyton explains receiving a formal complaint about workplace behavior and asks Drew for guidance on how to handle the situation and what the legal implications might be. The tone is business-casual, seeking advice from the GC."
@@ -420,6 +426,8 @@ scenarios:
   - type: "thread"
     description: "(S3) Email thread starts non-privileged, becomes privileged mid-conversation"
     base_filename: "S3D_mixed_privilege_thread"
+    llm_settings:
+      temperature: 0.4  # Signal: Lower temp for consistency
     prompts:
       - prompt_templates:
           - "Draft an email from Peyton Parker to Casey Mitchell with subject 'Uncomfortable situation with Jamie' discussing concerning workplace interactions. This is colleague-to-colleague discussion, no legal tone."
@@ -432,6 +440,8 @@ scenarios:
   - type: "thread"
     description: "(S3) Privileged email forwarded to non-attorney (waiver scenario)"
     base_filename: "S3E_privilege_waiver"
+    llm_settings:
+      temperature: 0.4  # Signal: Lower temp for consistency
     prompts:
       - prompt_templates:
           - "Draft an email from Drew Foster to Taylor Brooks with subject 'ATTORNEY-CLIENT PRIVILEGED - Harassment Investigation Legal Strategy'. Drew provides detailed legal analysis of potential Title VII liability, hostile environment claims, and recommended investigation procedures. Mark this clearly as privileged communication."
@@ -446,6 +456,8 @@ scenarios:
   - type: "thread"
     description: "(S_HR) Workplace harassment communications"
     base_filename: "S_HR_harassment_thread"
+    llm_settings:
+      temperature: 0.4  # Signal: Lower temp for consistency
     prompts:
       - prompt_templates:
           - "Draft an email from Peyton Parker to Drew Foster (General Counsel) with subject 'Confidential HR Matter - Need Advice'. Peyton reports feeling uncomfortable with repeated inappropriate comments from Jamie Chen about Peyton's appearance and personal life. The tone should be professional but clearly distressed."
@@ -470,6 +482,8 @@ scenarios:
   - type: "standalone"
     description: "(S_HR) HR investigation case file email"
     base_filename: "S_HR_investigation_docs"
+    llm_settings:
+      temperature: 0.4  # Signal: Lower temp for consistency
     prompts:
       - prompt_templates:
           - "Draft an email from Drew Foster to Taylor Brooks attaching 'HR Investigation Report - Case #2025-003 - CONFIDENTIAL'. The email summarizes findings: multiple witnesses corroborated the allegations, Jamie Chen admitted to some comments but claimed they were 'just joking', recommendation is termination for policy violations. Attach a formal investigation summary."
@@ -478,6 +492,8 @@ scenarios:
   - type: "standalone"
     description: "(S_HR) Witness statement about harassment"
     base_filename: "S_HR_witness_statement"
+    llm_settings:
+      temperature: 0.4  # Signal: Lower temp for consistency
     prompts:
       - prompt_templates:
           - "Draft an email from Casey Mitchell to Drew Foster in response to a request for information. Casey confirms witnessing Jamie Chen make inappropriate comments about Peyton Parker's appearance during a team lunch in October. Casey states feeling uncomfortable but not knowing how to intervene. The tone should be factual and somewhat reluctant."
@@ -486,6 +502,8 @@ scenarios:
   - type: "chat"
     description: "(S_HR) Slack/Teams chat showing inappropriate behavior"
     base_filename: "hr-inappropriate-chat"
+    llm_settings:
+      temperature: 0.4  # Signal: Lower temp for consistency
     prompts:
       - prompt_templates:
           - "Generate a Microsoft Teams chat history between Jamie Chen and Peyton Parker. Jamie sends several messages that cross professional boundaries: complimenting appearance excessively, asking personal questions about dating life, making jokes about going out for drinks. Peyton's responses should be brief, polite, and deflective, showing discomfort. The chat should be about 10-12 messages total over a 2-hour period after work hours."
@@ -494,6 +512,8 @@ scenarios:
   - type: "calendar_event"
     description: "(S_HR) Calendar invite for initial harassment complaint meeting"
     base_filename: "S_HR_complaint_meeting"
+    llm_settings:
+      temperature: 0.4  # Signal: Lower temp for consistency
     prompts:
       - prompt_templates:
           - "Draft a calendar event from Drew Foster (General Counsel) to Peyton Parker. Summary: 'Confidential Meeting - Workplace Concern'. Location: GC Office (Conference Room B). Duration: 1 hour. Description should be discrete: 'Please come prepared to discuss the matter we spoke about earlier. This meeting is confidential.' Use a date/time during business hours."
@@ -502,6 +522,8 @@ scenarios:
   - type: "calendar_event"
     description: "(S_HR) Calendar invite for witness interview"
     base_filename: "S_HR_witness_interview"
+    llm_settings:
+      temperature: 0.4  # Signal: Lower temp for consistency
     prompts:
       - prompt_templates:
           - "Draft a calendar event from Drew Foster to Casey Mitchell. Summary: 'HR Investigation Interview'. Location: Legal Department Conference Room. Duration: 30 minutes. Description: 'As part of an ongoing workplace investigation, we need to speak with you regarding observations you may have made about team interactions. Your participation is required and this conversation is confidential.' Use a date/time during business hours."
@@ -510,6 +532,8 @@ scenarios:
   - type: "calendar_event"
     description: "(S_HR) Calendar invite for executive disciplinary decision meeting"
     base_filename: "S_HR_executive_review"
+    llm_settings:
+      temperature: 0.4  # Signal: Lower temp for consistency
     prompts:
       - prompt_templates:
           - "Draft a calendar event from Drew Foster to Taylor Brooks (CEO). Summary: 'CONFIDENTIAL: HR Investigation Review & Decision'. Location: CEO Office. Duration: 45 minutes. Description: 'Review findings from Case #2025-003 and discuss recommended disciplinary action. Please review the attached investigation report before this meeting.' Mark as 'Private' or 'Confidential'. Use a date/time during business hours."
@@ -518,6 +542,8 @@ scenarios:
   - type: "calendar_event"
     description: "(S_HR) Calendar invite for follow-up meeting with complainant"
     base_filename: "S_HR_followup_meeting"
+    llm_settings:
+      temperature: 0.4  # Signal: Lower temp for consistency
     prompts:
       - prompt_templates:
           - "Draft a calendar event from Drew Foster to Peyton Parker. Summary: 'Follow-up Discussion'. Location: GC Office. Duration: 30 minutes. Description: 'Following our investigation, I'd like to update you on the findings and next steps. This is a confidential meeting to discuss resolution and any support resources you may need.' Use a date/time during business hours."
@@ -528,7 +554,9 @@ scenarios:
     type: "standalone"
     description: "(S4) Generic project management emails"
     base_filename: "noise_project_mgmt"
-    near_duplicate_probability: 0.15 
+    llm_settings:
+      temperature: 0.95  # Noise: Higher temp for variety
+    near_duplicate_probability: 0.15
     prompt_variables:
       topic:
         - "Phoenix project weekly status"
@@ -645,6 +673,8 @@ scenarios:
   - type: "standalone"
     description: "(S5) Generic HR or admin announcements"
     base_filename: "noise_hr_admin"
+    llm_settings:
+      temperature: 0.95  # Noise: Higher temp for variety
     prompt_variables:
       topic:
         - "upcoming office holiday closure"
@@ -762,6 +792,8 @@ scenarios:
   - type: "standalone"
     description: "(S6) Generic sales team emails"
     base_filename: "noise_sales_chatter"
+    llm_settings:
+      temperature: 0.95  # Noise: Higher temp for variety
     prompt_variables:
       topic:
         - "weekly sales report deadline"
@@ -858,6 +890,8 @@ scenarios:
   - type: "standalone"
     description: "(S7) Personal, non-work emails"
     base_filename: "noise_personal"
+    llm_settings:
+      temperature: 0.95  # Noise: Higher temp for variety
     prompt_variables:
       # Expansion personnel - various departments
       employee_pool: ["Brandon Hayes", "Marcus J. Dillon", "Lisa Wong", "Oscar Martinez", "Fatima Al-Sayed", "Jack Reacher", "Kara Danvers", "Peter Parker"]
@@ -919,6 +953,8 @@ scenarios:
   - type: "standalone"
     description: "(S8) Low-quality email fragments"
     base_filename: "noise_fragments"
+    llm_settings:
+      temperature: 0.95  # Noise: Higher temp for variety
     prompt_variables:
       employee_pool: ["Marcus J. Dillon", "Greg 'Mac' MacIntyre", "Tom Wozniak", "Frank Castle", "Kara Danvers"]
       fragment_type:
@@ -934,6 +970,8 @@ scenarios:
   - type: "standalone"
     description: "(S9) Emails with realistic typos"
     base_filename: "noise_typos"
+    llm_settings:
+      temperature: 0.95  # Noise: Higher temp for variety
     prompt_variables:
       # Intentional misspellings of Core 5 names
       employee_pool: ["Brandon Hays", "Peter Parkr", "Jack Reacher", "Gina Lineti", "Zack Moris", "Wade Willson"]
@@ -948,6 +986,8 @@ scenarios:
   - type: "standalone"
     description: "(S10) Vague or unclear emails"
     base_filename: "noise_vague"
+    llm_settings:
+      temperature: 0.95  # Noise: Higher temp for variety
     prompt_variables:
       employee_pool: ["Tony Stark", "Wade Wilson", "Ursula Buffay", "Ron Swanson", "Marcus J. Dillon"]
       task:
@@ -961,6 +1001,8 @@ scenarios:
   - type: "standalone"
     description: "(S11) Out-of-office auto-replies"
     base_filename: "noise_autoreply"
+    llm_settings:
+      temperature: 0.95  # Noise: Higher temp for variety
     prompt_variables:
       employee_pool: ["Victor Krum", "Lisa Wong", "Kevin O'Connor", "Samantha Power", "Iris West", "Derek Shepherd", "Dr. Aris Thorne"]
       reason:
@@ -975,6 +1017,8 @@ scenarios:
   - type: "standalone"
     description: "(S12) Meeting scheduling back-and-forth"
     base_filename: "noise_meetings"
+    llm_settings:
+      temperature: 0.95  # Noise: Higher temp for variety
     prompt_variables:
       employee_pool: ["Rachel Green", "Gina Linetti", "Erica Sinclair", "Lisa Wong", "Kara Danvers"]
       topic:
@@ -989,6 +1033,8 @@ scenarios:
   - type: "standalone"
     description: "(S13) Blast email (Expanded Headers)"
     base_filename: "stress_test_blast_email"
+    llm_settings:
+      temperature: 0.95  # Noise: Higher temp for variety
     prompt_variables:
       employee_pool: ["Yennefer Vengerberg", "Steve Rogers", "Veronica Mars", "Priya Desai", "Meredith Grey"]
       topic:
@@ -998,6 +1044,90 @@ scenarios:
     prompts:
       - prompt_templates:
           - "Draft a broadcast email from {sender} regarding '{topic}'."
+
+  # --- SCENARIO 16: Office Life Trivia ---
+  - type: "standalone"
+    description: "(S16) Ultra-mundane office life trivia"
+    base_filename: "noise_office_trivia"
+    llm_settings:
+      temperature: 1.0  # Maximum variety for mundane topics
+    prompt_variables:
+      employee_pool: ["Brandon Hayes", "Lisa Wong", "Oscar Martinez", "Rachel Green", "Gina Linetti", "Peter Parker", "Kara Danvers", "Marcus J. Dillon"]
+      topic:
+        - "Cake in the breakroom"
+        - "AC is freezing"
+        - "Who left dishes in sink"
+        - "Elevator B is broken"
+        - "Found a badge in lobby"
+        - "Coffee machine needs refill"
+        - "Someone parked in my spot"
+        - "Lost and found item"
+        - "Fridge cleanout Friday"
+        - "Birthday card for coworker"
+        - "Thermostat wars"
+        - "Printer is jammed again"
+        - "WiFi slow today"
+        - "Anyone have a phone charger"
+        - "Lunch recommendations near office"
+    prompts:
+      - prompt_templates:
+          - "Draft a very brief (1-2 sentences) email from {sender} to {recipient} about: {topic}. Keep it casual and mundane."
+
+  # --- SCENARIO 17: IT/System Issues ---
+  - type: "standalone"
+    description: "(S17) IT and system issues (mundane support requests)"
+    base_filename: "noise_it_issues"
+    llm_settings:
+      temperature: 1.0  # Maximum variety for mundane topics
+    prompt_variables:
+      employee_pool: ["Tom Wozniak", "Jack Reacher", "Wade Wilson", "Frank Castle", "Derek Shepherd", "Kevin O'Connor", "Brandon Hayes"]
+      issue:
+        - "Can't login to Jira"
+        - "VPN keeps disconnecting"
+        - "Mouse battery dead"
+        - "Need access to shared folder"
+        - "Laptop running slow"
+        - "Forgot password for system"
+        - "Screen went black"
+        - "Keyboard not working"
+        - "Can't connect to printer"
+        - "Email not syncing"
+        - "Teams app crashing"
+        - "Need software installed"
+        - "Computer won't wake up"
+        - "Mic not working on Zoom"
+        - "Files not saving"
+    prompts:
+      - prompt_templates:
+          - "Draft a brief (1-2 sentences) IT support request email from {sender} to {recipient} about: {issue}. Make it sound rushed or frustrated."
+
+  # --- SCENARIO 18: Micro-Collaborations ---
+  - type: "standalone"
+    description: "(S18) Ultra-brief micro-collaboration messages"
+    base_filename: "noise_micro_collab"
+    llm_settings:
+      temperature: 1.0  # Maximum variety for mundane topics
+    prompt_variables:
+      employee_pool: ["Priya Desai", "Elena Rostova", "Zoe Nakamura", "Lisa Wong", "Marcus J. Dillon", "Greg MacIntyre", "Iris West"]
+      task:
+        - "Did you see this"
+        - "Quick question"
+        - "Thoughts on attached"
+        - "Can you review"
+        - "Need your input"
+        - "FYI"
+        - "Looping you in"
+        - "Heads up"
+        - "Just checking in"
+        - "Following up"
+        - "Circling back"
+        - "Touching base"
+        - "Update when you can"
+        - "Let me know"
+        - "Sending this your way"
+    prompts:
+      - prompt_templates:
+          - "Draft an extremely brief (5-10 words max) email from {sender} to {recipient} with subject line based on: '{task}'. Body should be minimal, like 'See below' or 'Thoughts?' or just 'FYI'. Simulate someone hitting send too quickly."
 
 # ===================================================================
 # DUPLICATE NOISE SCENARIOS FOR SIGNAL/NOISE RATIO TUNING

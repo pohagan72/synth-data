@@ -406,6 +406,8 @@ scenarios:
   - type: "thread"
     description: "(S2) Urgent: Discussion about hiding safety test results"
     base_filename: "S2_safety_fraud_thread"
+    llm_settings:
+      temperature: 0.4  # Signal: Lower temp for consistency
     prompts:
       - prompt_templates:
           - "Draft an email from Peyton Parker to Casey Mitchell expressing alarm about the 'catastrophic failure'..."
@@ -432,6 +434,8 @@ scenarios:
   - type: "thread"
     description: "(S3) Confidential legal consultation with privilege"
     base_filename: "S3_legal_privilege_thread"
+    llm_settings:
+      temperature: 0.4  # Signal: Lower temp for consistency
     prompts:
       - prompt_templates:
           - "Draft an email from Taylor Brooks to Drew Foster with subject 'CONFIDENTIAL AND PRIVILEGED'..."
@@ -446,6 +450,8 @@ scenarios:
   - type: "thread"
     description: "(S3) Subtle privilege consultation without obvious markers"
     base_filename: "S3B_subtle_privilege_thread"
+    llm_settings:
+      temperature: 0.4  # Signal: Lower temp for consistency
     prompts:
       - prompt_templates:
           - "Draft an email from Taylor Brooks to Drew Foster with subject 'Need your advice on Phoenix test results'. The email should ask Drew (General Counsel) for confidential legal advice about potential regulatory disclosure obligations related to Phoenix product safety test failures. DO NOT use the words 'privileged', 'confidential', or 'attorney-client' in the subject line. The body should make it clear Taylor is seeking legal counsel from Drew in his capacity as General Counsel."
@@ -456,6 +462,8 @@ scenarios:
   - type: "thread"
     description: "(S3) Business email to General Counsel becomes privileged"
     base_filename: "S3C_privilege_by_recipient"
+    llm_settings:
+      temperature: 0.4  # Signal: Lower temp for consistency
     prompts:
       - prompt_templates:
           - "Draft an email from Peyton Parker to Drew Foster with subject 'Question about test failure documentation'. Peyton explains discovering concerning Phoenix test results and asks Drew for guidance on how to handle documentation and whether this needs to be reported. The tone is business-casual, seeking advice from the GC."
@@ -466,6 +474,8 @@ scenarios:
   - type: "thread"
     description: "(S3) Email thread starts non-privileged, becomes privileged mid-conversation"
     base_filename: "S3D_mixed_privilege_thread"
+    llm_settings:
+      temperature: 0.4  # Signal: Lower temp for consistency
     prompts:
       - prompt_templates:
           - "Draft an email from Peyton Parker to Casey Mitchell with subject 'Phoenix Test Run #4 anomaly' discussing unexpected test results. This is routine engineering discussion, no legal tone."
@@ -478,6 +488,8 @@ scenarios:
   - type: "thread"
     description: "(S3) Privileged email forwarded to non-attorney (waiver scenario)"
     base_filename: "S3E_privilege_waiver"
+    llm_settings:
+      temperature: 0.4  # Signal: Lower temp for consistency
     prompts:
       - prompt_templates:
           - "Draft an email from Drew Foster to Taylor Brooks with subject 'ATTORNEY-CLIENT PRIVILEGED - Phoenix Regulatory Analysis'. Drew provides detailed legal analysis of potential FDA violations and product liability exposure related to Phoenix safety test failures. Mark this clearly as privileged communication."
@@ -488,6 +500,8 @@ scenarios:
   - type: "calendar_event"
     description: "(S2) Calendar invite for urgent safety review meeting"
     base_filename: "S2A_safety_review_meeting"
+    llm_settings:
+      temperature: 0.4  # Signal: Lower temp for consistency
     prompts:
       - prompt_templates:
           - "Draft a calendar event from Casey Mitchell (R&D Lead) to Peyton Parker (QA Specialist). Summary: 'URGENT: Project Phoenix Test Results Review'. Location: Engineering Conference Room. Duration: 1 hour. Description: 'We need to discuss the latest stress test results from Phoenix immediately. Please bring all test data and your analysis. This is time-sensitive and confidential.' Use a date/time during business hours."
@@ -496,6 +510,8 @@ scenarios:
   - type: "calendar_event"
     description: "(S2) Calendar invite for client presentation with falsified data"
     base_filename: "S2B_client_presentation"
+    llm_settings:
+      temperature: 0.4  # Signal: Lower temp for consistency
     prompts:
       - prompt_templates:
           - "Draft a calendar event from Taylor Brooks (CEO) to external attendees from Coyote Industries plus Casey Mitchell and Peyton Parker. Summary: 'Project Phoenix - Final Safety Certification Presentation'. Location: ACME Headquarters - Executive Conference Room. Duration: 2 hours. Description: 'Final presentation of Project Phoenix safety test results and certification documentation for Coyote Industries procurement decision. Please review attached materials before the meeting.' Use a date/time during business hours."
@@ -504,6 +520,8 @@ scenarios:
   - type: "calendar_event"
     description: "(S2) Calendar invite for executive decision on test results"
     base_filename: "S2C_executive_decision"
+    llm_settings:
+      temperature: 0.4  # Signal: Lower temp for consistency
     prompts:
       - prompt_templates:
           - "Draft a calendar event from Taylor Brooks (CEO) to Casey Mitchell and Peyton Parker. Summary: 'CONFIDENTIAL: Phoenix Project Decision'. Location: CEO Office. Duration: 45 minutes. Description: 'Critical decision needed on Phoenix test results and our path forward with Coyote Industries contract. This is a confidential discussion.' Mark as 'Private'. Use a date/time during business hours."
@@ -512,6 +530,8 @@ scenarios:
   - type: "calendar_event"
     description: "(S2) Calendar invite briefing team on 'revised' safety protocols"
     base_filename: "S2D_team_briefing"
+    llm_settings:
+      temperature: 0.4  # Signal: Lower temp for consistency
     prompts:
       - prompt_templates:
           - "Draft a calendar event from Casey Mitchell to the Phoenix engineering team (multiple engineers). Summary: 'Project Phoenix - Updated Testing Protocols'. Location: Engineering Lab 3. Duration: 30 minutes. Description: 'Team briefing on revised safety testing procedures for Phoenix. We've made some adjustments to our methodology based on recent findings. Attendance is mandatory.' Use a date/time during business hours."
@@ -522,7 +542,9 @@ scenarios:
     type: "standalone"
     description: "(S4) Generic project management emails"
     base_filename: "noise_project_mgmt"
-    near_duplicate_probability: 0.15 
+    llm_settings:
+      temperature: 0.95  # Noise: Higher temp for variety
+    near_duplicate_probability: 0.15
     prompt_variables:
       topic:
         - "Phoenix project weekly status"
@@ -639,6 +661,8 @@ scenarios:
   - type: "standalone"
     description: "(S5) Generic HR or admin announcements"
     base_filename: "noise_hr_admin"
+    llm_settings:
+      temperature: 0.95  # Noise: Higher temp for variety
     prompt_variables:
       topic:
         - "upcoming office holiday closure"
@@ -756,6 +780,8 @@ scenarios:
   - type: "thread"
     description: "(S6) Routine conversation with Coyote Industries"
     base_filename: "noise_client_comms"
+    llm_settings:
+      temperature: 0.95  # Noise: Higher temp for variety
     prompts:
       - prompt_templates:
           - "Draft an email from Rebecca Turner (Coyote) to Jamie Chen (ACME) asking about the status of purchase order #4521."
@@ -766,6 +792,8 @@ scenarios:
   - type: "standalone"
     description: "(S7) Generic engineering team emails"
     base_filename: "noise_engineering_chatter"
+    llm_settings:
+      temperature: 0.95  # Noise: Higher temp for variety
     prompt_variables:
       topic:
         - "Phoenix project weekly status"
@@ -855,6 +883,8 @@ scenarios:
   - type: "standalone"
     description: "(S8) Personal, non-work emails"
     base_filename: "noise_personal"
+    llm_settings:
+      temperature: 0.95  # Noise: Higher temp for variety
     prompt_variables:
       # ONLY THE CORE 5
       employee_pool: ["Marcus J. Dillon", "Greg 'Mac' MacIntyre", "Tom Wozniak", "Frank Castle", "Kara Danvers"]
@@ -916,6 +946,8 @@ scenarios:
   - type: "standalone"
     description: "(S9) Low-quality email fragments"
     base_filename: "noise_fragments"
+    llm_settings:
+      temperature: 0.95  # Noise: Higher temp for variety
     prompt_variables:
       employee_pool: ["Brandon Hays", "Peter Parkr", "Jack Reacher", "Gina Lineti", "Zack Moris", "Wade Willson"]
       fragment_type:
@@ -931,6 +963,8 @@ scenarios:
   - type: "standalone"
     description: "(S10) Emails with realistic typos"
     base_filename: "noise_typos"
+    llm_settings:
+      temperature: 0.95  # Noise: Higher temp for variety
     prompt_variables:
       # Intentional misspellings of Core 5 names
       employee_pool: ["Tony Stark", "Wade Wilson", "Ursula Buffay", "Ron Swanson", "Marcus J. Dillon"]
@@ -945,6 +979,8 @@ scenarios:
   - type: "standalone"
     description: "(S11) Vague or unclear emails"
     base_filename: "noise_vague"
+    llm_settings:
+      temperature: 0.95  # Noise: Higher temp for variety
     prompt_variables:
       employee_pool: ["Victor Krum", "Lisa Wong", "Kevin O'Connor", "Samantha Power", "Iris West", "Derek Shepherd", "Dr. Aris Thorne"]
       task:
@@ -958,6 +994,8 @@ scenarios:
   - type: "standalone"
     description: "(S12) Out-of-office auto-replies"
     base_filename: "noise_autoreply"
+    llm_settings:
+      temperature: 0.95  # Noise: Higher temp for variety
     prompt_variables:
       employee_pool: ["Rachel Green", "Gina Linetti", "Erica Sinclair", "Lisa Wong", "Kara Danvers"]
       reason:
@@ -972,6 +1010,8 @@ scenarios:
   - type: "standalone"
     description: "(S13) Meeting scheduling back-and-forth"
     base_filename: "noise_meetings"
+    llm_settings:
+      temperature: 0.95  # Noise: Higher temp for variety
     prompt_variables:
       employee_pool: ["Yennefer Vengerberg", "Steve Rogers", "Veronica Mars", "Priya Desai", "Meredith Grey"]
       topic:
@@ -986,6 +1026,8 @@ scenarios:
   - type: "standalone"
     description: "(S13) Blast email (Expanded Headers)"
     base_filename: "stress_test_blast_email"
+    llm_settings:
+      temperature: 0.95  # Noise: Higher temp for variety
     prompt_variables:
       # Since we don't have 500 people, the code will just repeat these 5 people 100 times in the header.
       # This still works for stress testing header length.
@@ -997,6 +1039,91 @@ scenarios:
     prompts:
       - prompt_templates:
           - "Draft a broadcast email from {sender} regarding '{topic}'."
+
+  # --- SCENARIO 16: Office Life Trivia ---
+  - type: "standalone"
+    description: "(S16) Ultra-mundane office life trivia"
+    base_filename: "noise_office_trivia"
+    llm_settings:
+      temperature: 1.0  # Maximum variety for mundane topics
+    prompt_variables:
+      employee_pool: ["Brandon Hayes", "Lisa Wong", "Oscar Martinez", "Rachel Green", "Gina Linetti", "Peter Parker", "Kara Danvers", "Marcus J. Dillon"]
+      topic:
+        - "Cake in the breakroom"
+        - "AC is freezing"
+        - "Who left dishes in sink"
+        - "Elevator B is broken"
+        - "Found a badge in lobby"
+        - "Coffee machine needs refill"
+        - "Someone parked in my spot"
+        - "Lost and found item"
+        - "Fridge cleanout Friday"
+        - "Birthday card for coworker"
+        - "Thermostat wars"
+        - "Printer is jammed again"
+        - "WiFi slow today"
+        - "Anyone have a phone charger"
+        - "Lunch recommendations near office"
+    prompts:
+      - prompt_templates:
+          - "Draft a very brief (1-2 sentences) email from {sender} to {recipient} about: {topic}. Keep it casual and mundane."
+
+  # --- SCENARIO 17: IT/System Issues ---
+  - type: "standalone"
+    description: "(S17) IT and system issues (mundane support requests)"
+    base_filename: "noise_it_issues"
+    llm_settings:
+      temperature: 1.0  # Maximum variety for mundane topics
+    prompt_variables:
+      employee_pool: ["Tom Wozniak", "Jack Reacher", "Wade Wilson", "Frank Castle", "Derek Shepherd", "Kevin O'Connor", "Brandon Hayes"]
+      issue:
+        - "Can't login to Jira"
+        - "VPN keeps disconnecting"
+        - "Mouse battery dead"
+        - "Need access to shared folder"
+        - "Laptop running slow"
+        - "Forgot password for system"
+        - "Screen went black"
+        - "Keyboard not working"
+        - "Can't connect to printer"
+        - "Email not syncing"
+        - "Teams app crashing"
+        - "Need software installed"
+        - "Computer won't wake up"
+        - "Mic not working on Zoom"
+        - "Files not saving"
+    prompts:
+      - prompt_templates:
+          - "Draft a brief (1-2 sentences) IT support request email from {sender} to {recipient} about: {issue}. Make it sound rushed or frustrated."
+
+  # --- SCENARIO 18: Micro-Collaborations ---
+  - type: "standalone"
+    description: "(S18) Ultra-brief micro-collaboration messages"
+    base_filename: "noise_micro_collab"
+    llm_settings:
+      temperature: 1.0  # Maximum variety for mundane topics
+    prompt_variables:
+      employee_pool: ["Priya Desai", "Elena Rostova", "Zoe Nakamura", "Lisa Wong", "Marcus J. Dillon", "Greg MacIntyre", "Iris West"]
+      task:
+        - "Did you see this"
+        - "Quick question"
+        - "Thoughts on attached"
+        - "Can you review"
+        - "Need your input"
+        - "FYI"
+        - "Looping you in"
+        - "Heads up"
+        - "Just checking in"
+        - "Following up"
+        - "Circling back"
+        - "Touching base"
+        - "Update when you can"
+        - "Let me know"
+        - "Sending this your way"
+    prompts:
+      - prompt_templates:
+          - "Draft an extremely brief (5-10 words max) email from {sender} to {recipient} with subject line based on: '{task}'. Body should be minimal, like 'See below' or 'Thoughts?' or just 'FYI'. Simulate someone hitting send too quickly."
+
 # ===================================================================
 # DUPLICATE NOISE SCENARIOS FOR SIGNAL/NOISE RATIO TUNING
 # ===================================================================

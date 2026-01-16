@@ -610,8 +610,22 @@ def format_quoted_body(previous_content, previous_date):
     
     return f"\n\n-----Original Message-----\n{sender_line}\n{date_line}\n{to_line}{cc_line}\n{subject_line}\n\n{quoted_body}"
 
-def get_temperature_for_scenario(scenario_type, is_noise=False):
-    """Returns appropriate temperature based on scenario characteristics."""
+def get_temperature_for_scenario(scenario_type, is_noise=False, config_temp=None):
+    """Returns appropriate temperature based on scenario characteristics.
+
+    Args:
+        scenario_type: Type of scenario ('thread', 'chat', 'standalone', 'calendar')
+        is_noise: Whether this is a noise scenario
+        config_temp: Temperature override from YAML llm_settings (takes precedence)
+
+    Returns:
+        float: Temperature value for LLM generation
+    """
+    # Config override takes precedence
+    if config_temp is not None:
+        return config_temp
+
+    # Default behavior (backwards compatible)
     if is_noise: return random.uniform(0.9, 1.3)
     elif scenario_type == 'thread': return 0.85
     elif scenario_type == 'chat': return 0.7  # High temp for chat spontaneity
@@ -1223,11 +1237,11 @@ def generate_realistic_timestamp(base_date=None, hours_offset=None, scenario_des
 
 # --- Core Generation Functions ---
 
-def generate_email_thread(prompts, base_filename, output_dir, context_block, variables, personnel_map, scenario_description, attachment_config, near_dup_prob, run_count=1, is_noise=False, stats=None):
+def generate_email_thread(prompts, base_filename, output_dir, context_block, variables, personnel_map, scenario_description, attachment_config, near_dup_prob, run_count=1, is_noise=False, stats=None, config_temp=None):
     """Generates a threaded email conversation."""
     previous_message_id, references, generated_count = None, [], 0
     previous_email_content, previous_email_date = None, None
-    temperature = get_temperature_for_scenario('thread', is_noise)
+    temperature = get_temperature_for_scenario('thread', is_noise, config_temp)
     for i, prompt_obj in enumerate(prompts):
         probability = prompt_obj.get('probability', 1.0)
         if random.random() > probability:
@@ -1290,7 +1304,7 @@ def generate_email_thread(prompts, base_filename, output_dir, context_block, var
         previous_message_id, previous_email_content, previous_email_date = current_message_id, email_content, current_email_date
     return generated_count
 
-def generate_standalone_email(prompt_template, base_filename, output_dir, context_block, variables, personnel_map, scenario_description, attachment_config, near_dup_prob, run_count=1, is_noise=False, stats=None):
+def generate_standalone_email(prompt_template, base_filename, output_dir, context_block, variables, personnel_map, scenario_description, attachment_config, near_dup_prob, run_count=1, is_noise=False, stats=None, config_temp=None):
     """Generates a standalone email."""
     randomized_prompt = get_randomized_prompt(prompt_template, variables, personnel_map, run_count)
     sender_name = get_sender_name_from_prompt(randomized_prompt, personnel_map)
@@ -1299,7 +1313,7 @@ def generate_standalone_email(prompt_template, base_filename, output_dir, contex
         style = personnel_map[sender_name]['style']
         style_instruction = f"\n\nIMPORTANT: Write this email in the style of {sender_name}: {style}"
     full_prompt = f"{context_block}\n\nTask: {randomized_prompt}{style_instruction}"
-    temperature = get_temperature_for_scenario('standalone', is_noise)
+    temperature = get_temperature_for_scenario('standalone', is_noise, config_temp)
     email_content = generate_email_content_from_llm(full_prompt, temperature)
     if not email_content: return 0
 
@@ -1333,11 +1347,11 @@ def generate_standalone_email(prompt_template, base_filename, output_dir, contex
     create_and_save_email(base_filename, email_content, output_dir, email_date, personnel_map, scenario_description, attachment_config, headers, stats)
     return 1
 
-def generate_calendar_event(prompt_template, base_filename, output_dir, context_block, variables, personnel_map, run_count=1, is_noise=False, stats=None):
+def generate_calendar_event(prompt_template, base_filename, output_dir, context_block, variables, personnel_map, run_count=1, is_noise=False, stats=None, config_temp=None):
     """Generates a standalone .ics calendar event."""
     randomized_prompt = get_randomized_prompt(prompt_template, variables, personnel_map, run_count)
     full_prompt = f"{context_block}\n\nTask: {randomized_prompt}"
-    temperature = get_temperature_for_scenario('calendar', is_noise)
+    temperature = get_temperature_for_scenario('calendar', is_noise, config_temp)
     event_content = generate_calendar_content_from_llm(full_prompt, temperature)
     if not event_content: return 0
     event_date = generate_realistic_timestamp()
@@ -1345,14 +1359,14 @@ def generate_calendar_event(prompt_template, base_filename, output_dir, context_
     create_and_save_calendar_event(filename, event_content, output_dir, event_date, stats)
     return 1
 
-def generate_chat_scenario(prompts, base_filename, output_dir, context_block, variables, personnel_map, chat_format='slack', run_count=1, is_noise=False, stats=None):
+def generate_chat_scenario(prompts, base_filename, output_dir, context_block, variables, personnel_map, chat_format='slack', run_count=1, is_noise=False, stats=None, config_temp=None):
     """Orchestrates the creation of a chat/RSMF file."""
     prompt_obj = prompts[0]
     randomized_prompt = get_randomized_prompt(prompt_obj, variables, personnel_map, run_count)
-    
+
     full_prompt = f"{context_block}\n\nTask: {randomized_prompt}\n\nGenerate a conversation history between these participants."
-    
-    chat_content = generate_chat_content_from_llm(full_prompt, get_temperature_for_scenario('chat', is_noise))
+
+    chat_content = generate_chat_content_from_llm(full_prompt, get_temperature_for_scenario('chat', is_noise, config_temp))
     
     if not chat_content: return 0
 
@@ -1796,6 +1810,11 @@ if __name__ == "__main__":
             is_noise = 'noise' in scenario['base_filename'].lower()
             prompts_list = scenario['prompts']
 
+            # Extract temperature from llm_settings if present
+            config_temp = None
+            if 'llm_settings' in scenario and 'temperature' in scenario['llm_settings']:
+                config_temp = scenario['llm_settings']['temperature']
+
             # Track stress tests
             stress_test_triggered = None
             if "blast_email" in scenario['base_filename']:
@@ -1803,13 +1822,13 @@ if __name__ == "__main__":
 
             # Generate based on scenario type
             if scenario['type'] == 'thread':
-                items_created = generate_email_thread(prompts_list, dynamic_base_filename, output_dir, context, variables, personnel_map, scenario_desc, attachment_config, near_dup_prob, current_run, is_noise, stats)
+                items_created = generate_email_thread(prompts_list, dynamic_base_filename, output_dir, context, variables, personnel_map, scenario_desc, attachment_config, near_dup_prob, current_run, is_noise, stats, config_temp)
             elif scenario['type'] == 'standalone':
-                items_created = generate_standalone_email(prompts_list[0], dynamic_base_filename, output_dir, context, variables, personnel_map, scenario_desc, attachment_config, near_dup_prob, current_run, is_noise, stats)
+                items_created = generate_standalone_email(prompts_list[0], dynamic_base_filename, output_dir, context, variables, personnel_map, scenario_desc, attachment_config, near_dup_prob, current_run, is_noise, stats, config_temp)
             elif scenario['type'] == 'calendar_event':
-                items_created = generate_calendar_event(prompts_list[0], dynamic_base_filename, output_dir, context, variables, personnel_map, current_run, is_noise, stats)
+                items_created = generate_calendar_event(prompts_list[0], dynamic_base_filename, output_dir, context, variables, personnel_map, current_run, is_noise, stats, config_temp)
             elif scenario['type'] == 'chat':
-                items_created = generate_chat_scenario(prompts_list, dynamic_base_filename, output_dir, context, variables, personnel_map, chat_format_pref, current_run, is_noise, stats)
+                items_created = generate_chat_scenario(prompts_list, dynamic_base_filename, output_dir, context, variables, personnel_map, chat_format_pref, current_run, is_noise, stats, config_temp)
 
             if items_created > 0:
                 print(f"  > Generated {items_created} item(s) for this scenario.")
