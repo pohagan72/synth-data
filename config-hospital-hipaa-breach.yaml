@@ -619,6 +619,24 @@ scenarios:
       - prompt_templates:
           - "Generate a Microsoft Teams private chat history between Morgan Chen and Dr. Patricia Williams on March 15, 2024 starting at 11:30 PM (after the initial breach discovery). Morgan messages Patricia late at night saying he can't sleep and is still analyzing the logs. He's found more evidence of data exfiltration. Shares that this is worse than initially thought - systematic extraction over multiple days. Patricia responds that they need to engage external forensics immediately. Discussion includes technical details about the attack vector (GitHub credential exposure), scope (47K+ records), and next steps. Both express concern about HIPAA notification timeline. Conversation should feel urgent, somewhat informal due to late-night timing, but still professional. Include 15-20 messages back and forth."
 
+  # --- SCENARIO S_HIPAA_F: Spanish/English IT Security Incident Discussion ---
+  # Tests: Language Identification (LID), Unicode handling, bilingual healthcare IT communications
+  - type: "thread"
+    description: "(S_HIPAA_F) Spanish/English security incident (multilingual)"
+    base_filename: "S_HIPAA_F_spanish_security"
+    language: "es-en-mixed"  # Code-switching between Spanish and English
+    language_ratio: 0.55  # 55% Spanish, 45% English
+    llm_settings:
+      temperature: 0.4  # Signal: Lower temp for consistency
+    prompts:
+      - prompt_templates:
+          - "Draft an email from Carlos Mendez (IT Security Analyst, carlos.mendez@metrogenhospital.org) to Morgan Chen discussing suspicious database access patterns he discovered during routine monitoring. Use 55% Spanish, 45% English code-switching as bilingual IT staff would naturally communicate. Carlos should report 'actividad sospechosa' (suspicious activity) in the patient database with 'acceso no autorizado' (unauthorized access) from an unknown IP address. Use Spanish for urgency/concern expressions and English for technical IT terms. Mention he found 'registros de acceso anormales' (abnormal access logs) showing bulk data extraction. Request immediate investigation."
+      - prompt_templates:
+          - "Draft Morgan Chen's urgent reply in English with some Spanish acknowledgments. Morgan should thank Carlos ('Gracias por alertarme' - thanks for alerting me) and confirm this is 'una violación grave de seguridad' (a serious security breach). Ask Carlos for detailed logs and explain they need to 'aislar el sistema inmediatamente' (isolate the system immediately). Use English for incident response procedures and Spanish for urgent directives. CC Dr. Patricia Williams."
+      - prompt_templates:
+          - "Draft Carlos's follow-up in Spanish/English mix with attached forensic evidence. He should confirm the 'aislamiento del sistema' (system isolation) is complete and provide analysis showing '47,000+ registros de pacientes' (47,000+ patient records) were accessed. Express concern that this is 'definitivamente una violación HIPAA' (definitely a HIPAA violation). Tone: worried IT analyst who discovered major breach."
+        probability: 0.8
+
   # --- SCENARIO 3: Legal Privilege ---
   - type: "thread"
     description: "(S3) Confidential legal consultation with privilege"

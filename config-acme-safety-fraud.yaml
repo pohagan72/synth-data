@@ -536,6 +536,24 @@ scenarios:
       - prompt_templates:
           - "Draft a calendar event from Casey Mitchell to the Phoenix engineering team (multiple engineers). Summary: 'Project Phoenix - Updated Testing Protocols'. Location: Engineering Lab 3. Duration: 30 minutes. Description: 'Team briefing on revised safety testing procedures for Phoenix. We've made some adjustments to our methodology based on recent findings. Attendance is mandatory.' Use a date/time during business hours."
 
+  # --- SCENARIO S2E: Chinese/English Manufacturing Quality Concerns ---
+  # Tests: Language Identification (LID), Unicode handling, international manufacturing context
+  - type: "thread"
+    description: "(S2E) Chinese/English supplier quality discussion (multilingual)"
+    base_filename: "S2E_chinese_quality_concerns"
+    language: "zh-en-mixed"  # Code-switching between Chinese and English
+    language_ratio: 0.5  # 50% Chinese, 50% English
+    llm_settings:
+      temperature: 0.4  # Signal: Lower temp for consistency
+    prompts:
+      - prompt_templates:
+          - "Draft an email from Wei Zhang (ACME Manufacturing Engineer, wei.zhang@acmeinc.com) to Casey Mitchell discussing quality control issues discovered at the Shenzhen manufacturing facility for Phoenix components. Use 50% Simplified Chinese, 50% English code-switching as an engineer would naturally communicate with US headquarters. Wei should express concerns about '质量问题' (quality problems) in the Phoenix sensor housings and mention that the factory is '压力很大' (under a lot of pressure) to meet delivery deadlines. Use Chinese for technical manufacturing terms and concerns, English for product names and company references. Mention specific defect rates and testing failures."
+      - prompt_templates:
+          - "Draft Casey Mitchell's reply in English, acknowledging Wei's concerns but pushing back on the severity. Casey should ask if the defects are '真的那么严重吗?' (really that serious?) and suggest that Wei work with the factory to 'adjust the acceptance criteria' to keep production moving. Mix some basic Chinese phrases showing familiarity with the team."
+      - prompt_templates:
+          - "Draft Wei Zhang's follow-up in Chinese/English mix expressing deeper concern. Wei should explain that '这不是小问题' (this is not a small problem) and that reducing acceptance criteria would '违反安全标准' (violate safety standards). Provide specific examples of sensor housing cracks discovered during testing. Tone: concerned engineer trying to escalate quality issue."
+        probability: 0.8
+
   # --- SCENARIO 4: Routine Project Management ---
   # NOTE: The LLM will naturally select Casey Mitchell or Peyton Parker due to context
   - &noise_s4_template  # YAML anchor for reuse

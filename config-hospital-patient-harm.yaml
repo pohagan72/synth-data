@@ -687,6 +687,24 @@ scenarios:
       - prompt_templates:
           - "Generate a Microsoft Teams private chat history between Dr. Marcus Chen and Patricia Vasquez on March 15, 2024, starting around 4:00 PM (shortly after the wrong-site surgery was discovered). The chat should show Marcus in a panic, saying things like 'This is bad', 'I don't know how this happened', 'The consent form definitely said left knee'. Patricia responds with damage control advice: 'Stop texting. Come to my office now', 'We need to get ahead of this', 'Do NOT put anything else in writing'. Marcus asks 'What do I tell the family?' Patricia says 'Nothing until we talk to legal. Seriously, stop texting.' The chat should feel authentic, showing real-time panic and immediate coverup instincts. Include timestamps showing rapid exchanges over 10-15 minutes."
 
+  # --- SCENARIO S_HARM_H: Spanish/English Nurse Safety Concerns ---
+  # Tests: Language Identification (LID), Unicode handling, bilingual clinical staff communications
+  - type: "thread"
+    description: "(S_HARM_H) Spanish/English patient safety concerns (multilingual)"
+    base_filename: "S_HARM_H_spanish_nurse_concerns"
+    language: "es-en-mixed"  # Code-switching between Spanish and English
+    language_ratio: 0.6  # 60% Spanish, 40% English
+    llm_settings:
+      temperature: 0.4  # Signal: Lower temp for consistency
+    prompts:
+      - prompt_templates:
+          - "Draft an email from Nurse Isabel Morales (isabel.morales@stcatherines-health.org) to Nurse Supervisor Ana Rodriguez discussing serious concerns about the surgical error. Use 60% Spanish, 40% English code-switching as bilingual nurses would naturally communicate. Isabel should express that she witnessed 'algo muy grave' (something very serious) during the surgery and feels 'obligada a reportarlo' (obligated to report it). Use Spanish for emotional/ethical concerns and English for medical terminology. Mention she saw the 'sitio quirúrgico incorrecto' (wrong surgical site) being marked and questioned it, but was 'ignorada por el cirujano' (ignored by the surgeon). Request confidential meeting to discuss 'responsabilidad ética' (ethical responsibility)."
+      - prompt_templates:
+          - "Draft Ana Rodriguez's reply in Spanish/English mix, taking Isabel's concerns very seriously. Ana should acknowledge that this is 'un error médico grave' (a serious medical error) and Isabel has 'derecho y deber de reportar' (right and duty to report). Use Spanish for supportive/protective language ('te voy a proteger' - I will protect you) and English for hospital reporting procedures. Warn Isabel that she may face 'presión para quedarse callada' (pressure to stay quiet) but assure her of whistleblower protections. Suggest documenting everything and reporting to Quality & Safety department."
+      - prompt_templates:
+          - "Draft Isabel's follow-up expressing fear of retaliation. Mix Spanish expressions of fear ('tengo miedo de perder mi trabajo' - I'm afraid of losing my job) with English descriptions of intimidation she's already experiencing. Mention Dr. Chen and Patricia Vasquez have been 'muy fríos conmigo' (very cold with her) since she asked about the incident. Request Ana's presence at any meetings with administration. Tone: frightened nurse-whistleblower seeking protection."
+        probability: 0.8
+
   # --- SCENARIO 3: Legal Privilege (Standard Attorney-Client) ---
   - type: "thread"
     description: "(S3) Confidential legal consultation with privilege"

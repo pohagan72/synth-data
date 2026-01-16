@@ -4,6 +4,70 @@ All notable changes to the Synthetic E-Discovery Dataset Generator.
 
 ---
 
+## [2.3.1] - 2026-01-16
+
+### Added
+
+#### 🌍 Complete Multilingual Coverage Across All Configs
+- **Feature:** Extended multilingual support to all remaining investigation configs
+- **Why:** Every organization has multilingual communications. Complete coverage ensures realistic testing regardless of which config is selected.
+- **New Multilingual Scenarios Added:**
+
+**Corporate Configs:**
+1. **(S2E) Chinese/English Manufacturing Quality Concerns** - config-acme-safety-fraud.yaml
+   - Wei Zhang (ACME Manufacturing Engineer) ↔ Casey Mitchell
+   - 50% Simplified Chinese, 50% English code-switching
+   - Context: Shenzhen factory quality control issues, sensor housing defects
+   - Tests: CJK character encoding, manufacturing terminology (质量问题, 压力很大, 违反安全标准)
+
+2. **(HR9) Spanish/English Workplace Harassment Discussion** - config-acme-hr-misconduct.yaml
+   - Sofia Ramirez ↔ Carmen Lopez (HR Specialist)
+   - 60% Spanish, 40% English code-switching
+   - Context: Harassment complaint, whistleblower support
+   - Tests: Bilingual US workplace, HR terminology (acoso laboral, violación de política, testigos)
+
+**Healthcare Configs:**
+3. **(S_HIPAA_F) Spanish/English IT Security Incident** - config-hospital-hipaa-breach.yaml
+   - Carlos Mendez (IT Security Analyst) ↔ Morgan Chen
+   - 55% Spanish, 45% English code-switching
+   - Context: Database breach discovery, HIPAA violation
+   - Tests: Bilingual IT staff, security terminology (actividad sospechosa, violación HIPAA, aislamiento del sistema)
+
+4. **(S_HARM_H) Spanish/English Nurse Safety Concerns** - config-hospital-patient-harm.yaml
+   - Nurse Isabel Morales ↔ Nurse Supervisor Ana Rodriguez
+   - 60% Spanish, 40% English code-switching
+   - Context: Wrong-site surgery witnessed, whistleblower fear
+   - Tests: Bilingual clinical staff, medical terminology (sitio quirúrgico incorrecto, error médico grave, responsabilidad ética)
+
+- **Coverage:** Every focused investigation config now includes contextually-appropriate multilingual scenarios
+- **Realism:** Language choices match real-world workforce demographics:
+  - Manufacturing → Chinese (Asian supplier communications)
+  - HR/Workplace → Spanish (US bilingual workforce)
+  - Healthcare IT → Spanish (bilingual technical staff)
+  - Clinical → Spanish (bilingual nursing staff - largest Spanish-speaking healthcare demographic)
+- **Files Modified:**
+  - `config-acme-safety-fraud.yaml`: Added S2E Chinese manufacturing scenario
+  - `config-acme-hr-misconduct.yaml`: Added HR9 Spanish harassment scenario
+  - `config-hospital-hipaa-breach.yaml`: Added S_HIPAA_F Spanish IT security scenario
+  - `config-hospital-patient-harm.yaml`: Added S_HARM_H Spanish clinical scenario
+
+### Impact Summary
+
+**Before v2.3.1:**
+- Only 2 configs had multilingual scenarios (antitrust + billing fraud)
+- Missing coverage for safety fraud, HR, HIPAA breach, and patient harm investigations
+- Users had to select specific configs to test multilingual capabilities
+
+**After v2.3.1:**
+- **All 6 focused investigation configs** include multilingual scenarios
+- 2-5% multilingual content in every dataset (realistic proportion)
+- No matter which config a user selects, they test LID/encoding/multilingual search
+- Language choices match investigation context (manufacturing → Chinese, healthcare → Spanish)
+
+**Result:** Complete multilingual coverage ensures every EAIDA test includes Language Identification, Unicode encoding, and multilingual search capabilities by default. No special configuration required.
+
+---
+
 ## [2.3.0] - 2026-01-16
 
 ### Added

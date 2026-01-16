@@ -548,6 +548,24 @@ scenarios:
       - prompt_templates:
           - "Draft a calendar event from Drew Foster to Peyton Parker. Summary: 'Follow-up Discussion'. Location: GC Office. Duration: 30 minutes. Description: 'Following our investigation, I'd like to update you on the findings and next steps. This is a confidential meeting to discuss resolution and any support resources you may need.' Use a date/time during business hours."
 
+  # --- SCENARIO HR9: Spanish/English Workplace Harassment Discussion ---
+  # Tests: Language Identification (LID), Unicode handling, bilingual US workplace communications
+  - type: "thread"
+    description: "(S_HR) Spanish/English harassment discussion (multilingual)"
+    base_filename: "S_HR_spanish_harassment"
+    language: "es-en-mixed"  # Code-switching between Spanish and English
+    language_ratio: 0.6  # 60% Spanish, 40% English
+    llm_settings:
+      temperature: 0.4  # Signal: Lower temp for consistency
+    prompts:
+      - prompt_templates:
+          - "Draft an email from Sofia Ramirez (Administrative Assistant, sofia.ramirez@acmeinc.com) to Carmen Lopez (HR Specialist, carmen.lopez@acmeinc.com) discussing uncomfortable behavior from a manager. Use 60% Spanish, 40% English code-switching as bilingual colleagues would naturally communicate. Sofia should express that she feels 'muy incómoda' (very uncomfortable) with repeated comments about her appearance and that this is 'acoso laboral' (workplace harassment). Use Spanish for emotional/personal concerns and English for HR process references. Mention specific incidents and ask Carmen for 'consejo confidencial' (confidential advice)."
+      - prompt_templates:
+          - "Draft Carmen Lopez's reply in Spanish/English mix, taking Sofia's concerns seriously. Carmen should acknowledge this constitutes 'violación de política' (policy violation) and offer to help Sofia file a formal 'queja de acoso' (harassment complaint). Use Spanish to provide emotional support ('estoy aquí para apoyarte' - I'm here to support you) and English for HR procedural terms. Explain the investigation process and assure confidentiality."
+      - prompt_templates:
+          - "Draft Sofia's follow-up agreeing to file formal complaint. Mix Spanish expressions of gratitude ('Muchas gracias por entenderme' - thank you for understanding me) with English for specific incident details. Mention she has 'testigos' (witnesses) who saw some incidents. Request meeting to discuss next steps. Tone: relieved employee deciding to report harassment."
+        probability: 0.8
+
   # --- SCENARIO 4: Routine Project Management ---
   # NOTE: The LLM will naturally select Casey Mitchell or Peyton Parker due to context
   - &noise_s4_template  # YAML anchor for reuse
