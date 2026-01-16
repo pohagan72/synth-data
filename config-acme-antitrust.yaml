@@ -198,11 +198,11 @@ company_profiles:
         email: "oscar.martinez@acmeinc.com"
         style: "Visual and brief. Sends links to large files. Complains about font usage."
         signature: "Oscar M. | Design"
-      - name: "Rachel Green"
+      - name: "Rachel M. Greene"
         title: "Executive Assistant"
-        email: "rachel.green@acmeinc.com"
+        email: "rachel.greene@acmeinc.com"
         style: "Gatekeeper. Scheduling meetings for VPs. Polite but firm about availability."
-        signature: "Rachel Green | EA to VP of Engineering"
+        signature: "Rachel M. Greene | EA to VP of Engineering"
       - name: "David Mueller"
         title: "Security Ops Center (SOC)"
         email: "david.mueller@acmeinc.com"
@@ -223,139 +223,139 @@ company_profiles:
         email: "holly.vance@acmeinc.com"
         style: "Trendy. Uses hashtags and discusses 'engagement metrics' and 'brand voice'."
         signature: "Holly Vance | Social"
-      - name: "Victor Krum"
+      - name: "Victor D. Kramer"
         title: "Regional Sales Director (EU)"
-        email: "victor.krum@acmeinc.com"
+        email: "victor.kramer@acmeinc.com"
         style: "Formal. often mentions time zones and travel schedules. Focused on the European market."
-        signature: "Victor Krum | Director of Sales, EMEA"
+        signature: "Victor D. Kramer | Director of Sales, EMEA"
       - name: "Alice Chen"
         title: "Frontend Developer"
         email: "alice.chen@acmeinc.com"
         style: "Detail oriented. Discusses pixels, browsers, and CSS frameworks."
         signature: "Alice Chen | UI Dev"
-      - name: "Bob Drax"
+      - name: "Robert L. Drake"
         title: "Database Admin"
-        email: "bob.drax@acmeinc.com"
+        email: "robert.drake@acmeinc.com"
         style: "Protective. Rejects bad queries. 'Do not run this in production'."
-        signature: "Bob Drax | DBA"
-      - name: "Clara Oswin"
+        signature: "Robert L. Drake | DBA"
+      - name: "Clara J. Osborne"
         title: "QA Tester"
-        email: "clara.oswin@acmeinc.com"
+        email: "clara.osborne@acmeinc.com"
         style: "Inquisitive. 'I found a weird edge case'. 'Steps to reproduce:'"
         signature: "Clara | QA"
-      - name: "Derek Shepherd"
+      - name: "Derek J. Sheffield"
         title: "Solutions Architect"
-        email: "derek.shepherd@acmeinc.com"
+        email: "derek.sheffield@acmeinc.com"
         style: "Big picture. Discusses integrations and API strategy. Bridges sales and tech."
-        signature: "Derek Shepherd | Solutions"
+        signature: "Derek J. Sheffield | Solutions"
       - name: "Erica Sinclair"
         title: "Office Manager"
         email: "erica.sinclair@acmeinc.com"
         style: "Cheery organizer. Birthdays, cake, and holiday parties."
         signature: "Erica Sinclair | Office Management"
-      - name: "Frank Castle"
+      - name: "Franklin R. Castillo"
         title: "Physical Security"
-        email: "frank.castle@acmeinc.com"
+        email: "franklin.castillo@acmeinc.com"
         style: "Serious. Badges, cameras, and unauthorized access."
-        signature: "F. Castle | Security"
-      - name: "Gina Linetti"
+        signature: "F. Castillo | Security"
+      - name: "Gina M. Lindsey"
         title: "Admin Assistant"
-        email: "gina.linetti@acmeinc.com"
+        email: "gina.lindsey@acmeinc.com"
         style: "Informal and distracted. Emojis, personal gossip mixed with work."
         signature: "Gina"
-      - name: "Harry Bosch"
+      - name: "Harrison P. Boswell"
         title: "Legal Counsel (Contract)"
-        email: "harry.bosch@acmeinc.com"
+        email: "harrison.boswell@acmeinc.com"
         style: "Short and guarded. 'Reviewing'. 'Approved'. 'Do not sign'."
-        signature: "H. Bosch | Legal"
-      - name: "Iris West"
+        signature: "H. Boswell | Legal"
+      - name: "Iris M. Westfield"
         title: "Content Marketing"
-        email: "iris.west@acmeinc.com"
+        email: "iris.westfield@acmeinc.com"
         style: "Storyteller. Blog posts, newsletters, and deadlines."
-        signature: "Iris West | Content Team"
-      - name: "Jack Reacher"
+        signature: "Iris M. Westfield | Content Team"
+      - name: "Jackson L. Reed"
         title: "Field Technician"
-        email: "jack.reacher@acmeinc.com"
+        email: "jackson.reed@acmeinc.com"
         style: "Mobile user. Sent from phone. Typos. 'On site now', 'Fixed it'."
         signature: "Sent from my iPhone"
-      - name: "Kara Danvers"
+      - name: "Kara J. Daniels"
         title: "Receptionist"
-        email: "kara.danvers@acmeinc.com"
+        email: "kara.daniels@acmeinc.com"
         style: "Friendly and helpful. Visitor badges and lunch deliveries."
         signature: "Kara | Front Desk"
-      - name: "Leonard Hofstadter"
+      - name: "Leonard M. Hoffman"
         title: "Experimental Physicist"
-        email: "leonard.hofstadter@acmeinc.com"
+        email: "leonard.hoffman@acmeinc.com"
         style: "Neurotic and explanatory. Worried about grant funding and lab equipment."
-        signature: "Dr. Hofstadter"
-      - name: "Meredith Grey"
+        signature: "Dr. Hoffman"
+      - name: "Meredith L. Gray"
         title: "Corporate Health Officer"
-        email: "meredith.grey@acmeinc.com"
+        email: "meredith.gray@acmeinc.com"
         style: "Caring but busy. COVID policies, flu shots, and ergonomics."
-        signature: "Meredith Grey"
-      - name: "Natasha Romanoff"
+        signature: "Meredith L. Gray"
+      - name: "Natalie R. Roman"
         title: "Competitive Intelligence"
-        email: "natasha.romanoff@acmeinc.com"
+        email: "natalie.roman@acmeinc.com"
         style: "Secretive and direct. Reports on competitor pricing and features."
         signature: "NR | Strategy"
-      - name: "Oliver Queen"
+      - name: "Oliver T. Quinn"
         title: "CSR Lead"
-        email: "oliver.queen@acmeinc.com"
+        email: "oliver.quinn@acmeinc.com"
         style: "Focused on 'mission' and 'saving the city/company'. Corporate responsibility."
-        signature: "Oliver Queen"
-      - name: "Peter Parker"
+        signature: "Oliver T. Quinn"
+      - name: "Peter R. Patterson"
         title: "Junior Dev (Web)"
-        email: "peter.parker@acmeinc.com"
+        email: "peter.patterson@acmeinc.com"
         style: "Eager, nervous, talks too much. 'Mr. Stark said I should...' "
-        signature: "Peter Parker"
-      - name: "Quentin Beck"
+        signature: "Peter R. Patterson"
+      - name: "Quentin R. Becker"
         title: "VFX / Media Specialist"
-        email: "quentin.beck@acmeinc.com"
+        email: "quentin.becker@acmeinc.com"
         style: "Grandise and illusionary. Video editing and presentation polish."
-        signature: "Beck | Media"
-      - name: "Ron Swanson"
+        signature: "Becker | Media"
+      - name: "Ronald J. Sawyer"
         title: "Director of construction"
-        email: "ron.swanson@acmeinc.com"
+        email: "ronald.sawyer@acmeinc.com"
         style: "Extremely brief. Hates meetings. 'No.' 'Proceed.'"
-        signature: "Ron Swanson"
-      - name: "Steve Rogers"
+        signature: "Ronald J. Sawyer"
+      - name: "Steven R. Rogers"
         title: "Team Lead"
-        email: "steve.rogers@acmeinc.com"
+        email: "steven.rogers@acmeinc.com"
         style: "Motivational and polite. 'Language!' 'Let's work together'."
-        signature: "Steve Rogers"
-      - name: "Tony Stark"
+        signature: "Steven R. Rogers"
+      - name: "Anthony S. Clark"
         title: "Consultant"
-        email: "tony.stark@acmeinc.com"
+        email: "anthony.clark@acmeinc.com"
         style: "Arrogant, brilliant, informal. Nicknames and snark."
-        signature: "Stark"
-      - name: "Ursula Buffay"
+        signature: "Clark"
+      - name: "Ursula K. Buffington"
         title: "HR Generalist"
-        email: "ursula.buffay@acmeinc.com"
+        email: "ursula.buffington@acmeinc.com"
         style: "Absent minded and weird. Forgets attachments. Weird signatures."
         signature: "Ursula"
-      - name: "Veronica Mars"
+      - name: "Veronica R. Marshall"
         title: "Fraud Investigator"
-        email: "veronica.mars@acmeinc.com"
+        email: "veronica.marshall@acmeinc.com"
         style: "Suspicious and sharp. Asking for receipts and proof."
-        signature: "V. Mars | Internal Investigations"
-      - name: "Wade Wilson"
+        signature: "V. Marshall | Internal Investigations"
+      - name: "William A. Watson"
         title: "Sales Rep"
-        email: "wade.wilson@acmeinc.com"
+        email: "william.watson@acmeinc.com"
         style: "Chaotic. Breaking the fourth wall. Inappropriate jokes."
-        signature: "Deadpool"
-      - name: "Xena Lawless"
+        signature: "Watson"
+      - name: "Xena R. Lawrence"
         title: "Security Guard"
-        email: "xena.lawless@acmeinc.com"
+        email: "xena.lawrence@acmeinc.com"
         style: "Tough and action oriented. 'Perimeter secure'."
         signature: "Xena"
-      - name: "Yennefer Vengerberg"
+      - name: "Jennifer L. Vandenberg"
         title: "Chief of Staff"
-        email: "yennefer.vengerberg@acmeinc.com"
+        email: "jennifer.vandenberg@acmeinc.com"
         style: "Commanding and impatient. Wants results yesterday."
-        signature: "Yennefer"
-      - name: "Zack Morris"
+        signature: "Jennifer"
+      - name: "Zachary T. Morrison"
         title: "Sales Intern"
-        email: "zack.morris@acmeinc.com"
+        email: "zachary.morrison@acmeinc.com"
         style: "Scheming and charming. Trying to get out of work."
         signature: "Zack"
 
@@ -843,7 +843,7 @@ scenarios:
       temperature: 0.95  # Noise: Higher temp for variety
     prompt_variables:
       # ONLY THE CORE 5
-      employee_pool: ["Brandon Hayes", "Marcus J. Dillon", "Lisa Wong", "Oscar Martinez", "Fatima Al-Sayed", "Jack Reacher", "Kara Danvers", "Peter Parker"]
+      employee_pool: ["Brandon Hayes", "Marcus J. Dillon", "Lisa Wong", "Oscar Martinez", "Fatima Al-Sayed", "Jackson L. Reed", "Kara J. Daniels", "Peter R. Patterson"]
       topic:
         - "weekend golf game"
         - "fantasy football league"
@@ -905,7 +905,7 @@ scenarios:
     llm_settings:
       temperature: 0.95  # Noise: Higher temp for variety
     prompt_variables:
-      employee_pool: ["Marcus J. Dillon", "Greg 'Mac' MacIntyre", "Tom Wozniak", "Frank Castle", "Kara Danvers"]
+      employee_pool: ["Marcus J. Dillon", "Greg 'Mac' MacIntyre", "Tom Wozniak", "Franklin R. Castillo", "Kara J. Daniels"]
       fragment_type:
         - "Draft a one-line reply from {sender} to {recipient}: 'Got it, thanks'"
         - "Draft a one-line reply from {sender} to {recipient}: 'Will do'"
@@ -923,7 +923,7 @@ scenarios:
       temperature: 0.95  # Noise: Higher temp for variety
     prompt_variables:
       # Intentional misspellings of Core 5 names
-      employee_pool: ["Brandon Hays", "Peter Parkr", "Jack Reacher", "Gina Lineti", "Zack Moris", "Wade Willson"]
+      employee_pool: ["Brandon Hays", "Peter Parkr", "Jackson L. Reed", "Gina Lineti", "Zack Moris", "Wade Willson"]
       task:
         - "Draft a brief email from {sender} to {recipient} asking for 'teh report' (typo for 'the report')"
         - "Draft a brief email from {sender} to {recipient} saying 'Can you send me hte file?' (typo)"
@@ -938,7 +938,7 @@ scenarios:
     llm_settings:
       temperature: 0.95  # Noise: Higher temp for variety
     prompt_variables:
-      employee_pool: ["Tony Stark", "Wade Wilson", "Ursula Buffay", "Ron Swanson", "Marcus J. Dillon"]
+      employee_pool: ["Anthony S. Clark", "William A. Watson", "Ursula K. Buffington", "Ronald J. Sawyer", "Marcus J. Dillon"]
       task:
         - "Draft a vague email from {sender} to {recipient} with subject 'update' and body 'Here is the update we discussed'"
         - "Draft a brief email from {sender} to {recipient} saying only 'Can we talk?'"
@@ -953,7 +953,7 @@ scenarios:
     llm_settings:
       temperature: 0.95  # Noise: Higher temp for variety
     prompt_variables:
-      employee_pool: ["Victor Krum", "Lisa Wong", "Kevin O'Connor", "Samantha Power", "Iris West", "Derek Shepherd", "Dr. Aris Thorne"]
+      employee_pool: ["Victor D. Kramer", "Lisa Wong", "Kevin O'Connor", "Samantha Power", "Iris M. Westfield", "Derek J. Sheffield", "Dr. Aris Thorne"]
       reason:
         - "on vacation"
         - "out of the office at a conference"
@@ -969,7 +969,7 @@ scenarios:
     llm_settings:
       temperature: 0.95  # Noise: Higher temp for variety
     prompt_variables:
-      employee_pool: ["Rachel Green", "Gina Linetti", "Erica Sinclair", "Lisa Wong", "Kara Danvers"]
+      employee_pool: ["Rachel M. Greene", "Gina M. Lindsey", "Erica Sinclair", "Lisa Wong", "Kara J. Daniels"]
       topic:
         - "proposing times for a sync meeting next week"
         - "asking to reschedule Friday's meeting"
@@ -987,7 +987,7 @@ scenarios:
     prompt_variables:
       # Since we don't have 500 people, the code will just repeat these 5 people 100 times in the header.
       # This still works for stress testing header length.
-      employee_pool: ["Yennefer Vengerberg", "Steve Rogers", "Veronica Mars", "Priya Desai", "Meredith Grey"]
+      employee_pool: ["Jennifer L. Vandenberg", "Steven R. Rogers", "Veronica R. Marshall", "Priya Desai", "Meredith L. Gray"]
       topic:
         - "Urgent Security Patch Notification"
         - "Company-Wide Sales Policy Update"
@@ -1003,7 +1003,7 @@ scenarios:
     llm_settings:
       temperature: 1.0  # Maximum variety for mundane topics
     prompt_variables:
-      employee_pool: ["Brandon Hayes", "Lisa Wong", "Oscar Martinez", "Rachel Green", "Gina Linetti", "Peter Parker", "Kara Danvers", "Marcus J. Dillon"]
+      employee_pool: ["Brandon Hayes", "Lisa Wong", "Oscar Martinez", "Rachel M. Greene", "Gina M. Lindsey", "Peter R. Patterson", "Kara J. Daniels", "Marcus J. Dillon"]
       topic:
         - "Cake in the breakroom"
         - "AC is freezing"
@@ -1031,7 +1031,7 @@ scenarios:
     llm_settings:
       temperature: 1.0  # Maximum variety for mundane topics
     prompt_variables:
-      employee_pool: ["Tom Wozniak", "Jack Reacher", "Wade Wilson", "Frank Castle", "Derek Shepherd", "Kevin O'Connor", "Brandon Hayes"]
+      employee_pool: ["Tom Wozniak", "Jackson L. Reed", "William A. Watson", "Franklin R. Castillo", "Derek J. Sheffield", "Kevin O'Connor", "Brandon Hayes"]
       issue:
         - "Can't login to Jira"
         - "VPN keeps disconnecting"

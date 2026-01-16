@@ -4,6 +4,46 @@ All notable changes to the Synthetic E-Discovery Dataset Generator.
 
 ---
 
+## [2.1.1] - 2026-01-16
+
+### Changed
+
+#### 🎭 Pop Culture Name Cleanup (Professional Dataset Readiness)
+- **Feature:** Replaced all pop culture character names with realistic business names
+- **Why:** Pop culture references (Tony Stark, Peter Parker, Wade Wilson, etc.) break immersion when demonstrating to clients and law firms
+- **Impact:** Configs now appear professional and production-ready for client presentations
+- **Changes Applied:**
+  - 25 expansion personnel renamed with realistic business names
+  - Email addresses updated to match new names (firstname.lastname@acmeinc.com)
+  - Signatures updated (e.g., "Deadpool" → "Watson", "Stark" → "Clark")
+  - Employee pool arrays updated throughout all prompt_variables sections
+  - All personality styles preserved exactly (quirks and communication patterns unchanged)
+- **Mapping Examples:**
+  - Tony Stark → Anthony S. Clark (Consultant)
+  - Peter Parker → Peter R. Patterson (Junior Dev)
+  - Wade Wilson → William A. Watson (Sales Rep)
+  - Steve Rogers → Steven R. Rogers (Team Lead)
+  - Natasha Romanoff → Natalie R. Roman (Competitive Intelligence)
+  - Jack Reacher → Jackson L. Reed (Field Technician)
+  - Ron Swanson → Ronald J. Sawyer (Director of Construction)
+  - Veronica Mars → Veronica R. Marshall (Fraud Investigator)
+  - Yennefer Vengerberg → Jennifer L. Vandenberg (Chief of Staff)
+  - And 16 more...
+- **Files Modified:**
+  - `config-acme-hr-misconduct.yaml`: 25 personnel updated + employee_pool arrays
+  - `config-acme-antitrust.yaml`: 25 personnel updated + employee_pool arrays
+  - `config-acme-safety-fraud.yaml`: 25 personnel updated + employee_pool arrays
+  - `name_mapping_v2.1.1.md`: Complete mapping documentation
+- **Architectural Integrity Maintained:**
+  - Social graph depth preserved (5 core + 45 expansion)
+  - Personality diversity unchanged (arrogant consultant, nervous intern, grumpy sysadmin, etc.)
+  - Employee pool segregation intact (signal uses core 5, noise uses expansion)
+  - All scenario definitions unmodified
+
+**Result:** Dataset now suitable for client-facing demonstrations without immersion-breaking references.
+
+---
+
 ## [2.1.0] - 2026-01-15
 
 ### Added
