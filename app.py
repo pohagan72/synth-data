@@ -835,23 +835,46 @@ def create_and_save_email(base_filename, email_content, output_dir, email_date, 
                         stats['attachment_types'][ext] = stats['attachment_types'].get(ext, 0) + 1
     
     # Exact Duplicate (Custodian Folder) Logic
-    all_custodians = [email_content.get('sender_email')]
-    for _, email in email_content.get('recipients', []): all_custodians.append(email)
+    all_custodians = []
+
+    # Add sender if valid
+    sender_email = email_content.get('sender_email')
+    if sender_email and isinstance(sender_email, str) and '@' in sender_email:
+        all_custodians.append(sender_email)
+
+    # Add recipients with validation
+    for recipient_pair in email_content.get('recipients', []):
+        if isinstance(recipient_pair, (list, tuple)) and len(recipient_pair) >= 2:
+            email = recipient_pair[1]
+            if email and isinstance(email, str) and '@' in email:
+                all_custodians.append(email)
+
+    # Add CC recipients with validation
     if 'cc_recipients' in email_content:
-        for _, email in email_content.get('cc_recipients', []): all_custodians.append(email)
+        for cc_pair in email_content.get('cc_recipients', []):
+            if isinstance(cc_pair, (list, tuple)) and len(cc_pair) >= 2:
+                email = cc_pair[1]
+                if email and isinstance(email, str) and '@' in email:
+                    all_custodians.append(email)
+
+    # Add BCC recipients with validation
     if 'bcc_recipients' in email_content:
-        for _, email in email_content.get('bcc_recipients', []): all_custodians.append(email)
-    
+        for bcc_pair in email_content.get('bcc_recipients', []):
+            if isinstance(bcc_pair, (list, tuple)) and len(bcc_pair) >= 2:
+                email = bcc_pair[1]
+                if email and isinstance(email, str) and '@' in email:
+                    all_custodians.append(email)
+
     email_as_string = str(msg)
-    
+
+    # Create folders only for valid, unique email addresses
     for email_address in set(all_custodians):
-        if email_address and '@' in email_address:
-            custodian_folder_name = email_address.split('@')[0]
-            custodian_path = os.path.join(output_dir, custodian_folder_name)
-            os.makedirs(custodian_path, exist_ok=True)
-            filepath = os.path.join(custodian_path, f"{base_filename}.eml")
-            with open(filepath, 'w', encoding='utf-8') as f:
-                f.write(email_as_string)
+        custodian_folder_name = email_address.split('@')[0]
+        custodian_path = os.path.join(output_dir, custodian_folder_name)
+        os.makedirs(custodian_path, exist_ok=True)
+        filepath = os.path.join(custodian_path, f"{base_filename}.eml")
+        with open(filepath, 'w', encoding='utf-8') as f:
+            f.write(email_as_string)
                 
     return msg.get('Message-ID')
 

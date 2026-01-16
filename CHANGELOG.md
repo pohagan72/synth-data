@@ -22,19 +22,37 @@ All notable changes to the Synthetic E-Discovery Dataset Generator.
 - **Files Modified:**
   - `app.py`: Stats initialization, email/calendar/chat tracking, report generation (lines 1773-1783, 740-744, 871-875, 1044-1050, 1127-1133, 1185-1192, 1960-1977)
 
+### Fixed
+
+#### 🐛 Custodian Validation Bug - "recipient" Folder Issue
+- **Bug:** Malformed LLM responses could create spurious custodian folders named "recipient" instead of valid email addresses
+- **Root Cause:** Lines 839-843 in `create_and_save_email()` assumed recipients were always [name, email] tuples without validation
+- **Original Code:** `for _, email in email_content.get('recipients', []): all_custodians.append(email)`
+- **Problem:** If LLM returned unexpected structure, variable could capture literal string "recipient"
+- **Fix Implemented:** Added comprehensive validation to custodian email extraction (lines 837-877):
+  - Validates sender_email is string containing '@' symbol
+  - Validates recipients/cc/bcc are tuples/lists with at least 2 elements
+  - Validates extracted emails are strings containing '@' symbol
+  - Only creates folders for valid, unique email addresses
+- **Result:** Eliminates spurious custodian folders from malformed LLM responses
+- **Files Modified:**
+  - `app.py`: Custodian folder creation logic with defensive validation (lines 837-877)
+
 ### Impact Summary
 
 **Before v2.2.1:**
 - Certification report showed document counts only
 - No visibility into temporal distribution or custodian participation
+- Potential for invalid custodian folders from malformed data
 
 **After v2.2.1:**
 - Report header includes date range showing investigation timeline
 - Active custodian count confirms realistic organizational depth (50 personnel)
 - Quality assurance: Quickly identify issues like narrow date ranges or low custodian participation
 - Professional: Provides context for dataset scope at a glance
+- Data integrity: Only valid email addresses create custodian folders
 
-**Result:** Certification report now provides comprehensive dataset overview with temporal and organizational context in the header.
+**Result:** Certification report now provides comprehensive dataset overview with temporal and organizational context in the header, plus improved data integrity through custodian validation.
 
 ---
 
