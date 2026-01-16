@@ -854,20 +854,13 @@ scenarios:
       - prompt_templates:
           - "Draft a routine email from Jamie Chen to Taylor Brooks about {topic}."
 
-  # --- SCENARIO 7: Personal/Non-Work (Restricted to Core 5) ---
+  # --- SCENARIO 7: Personal/Non-Work (Using Expansion Personnel) ---
   - type: "standalone"
     description: "(S7) Personal, non-work emails"
     base_filename: "noise_personal"
     prompt_variables:
-      # ONLY THE CORE 5
-      employee_pool:
-        - "Taylor Brooks"
-        - "T. Brooks"
-        - "Jamie Chen"
-        - "J. Chen"
-        - "Casey Mitchell"
-        - "Peyton Parker"
-        - "Drew Foster"
+      # Expansion personnel - various departments
+      employee_pool: ["Brandon Hayes", "Marcus J. Dillon", "Lisa Wong", "Oscar Martinez", "Fatima Al-Sayed", "Jack Reacher", "Kara Danvers", "Peter Parker"]
       topic:
         - "weekend golf game"
         - "fantasy football league"
@@ -927,7 +920,7 @@ scenarios:
     description: "(S8) Low-quality email fragments"
     base_filename: "noise_fragments"
     prompt_variables:
-      employee_pool: ["Taylor Brooks", "Jamie Chen", "Casey Mitchell", "Peyton Parker", "Drew Foster"]
+      employee_pool: ["Marcus J. Dillon", "Greg 'Mac' MacIntyre", "Tom Wozniak", "Frank Castle", "Kara Danvers"]
       fragment_type:
         - "Draft a one-line reply from {sender} to {recipient}: 'Got it, thanks'"
         - "Draft a one-line reply from {sender} to {recipient}: 'Will do'"
@@ -943,11 +936,7 @@ scenarios:
     base_filename: "noise_typos"
     prompt_variables:
       # Intentional misspellings of Core 5 names
-      employee_pool:
-        - "Taylor Brook"
-        - "Jamei Chen"
-        - "Peyton Paker"
-        - "Drew Fostr"
+      employee_pool: ["Brandon Hays", "Peter Parkr", "Jack Reacher", "Gina Lineti", "Zack Moris", "Wade Willson"]
       task:
         - "Draft a brief email from {sender} to {recipient} asking for 'teh report' (typo for 'the report')"
         - "Draft a brief email from {sender} to {recipient} saying 'Can you send me hte file?' (typo)"
@@ -960,7 +949,7 @@ scenarios:
     description: "(S10) Vague or unclear emails"
     base_filename: "noise_vague"
     prompt_variables:
-      employee_pool: ["Taylor Brooks", "Jamie Chen", "Casey Mitchell", "Peyton Parker"]
+      employee_pool: ["Tony Stark", "Wade Wilson", "Ursula Buffay", "Ron Swanson", "Marcus J. Dillon"]
       task:
         - "Draft a vague email from {sender} to {recipient} with subject 'update' and body 'Here is the update we discussed'"
         - "Draft a brief email from {sender} to {recipient} saying only 'Can we talk?'"
@@ -973,7 +962,7 @@ scenarios:
     description: "(S11) Out-of-office auto-replies"
     base_filename: "noise_autoreply"
     prompt_variables:
-      employee_pool: ["Taylor Brooks", "Jamie Chen", "Casey Mitchell", "Peyton Parker", "Drew Foster"]
+      employee_pool: ["Victor Krum", "Lisa Wong", "Kevin O'Connor", "Samantha Power", "Iris West", "Derek Shepherd", "Dr. Aris Thorne"]
       reason:
         - "on vacation"
         - "out of the office at a conference"
@@ -987,7 +976,7 @@ scenarios:
     description: "(S12) Meeting scheduling back-and-forth"
     base_filename: "noise_meetings"
     prompt_variables:
-      employee_pool: ["Taylor", "Jamie", "Casey", "Peyton", "Drew"]
+      employee_pool: ["Rachel Green", "Gina Linetti", "Erica Sinclair", "Lisa Wong", "Kara Danvers"]
       topic:
         - "proposing times for a sync meeting next week"
         - "asking to reschedule Friday's meeting"
@@ -1001,7 +990,7 @@ scenarios:
     description: "(S13) Blast email (Expanded Headers)"
     base_filename: "stress_test_blast_email"
     prompt_variables:
-      employee_pool: ["Taylor L. Brooks", "Drew S. Foster"]
+      employee_pool: ["Yennefer Vengerberg", "Steve Rogers", "Veronica Mars", "Priya Desai", "Meredith Grey"]
       topic:
         - "Urgent Security Patch Notification"
         - "Company-Wide HR Policy Update"

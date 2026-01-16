@@ -4,6 +4,30 @@ All notable changes to the Synthetic E-Discovery Dataset Generator.
 
 ---
 
+## [2.0.3] - 2026-01-15
+
+### Changed
+
+#### 🔄 Noise Scenarios Now Use Expansion Personnel (Phase 2/2)
+- **Feature:** Updated all noise scenario `employee_pool` variables to use expansion personnel
+- **Why:** Phase 1 added 45 expansion personnel, but noise scenarios still only used core 5
+- **Impact:** Noise emails now come from appropriate staff (not CEOs discussing broken dishwashers)
+- **Scenario Assignments:**
+  - **(S7) Personal emails:** Junior staff (Brandon Hayes, Marcus Dillon, Lisa Wong, etc.)
+  - **(S8) Fragments:** Operations (Marcus Dillon, Greg MacIntyre, Tom Wozniak, etc.)
+  - **(S9) Typos:** Junior/rushed staff with intentional name typos (Brandon Hays, Peter Parkr, etc.)
+  - **(S10) Vague emails:** Various quirky personalities (Tony Stark, Wade Wilson, Ron Swanson, etc.)
+  - **(S11) Auto-replies:** Sales/marketing traveling staff (Victor Krum, Lisa Wong, Kevin O'Connor, etc.)
+  - **(S12) Meeting scheduling:** Admins and EAs (Rachel Green, Gina Linetti, Erica Sinclair, etc.)
+  - **(S13) Blast emails:** Leadership/executives (Yennefer Vengerberg, Steve Rogers, Veronica Mars, etc.)
+- **Files Modified:**
+  - `config-acme-antitrust.yaml`: Updated 7 noise scenarios
+  - `config-acme-safety-fraud.yaml`: Updated 6 noise scenarios
+  - `config-acme-hr-misconduct.yaml`: Updated 7 noise scenarios
+- **Result:** "Small Universe" problem fully solved - noise now distributed across 40+ employees
+
+---
+
 ## [2.0.2] - 2026-01-15
 
 ### Added
