@@ -738,6 +738,10 @@ def create_and_save_email(base_filename, email_content, output_dir, email_date, 
 
     if stats:
         stats['emails'] += 1
+        # Track date for date range calculation
+        stats['email_dates'].append(email_date)
+        # Track custodian (sender email)
+        stats['custodians'].add(email_content.get('sender_email'))
 
     # --- Attachment Logic ---
     if attachment_config:
@@ -865,6 +869,10 @@ def create_and_save_calendar_event(filename, event_content, output_dir, event_da
     
     if stats:
         stats['calendar_events'] += 1
+        # Track date for date range calculation
+        stats['email_dates'].append(event_date)
+        # Track custodian (organizer email)
+        stats['custodians'].add(event_content.get('organizer_email'))
 
 # --- Chat Generation Functions ---
 
@@ -1035,7 +1043,12 @@ def create_and_save_slack_native(base_filename, chat_content, output_dir, start_
     if stats:
         stats['scenarios_triggered'][f"Slack: {channel_name}"] = stats['scenarios_triggered'].get(f"Slack: {channel_name}", 0) + 1
         stats['rsmf_chats'] = stats.get('rsmf_chats', 0) + 1
-            
+        # Track date for date range calculation
+        stats['email_dates'].append(start_date)
+        # Track custodians (participants in chat)
+        for msg in chat_content.get('messages', []):
+            stats['custodians'].add(msg.get('sender_email'))
+
     print(f"  -> Created Native Slack Export: {channel_name}/{date_filename} (Modern Format)")
 
 def create_and_save_rsmf(base_filename, chat_content, output_dir, start_date, personnel_map, stats=None):
@@ -1113,7 +1126,12 @@ def create_and_save_rsmf(base_filename, chat_content, output_dir, start_date, pe
         
         if stats:
             stats['rsmf_chats'] = stats.get('rsmf_chats', 0) + 1
-            
+            # Track date for date range calculation
+            stats['email_dates'].append(start_date)
+            # Track custodians (participants in chat)
+            for participant in participants:
+                stats['custodians'].add(participant.get('email'))
+
         print(f"  -> Created RSMF Chat log: {rsmf_filename}")
     except Exception as e:
         print(f"!!! Error creating RSMF file: {e}")
@@ -1167,6 +1185,11 @@ def create_and_save_webex_native(base_filename, chat_content, output_dir, start_
     if stats:
         stats['scenarios_triggered'][f"Webex: {room_title}"] = stats['scenarios_triggered'].get(f"Webex: {room_title}", 0) + 1
         stats['rsmf_chats'] = stats.get('rsmf_chats', 0) + 1
+        # Track date for date range calculation
+        stats['email_dates'].append(start_date)
+        # Track custodians (participants in chat)
+        for msg in chat_content.get('messages', []):
+            stats['custodians'].add(msg.get('sender_email'))
 
     print(f"  -> Created Webex API Export: {base_filename}")
 
@@ -1777,7 +1800,9 @@ if __name__ == "__main__":
         'attachments': 0,
         'attachment_types': {},
         'scenarios_triggered': {},
-        'stress_tests_triggered': []
+        'stress_tests_triggered': [],
+        'email_dates': [],  # Track all email dates for date range calculation
+        'custodians': set()  # Track unique custodian emails
     }
 
     scenario_run_counts = {}
@@ -1932,8 +1957,23 @@ if __name__ == "__main__":
     print(f"   SYNTHETIC DATASET CERTIFICATION REPORT   |   {datetime.now().strftime('%Y-%m-%d %H:%M')}")
     print("="*80)
 
+    # Calculate date range and custodian statistics
+    date_range_str = "N/A"
+    days_span = 0
+    if stats['email_dates']:
+        min_date = min(stats['email_dates'])
+        max_date = max(stats['email_dates'])
+        days_span = (max_date - min_date).days + 1
+        date_range_str = f"{min_date.strftime('%b %d, %Y')} - {max_date.strftime('%b %d, %Y')} ({days_span} days)"
+
+    # Count core vs expansion custodians (assuming core 5 have specific patterns in their names/roles)
+    # For now, just show total active custodians
+    total_custodians = len(stats['custodians'])
+
     print(f"\n[1] DATASET VOLUME & DIVERSITY")
     print(f"    Total Readable Documents: {total_docs}")
+    print(f"    Simulated Date Range:     {date_range_str}")
+    print(f"    Active Custodians:        {total_custodians}")
     print(f"    ---------------------------------------")
     print(f"    • Emails (.eml):             {stats['emails']:<5} (RFC-compliant, headers included)")
     print(f"    • Chats (Slack/Teams/Webex): {stats.get('rsmf_chats', 0):<5} (Modern short-message format)")

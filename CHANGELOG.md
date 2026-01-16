@@ -4,6 +4,40 @@ All notable changes to the Synthetic E-Discovery Dataset Generator.
 
 ---
 
+## [2.2.1] - 2026-01-16
+
+### Added
+
+#### 📊 Enhanced Certification Report Metrics
+- **Feature:** Added date range and active custodian count to certification report header
+- **Why:** Provides immediate visibility into dataset temporal scope and organizational breadth
+- **New Metrics:**
+  - **Simulated Date Range:** Shows earliest to latest document date with day span (e.g., "Nov 15, 2025 - Jan 16, 2026 (63 days)")
+  - **Active Custodians:** Displays count of unique custodians with generated documents (e.g., "50")
+- **Implementation:**
+  - Added `email_dates` list to stats tracking (tracks all email, calendar, chat dates)
+  - Added `custodians` set to stats tracking (tracks unique sender/participant emails)
+  - Updated all document creation functions to populate tracking data
+  - Report calculates min/max dates and unique custodian count on-the-fly
+- **Files Modified:**
+  - `app.py`: Stats initialization, email/calendar/chat tracking, report generation (lines 1773-1783, 740-744, 871-875, 1044-1050, 1127-1133, 1185-1192, 1960-1977)
+
+### Impact Summary
+
+**Before v2.2.1:**
+- Certification report showed document counts only
+- No visibility into temporal distribution or custodian participation
+
+**After v2.2.1:**
+- Report header includes date range showing investigation timeline
+- Active custodian count confirms realistic organizational depth (50 personnel)
+- Quality assurance: Quickly identify issues like narrow date ranges or low custodian participation
+- Professional: Provides context for dataset scope at a glance
+
+**Result:** Certification report now provides comprehensive dataset overview with temporal and organizational context in the header.
+
+---
+
 ## [2.2.0] - 2026-01-16
 
 ### Added
