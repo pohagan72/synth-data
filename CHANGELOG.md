@@ -4,6 +4,29 @@ All notable changes to the Synthetic E-Discovery Dataset Generator.
 
 ---
 
+## [2.4.0] - 2026-01-16
+
+### Added
+
+#### 🎛️ Interactive Model Selection
+- **Feature:** Users can now select which AI model to use for generation at runtime
+- **Why:** Different models offer different trade-offs between quality, speed, and cost
+- **Options:**
+  1. **GPT-4 (gpt-4):** Best quality for complex legal language, slower, more expensive
+  2. **Claude Haiku 4 (claude-haiku-4-5):** Fast and cost-effective, recommended for large datasets (default)
+  3. **Claude Sonnet 3.5 (claude-sonnet-3.5):** Balanced quality and speed for production use
+  4. **Use .env default:** Automatically use `ANTHROPIC_DEFAULT_HAIKU_MODEL` or `AZURE_OPENAI_MODEL`
+
+**Use cases:**
+- **Quality assurance runs:** Use GPT-4 for highest quality legal terminology
+- **High-volume testing:** Use Claude Haiku for fast, cost-effective dataset generation
+- **Production datasets:** Use Claude Sonnet 3.5 for balanced quality
+- **Batch operations:** Set default in `.env` and select option 4 for automated workflows
+
+**Implementation:** New `get_model_preference()` function prompts user during startup, before item generation begins.
+
+---
+
 ## [2.3.1] - 2026-01-16
 
 ### Added

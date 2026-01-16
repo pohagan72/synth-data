@@ -90,8 +90,9 @@ python app.py
 
 1. **Select a config file** - Choose investigation type
 2. **Enter item count** - How many emails/chats to generate
-3. **Choose chat format** - Slack, Teams, Webex, or All
-4. **Wait for generation** - ~1 minute per 100 items (parallel execution)
+3. **Select AI model** - GPT-4, Claude Haiku 4, Claude Sonnet 3.5, or use .env default
+4. **Choose chat format** - Slack, Teams, Webex, or All
+5. **Wait for generation** - ~1 minute per 100 items (parallel execution)
 
 ### Using config-acme.yaml (Interactive Mode)
 
@@ -296,6 +297,15 @@ demo_patient_harm_investigation/
 ## Features
 
 ### 🆕 Recent Enhancements (v2.0 - January 2026)
+
+#### Model Selection (v2.4.0)
+Interactive model selection at runtime for cost and quality optimization:
+- **GPT-4:** Best quality for complex legal language, slower, more expensive
+- **Claude Haiku 4:** Fast and cost-effective, recommended for large datasets
+- **Claude Sonnet 3.5:** Balanced quality and speed for production use
+- **Use .env default:** Automatically use `ANTHROPIC_DEFAULT_HAIKU_MODEL` or `AZURE_OPENAI_MODEL`
+
+**Why this matters:** Different scenarios benefit from different models. Use GPT-4 for quality assurance runs, Claude Haiku for high-volume testing, or configure your preferred default in `.env` for batch operations.
 
 #### Multilingual Support (v2.3.0 - v2.3.1)
 All investigation configs now include multilingual scenarios for comprehensive language testing:

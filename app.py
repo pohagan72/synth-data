@@ -86,6 +86,26 @@ def get_log_size_preference():
         except ValueError:
             print("Invalid input. Please enter a number.")
 
+def get_model_preference():
+    """Prompts the user to select which model to use for generation."""
+    print("\n[Model Selection]")
+    print("Select the AI model to use for synthetic data generation:")
+    print("  1: GPT-4 (gpt-4) - Best quality, slower, more expensive")
+    print("  2: Claude Haiku 4 (claude-haiku-4-5) - Fast, cost-effective (Recommended)")
+    print("  3: Claude Sonnet 3.5 (claude-sonnet-3.5) - Balanced quality and speed")
+    print("  4: Use .env default (ANTHROPIC_DEFAULT_HAIKU_MODEL or AZURE_OPENAI_MODEL)")
+
+    while True:
+        try:
+            choice = int(input("Enter a number (1-4): "))
+            if choice == 1: return "gpt-4"
+            elif choice == 2: return "claude-haiku-4-5"
+            elif choice == 3: return "claude-sonnet-3.5"
+            elif choice == 4: return None  # Use environment default
+            else: print("Invalid number. Please enter 1-4.")
+        except ValueError:
+            print("Invalid input. Please enter a number.")
+
 def get_container_preference():
     """Prompts the user regarding nested compression."""
     print("\n[Post-Processing Stress Test]")
@@ -341,7 +361,9 @@ def get_sender_name_from_prompt(prompt, personnel_map):
 
 try:
     client = AzureOpenAI(azure_endpoint=os.getenv("AZURE_ENDPOINT"), api_key=os.getenv("AZURE_API_KEY"), api_version=os.getenv("AZURE_API_VERSION"))
-    AZURE_MODEL_NAME = os.getenv("AZURE_OPENAI_MODEL")
+    # Model will be set after user selection - default from .env for now
+    DEFAULT_MODEL = os.getenv("ANTHROPIC_DEFAULT_HAIKU_MODEL") or os.getenv("AZURE_OPENAI_MODEL")
+    AZURE_MODEL_NAME = DEFAULT_MODEL  # Will be overridden by user selection
 except Exception as e:
     print(f"Error: Failed to configure AzureOpenAI client. Check .env file. Details: {e}")
     exit()
@@ -1823,13 +1845,21 @@ if __name__ == "__main__":
     selected_config_file = select_config_file()
     if not selected_config_file: exit()
     target_item_count = get_target_email_count()
-    
+
+    # --- Prompt for Model Selection ---
+    selected_model = get_model_preference()
+    if selected_model:
+        AZURE_MODEL_NAME = selected_model
+        print(f"Using model: {AZURE_MODEL_NAME}")
+    else:
+        print(f"Using default model from .env: {AZURE_MODEL_NAME}")
+
     # --- Prompt for Chat Format ---
     chat_format_pref = get_chat_format_preference()
-    
+
     # --- Prompt for Log Size (Stress Test) ---
     log_size_mb = get_log_size_preference()
-    
+
     # --- Prompt for Nested Container (Stress Test) ---
     create_container = get_container_preference()
 
