@@ -161,10 +161,10 @@ Each investigation type has:
 **Purpose:** Define investigation scenarios, personnel, company profiles, attachment types
 
 **Key Files:**
-- `config-acme-antitrust.yaml` - Antitrust investigation (5 custodians, S1 scenarios)
-- `config-acme-safety-fraud.yaml` - Product safety fraud (5 custodians, S2 scenarios)
-- `config-acme-hr-misconduct.yaml` - HR harassment (5 custodians, S_HR scenarios)
-- `config-acme.yaml` - All scenarios mixed (50+ custodians, stress testing)
+- `config-acme-antitrust.yaml` - Antitrust investigation (50 personnel: 5 core + 45 expansion, S1 scenarios)
+- `config-acme-safety-fraud.yaml` - Product safety fraud (50 personnel: 5 core + 45 expansion, S2 scenarios)
+- `config-acme-hr-misconduct.yaml` - HR harassment (50 personnel: 5 core + 45 expansion, S_HR scenarios)
+- `config-acme.yaml` - All scenarios mixed (50+ personnel, stress testing)
 
 **Structure:**
 ```yaml

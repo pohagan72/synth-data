@@ -131,9 +131,9 @@ Which investigation type do you want to generate?
 
 | Config File | Investigation | Personnel | Output Directory |
 |------------|---------------|-----------|------------------|
-| [config-acme-antitrust.yaml](config-acme-antitrust.yaml) | Price-fixing | 5 core | demo_antitrust_investigation |
-| [config-acme-safety-fraud.yaml](config-acme-safety-fraud.yaml) | Safety fraud | 5 core | demo_product_safety_fraud |
-| [config-acme-hr-misconduct.yaml](config-acme-hr-misconduct.yaml) | HR harassment | 5 core | demo_hr_misconduct_investigation |
+| [config-acme-antitrust.yaml](config-acme-antitrust.yaml) | Price-fixing | 50 (5 core + 45 expansion) | demo_antitrust_investigation |
+| [config-acme-safety-fraud.yaml](config-acme-safety-fraud.yaml) | Safety fraud | 50 (5 core + 45 expansion) | demo_product_safety_fraud |
+| [config-acme-hr-misconduct.yaml](config-acme-hr-misconduct.yaml) | HR harassment | 50 (5 core + 45 expansion) | demo_hr_misconduct_investigation |
 | [config-acme.yaml](config-acme.yaml) | **Interactive** - Choose your type | 50+ | ediscovery_dataset_stress_test |
 
 **Note on config-acme.yaml:** When you select this config, you'll be prompted to choose which investigation type(s) to generate:
@@ -458,7 +458,7 @@ prompts:
 ### Slow Generation
 
 - Reduce item count for testing
-- Use focused configs (antitrust, safety-fraud, hr-misconduct) with 5-8 custodians instead of config-acme.yaml with 50+
+- All configs now use 50 personnel for realistic organizational depth
 - LLM API calls are the bottleneck (normal)
 
 ---

@@ -72,10 +72,10 @@ This project includes multiple YAML configuration files optimized for different 
 ### For Training/Development
 
 **Use the focused investigation configs:**
-- Only 5 core custodians each
-- Deep data (many emails per person)
+- 5 core custodians + 45 expansion personnel (50 total)
+- Signal scenarios focus on core 5, noise uses full roster
 - Single investigation type per config
-- Easier to review and understand
+- Realistic organizational depth for volume testing
 - **Recommended:** config-acme-antitrust.yaml, config-acme-safety-fraud.yaml, or config-acme-hr-misconduct.yaml
 
 ## How to Use
@@ -220,7 +220,7 @@ python app.py
 
 | Feature | config-acme.yaml | config-acme-antitrust.yaml | config-acme-safety-fraud.yaml |
 |---------|------------------|---------------------------|------------------------------|
-| Personnel | 50+ | 5 core | 5 core |
+| Personnel | 50+ | 50 (5 core + 45 expansion) | 50 (5 core + 45 expansion) |
 | Investigation Types | Interactive choice | Antitrust only | Safety fraud only |
 | Privilege Docs | **Yes (automatic)** | **Yes (automatic)** | **Yes (automatic)** |
 | Noise | **Yes (automatic)** | **Yes (automatic)** | **Yes (automatic)** |
