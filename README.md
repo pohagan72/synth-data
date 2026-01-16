@@ -297,6 +297,20 @@ demo_patient_harm_investigation/
 
 ### 🆕 Recent Enhancements (v2.0 - January 2026)
 
+#### Multilingual Support (v2.3.0 - v2.3.1)
+All investigation configs now include multilingual scenarios for comprehensive language testing:
+- **Code-switching:** Natural language mixing (e.g., 60% Spanish, 40% English) as bilingual professionals communicate
+- **Language Identification (LID):** Tests EAIDA's ability to auto-detect document language percentages
+- **Unicode/UTF-8 encoding:** CJK character stress testing (Chinese, Japanese, Korean)
+- **Multilingual search:** Cross-language term matching (e.g., "price-fixing" ↔ "Preisabsprache")
+
+**Included multilingual scenarios (2-5% of each dataset):**
+- **German/English:** Antitrust price-fixing communications (S1C)
+- **Spanish/English:** Healthcare billing fraud (S_FRAUD_C2), HIPAA breach (S_HIPAA_F), patient safety (S_HARM_H), HR harassment (HR9)
+- **Chinese/English:** Manufacturing quality concerns (S2E)
+
+**Result:** Every config automatically tests multilingual capabilities without special configuration.
+
 #### Email-Attachment Content Alignment
 Attachments now align with email narratives. If an email says "see attached report showing catastrophic failure", the attachment will actually contain that failure data. This dramatically improves realism for testing content correlation in EAIDA.
 

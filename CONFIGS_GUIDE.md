@@ -189,6 +189,23 @@ All focused configs use **YAML anchors** for efficient scenario duplication. S4 
 
 To add more duplicates, follow the same pattern for other noise scenarios (S5-S13). Each duplicate lowers the signal ratio further.
 
+## Multilingual Support
+
+**All focused investigation configs include multilingual scenarios** (v2.3.0 - v2.3.1) to test:
+- **Language Identification (LID):** Auto-detection of document language percentages
+- **Unicode/UTF-8 encoding:** CJK character handling (Chinese, Japanese, Korean)
+- **Code-switching:** Natural bilingual communication patterns (e.g., 60% Spanish, 40% English)
+- **Multilingual search:** Cross-language term matching capabilities
+
+**Languages included:**
+- **German/English:** European antitrust communications (70% German, 30% English)
+- **Spanish/English:** US bilingual workforce (healthcare, HR, IT - 55-60% Spanish, 40-45% English)
+- **Chinese/English:** International manufacturing (50% Chinese, 50% English)
+
+**Proportion:** 2-5% of each dataset contains multilingual content, matching real-world international organization patterns.
+
+**Result:** Every config automatically tests EAIDA's multilingual capabilities without requiring special configuration.
+
 ## Quick Reference: Scenario Tags
 
 ### Corporate Investigation Tags
@@ -198,10 +215,13 @@ To add more duplicates, follow the same pattern for other noise scenarios (S5-S1
 | (S1) | Price-fixing email thread | config-acme-antitrust.yaml |
 | (S1A) | Collusion meeting calendar invite | config-acme-antitrust.yaml |
 | (S1B) | Teams/Slack pricing chat | config-acme-antitrust.yaml |
+| **(S1C)** | **German/English price-fixing (multilingual)** | config-acme-antitrust.yaml |
 | (S2) | Safety test manipulation thread | config-acme-safety-fraud.yaml |
 | (S2A-D) | **Safety investigation calendar events** | config-acme-safety-fraud.yaml |
+| **(S2E)** | **Chinese/English manufacturing quality (multilingual)** | config-acme-safety-fraud.yaml |
 | (S_HR) | HR misconduct scenarios | config-acme-hr-misconduct.yaml |
 | (HR5-8) | **HR investigation calendar events** | config-acme-hr-misconduct.yaml |
+| **(HR9)** | **Spanish/English harassment discussion (multilingual)** | config-acme-hr-misconduct.yaml |
 
 ### Healthcare Investigation Tags
 
@@ -209,10 +229,13 @@ To add more duplicates, follow the same pattern for other noise scenarios (S5-S1
 |-----|-------------|-------------|
 | (S_HIPAA) | HIPAA breach discovery and coverup | config-hospital-hipaa-breach.yaml |
 | (S_HIPAA_A-G) | Data exfiltration, delayed notification, evidence destruction | config-hospital-hipaa-breach.yaml |
+| **(S_HIPAA_F)** | **Spanish/English IT security incident (multilingual)** | config-hospital-hipaa-breach.yaml |
 | (S_FRAUD) | Medicare/Medicaid billing fraud | config-hospital-billing-fraud.yaml |
 | (S_FRAUD_A-F) | Kickbacks, phantom billing, upcoding, evidence destruction | config-hospital-billing-fraud.yaml |
+| **(S_FRAUD_C2)** | **Spanish/English billing concerns (multilingual)** | config-hospital-billing-fraud.yaml |
 | (S_HARM) | Medical malpractice with coverup | config-hospital-patient-harm.yaml |
 | (S_HARM_A-G) | Wrong-site surgery, record falsification, witness intimidation | config-hospital-patient-harm.yaml |
+| **(S_HARM_H)** | **Spanish/English nurse safety concerns (multilingual)** | config-hospital-patient-harm.yaml |
 
 ### Universal Tags (All Configs)
 
