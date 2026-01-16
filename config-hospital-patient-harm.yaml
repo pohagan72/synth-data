@@ -1,0 +1,1283 @@
+# ===================================================================
+# PATIENT HARM INVESTIGATION DATASET - FOCUSED CONFIGURATION
+# ===================================================================
+# This config generates a focused dataset for medical malpractice/negligence
+# with coverup investigations. Perfect for EAIDA demos of evidence tampering
+# and obstruction of justice detection in healthcare settings.
+#
+# Key Scenarios (NOW AVAILABLE):
+# - Serious adverse event email threads (S_HARM)
+# - Initial incident reports showing concerns (S_HARM_A)
+# - Pressure to modify/falsify medical records (S_HARM_B)
+# - Destruction of evidence communications (S_HARM_C)
+# - Intimidation of staff witnesses (S_HARM_D)
+# - Abuse of peer review privilege (S_HARM_E)
+# - Calendar: Secret "narrative management" meeting (S_HARM_F)
+# - Teams/Slack: Panic after adverse event (S_HARM_G)
+# - Attorney-client privilege documents (S3 - automatic with all investigations)
+# - Abuse of peer review privilege to hide evidence (S3F)
+# - Realistic healthcare business noise for context (S4-S18)
+#
+# Investigation Narrative:
+# On March 15, 2024, a 58-year-old patient named Robert Hendricks underwent
+# routine left knee arthroscopy at St. Catherine's Regional Hospital. Due to
+# a series of errors, the surgical team operated on the WRONG SITE (right knee
+# instead of left), resulting in unnecessary surgery. The error was discovered
+# post-operatively when the patient complained of continued left knee pain.
+#
+# Timeline of Event and Coverup:
+# - March 15, 2024, 8:30 AM: Wrong-site surgery performed by Dr. Marcus Chen
+# - March 15, 2024, 2:00 PM: Error discovered in recovery; patient severely distressed
+# - March 15, 2024, 3:00 PM: Charge Nurse Sarah Morrison files incident report
+# - March 16, 2024: Risk Management Director Patricia Vasquez convenes emergency meeting
+# - March 17-20, 2024: Pressure campaign begins to modify incident reports
+# - March 21, 2024: General Counsel David Park advises "narrative management"
+# - March 22-25, 2024: Original incident reports destroyed; altered versions created
+# - March 26, 2024: Nurse Morrison threatened with termination for "insubordination"
+# - March 27-30, 2024: Peer review committee convened to claim privilege over evidence
+# - April 1-5, 2024: Cover story established: "Patient gave conflicting consent"
+#
+# Key Players:
+# - Dr. Evelyn Hart (CMO): Aware of coverup, authorized "incident management"
+# - Dr. Marcus Chen (Attending Surgeon): Performed wrong-site surgery, participated in coverup
+# - Sarah Morrison (Charge Nurse): Witnessed error, filed initial report, later intimidated
+# - Patricia Vasquez (Risk Management Director): Orchestrated coverup, destroyed evidence
+# - David Park (General Counsel): Advised on legal strategy, abused peer review privilege
+#
+# Patient Outcome:
+# Robert Hendricks suffered unnecessary surgery on healthy right knee, requiring additional
+# corrective surgery. Left knee condition worsened due to surgical delay. Psychological
+# trauma from betrayal of trust. Patient ultimately died from post-operative complications
+# following emergency corrective surgery on April 15, 2024.
+#
+# Evidence Trail:
+# - Original incident reports (timestamped March 15-16) showing immediate concerns
+# - Modified incident reports (created March 22-23) downplaying severity
+# - Email thread showing pressure to "revise" documentation
+# - Calendar invite for "Risk Mitigation Strategy Session" (code for coverup meeting)
+# - Teams chat showing panic: "We need to get our story straight"
+# - Surgical logs with unexplained gaps and alterations
+# - Peer review committee minutes improperly claiming privilege over non-medical discussions
+# - Witness statements showing coercion: "You need to remember it differently"
+#
+# Investigation Focus:
+# This dataset demonstrates both medical negligence AND criminal obstruction:
+# - Wrong-site surgery (medical malpractice)
+# - Falsification of medical records (criminal fraud)
+# - Destruction of evidence (obstruction of justice)
+# - Witness intimidation (witness tampering)
+# - Abuse of peer review privilege (spoliation of evidence)
+# - Conspiracy to defraud patient and regulators
+# ===================================================================
+
+
+# Personnel:
+# - 5 core custodians (Hart, Chen, Morrison, Vasquez, Park)
+# - 45 expansion personnel for organizational depth and realistic noise
+# - Signal scenarios focus on core custodians, noise uses full roster
+
+general_settings:
+  output_directory: "demo_patient_harm_investigation"
+
+  # SCENARIO FILTER: Set to 'patient_harm' to focus on medical malpractice investigation
+  # This includes S_HARM series (patient harm scenarios) + privilege (S3) + noise (S4-S18)
+  scenario_filter: 'patient_harm'
+
+# --- Attachments with Scenario Restrictions & Stress Tests ---
+attachments:
+  types:
+    # 1. Patient Harm Investigation Documents
+    - name: "incident_report_original"
+      limit_to_scenarios: ["(S_HARM_A) Initial incident report showing concerns"]
+      probability: 0.25
+      filenames: ["Incident_Report_IR{random_number}_{date}.pdf", "Adverse_Event_Report_{date}.pdf", "Patient_Safety_Event_{date}.pdf"]
+      mime_type: "application/pdf"
+      content_description: "Original incident report filed by Charge Nurse Sarah Morrison on March 15, 2024, documenting wrong-site surgery and immediate patient harm. Contains timestamped observations, witness statements, and urgent safety concerns..."
+
+    - name: "incident_report_modified"
+      limit_to_scenarios: ["(S_HARM_B) Pressure to modify/falsify medical records"]
+      probability: 0.20
+      filenames: ["Incident_Report_IR{random_number}_REVISED_{date}.pdf", "Adverse_Event_Report_CORRECTED_{date}.pdf", "Final_Incident_Documentation_{date}.pdf"]
+      mime_type: "application/pdf"
+      content_description: "Modified incident report created March 22, 2024, downplaying severity of wrong-site surgery. Contains altered timeline, minimized harm description, and false narrative about 'patient confusion' regarding consent..."
+
+    - name: "medical_records"
+      limit_to_scenarios: ["(S_HARM) Main thread: Serious adverse event", "(S_HARM_B) Pressure to modify/falsify medical records"]
+      probability: 0.15
+      filenames: ["Patient_Chart_Hendricks_Robert_{date}.pdf", "Surgical_Notes_{date}.pdf", "Post_Op_Assessment_{date}.pdf"]
+      mime_type: "application/pdf"
+      content_description: "Medical records for patient Robert Hendricks showing surgical procedure details, post-operative complications, and documentation of wrong-site surgery discovery..."
+
+    - name: "surgical_logs"
+      limit_to_scenarios: ["(S_HARM) Main thread: Serious adverse event", "(S_HARM_C) Destruction of evidence"]
+      probability: 0.12
+      filenames: ["OR_Schedule_{date}.xlsx", "Surgical_Log_OR3_{date}.xlsx", "Time_Out_Checklist_{date}.pdf"]
+      mime_type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+      content_description: "Operating room logs showing scheduled procedures, time-out verification (or lack thereof), and post-incident alterations to surgical documentation..."
+
+    - name: "peer_review_minutes"
+      limit_to_scenarios: ["(S_HARM_E) Abuse of peer review privilege", "(S3F) Abuse of peer review privilege to hide coverup"]
+      probability: 0.18
+      filenames: ["Peer_Review_Committee_Minutes_{date}.docx", "Medical_Staff_QA_Meeting_{date}.docx", "Credentials_Committee_Notes_{date}.docx"]
+      mime_type: "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+      content_description: "Peer review committee minutes improperly claiming privilege over discussions about evidence destruction and narrative coordination rather than legitimate quality improvement..."
+
+    - name: "witness_statements"
+      limit_to_scenarios: ["(S_HARM_D) Intimidation of staff witnesses", "(S_HARM_C) Destruction of evidence"]
+      probability: 0.10
+      filenames: ["Staff_Statement_{date}.pdf", "Witness_Account_{date}.docx", "Employee_Interview_Notes_{date}.pdf"]
+      mime_type: "application/pdf"
+      content_description: "Witness statements from surgical staff describing the wrong-site surgery and subsequent pressure to alter their testimony..."
+
+    - name: "risk_assessment_reports"
+      limit_to_scenarios: ["(S_HARM) Main thread: Serious adverse event", "(S_HARM_E) Abuse of peer review privilege"]
+      probability: 0.08
+      filenames: ["Risk_Assessment_{date}.pptx", "Liability_Analysis_{date}.pptx", "Incident_Review_Summary_{date}.pptx"]
+      mime_type: "application/vnd.openxmlformats-officedocument.presentationml.presentation"
+      content_description: "Risk management analysis of the adverse event, including liability exposure, potential regulatory consequences, and recommendations for 'incident management'..."
+
+    - name: "medication_records"
+      limit_to_scenarios: ["(S_HARM) Main thread: Serious adverse event"]
+      probability: 0.08
+      filenames: ["MAR_Medication_Admin_Record_{date}.pdf", "Pharmacy_Log_{date}.xlsx", "Anesthesia_Record_{date}.pdf"]
+      mime_type: "application/pdf"
+      content_description: "Medication administration records showing pre-operative medications, anesthesia protocols, and post-operative pain management..."
+
+    # 2. Stress Test Files (Logs)
+    - name: "small_audit_log"
+      limit_to_scenarios: ["(S4) Generic hospital operations emails"]
+      probability: 0.1
+      filenames: ["audit_trace_{date}.log"]
+      mime_type: "text/x-log"
+      fixed_size_mb: 1
+
+    - name: "medium_ehr_log"
+      limit_to_scenarios: ["(S12) Meeting scheduling back-and-forth", "(S5) Generic HR or admin announcements"]
+      probability: 0.05
+      filenames: ["ehr_access_{date}.log"]
+      mime_type: "text/x-log"
+      fixed_size_mb: 15
+
+    - name: "stress_test_system_dump"
+      limit_to_scenarios: ["(S4) Generic hospital operations emails"]
+      probability: 0.02
+      filenames: ["CRITICAL_SYSTEM_DUMP_{date}.log"]
+      mime_type: "text/x-log"
+      # User defined size
+
+company_profiles:
+  - name: "St. Catherine's Regional Hospital"
+    domain: "stcatherines-health.org"
+    personnel:
+      # --- THE CORE 5 CUSTODIANS ONLY ---
+      - name: "Dr. Evelyn K. Hart"
+        title: "Chief Medical Officer (CMO)"
+        email: "evelyn.hart@stcatherines-health.org"
+        style: "Professional, authoritative, and measured. Uses formal medical terminology. Often begins emails with 'Colleagues,' or 'Team,'. Protective of hospital reputation."
+        signature: |
+          Dr. Evelyn K. Hart, MD, MBA
+          Chief Medical Officer | St. Catherine's Regional Hospital
+          Board Certified Internal Medicine
+
+      - name: "Dr. Marcus L. Chen"
+        title: "Attending Physician (Orthopedic Surgery)"
+        email: "marcus.chen@stcatherines-health.org"
+        style: "Initially confident and casual, becomes defensive and anxious after adverse event. Uses medical jargon. Often justifies decisions with technical explanations."
+        signature: |
+          Marcus L. Chen, MD, FAAOS
+          Orthopedic Surgery | St. Catherine's Regional Hospital
+
+      - name: "Sarah J. Morrison"
+        title: "Charge Nurse / Nursing Director"
+        email: "sarah.morrison@stcatherines-health.org"
+        style: "Conscientious, detail-oriented, and increasingly fearful. Precise about documentation. Style shifts from professional concern to anxious compliance under pressure."
+        signature: |
+          Sarah J. Morrison, RN, BSN
+          Charge Nurse, Surgical Services
+
+      - name: "Patricia M. Vasquez"
+        title: "Risk Management Director"
+        email: "patricia.vasquez@stcatherines-health.org"
+        style: "Strategic and calculated. Uses euphemisms like 'incident management' and 'narrative alignment'. Focuses on liability mitigation. Diplomatic but forceful."
+        signature: |
+          Patricia M. Vasquez, RN, MBA, CPHRM
+          Director of Risk Management & Patient Safety
+
+      - name: "David R. Park"
+        title: "General Counsel"
+        email: "david.park@stcatherines-health.org"
+        style: "Careful, legalistic, and strategic. Uses phrases like 'attorney-client privileged' and 'peer review protection'. Often advises limiting written communication."
+        signature: |
+          David R. Park, Esq.
+          General Counsel | St. Catherine's Regional Hospital
+          **CONFIDENTIALITY NOTICE:** This message is attorney-client privileged and intended only for the use of the individual or entity to which it is addressed...
+
+      # --- EXPANSION PERSONNEL (45 New Profiles for Organizational Depth) ---
+      # These personnel provide realistic noise and organizational context.
+      # Signal scenarios (S_HARM) still focus on the core 5 custodians above.
+
+      # Medical Staff - Physicians
+      - name: "Dr. Jennifer L. Rodriguez"
+        title: "Chief of Surgery"
+        email: "jennifer.rodriguez@stcatherines-health.org"
+        style: "Direct and no-nonsense. Focused on surgical outcomes and OR efficiency. Protective of surgical staff."
+        signature: "Dr. Jennifer Rodriguez | Chief of Surgery"
+
+      - name: "Dr. Amir S. Patel"
+        title: "Emergency Department Medical Director"
+        email: "amir.patel@stcatherines-health.org"
+        style: "High-energy and urgent. Deals with crises constantly. Short emails, lots of abbreviations."
+        signature: "Dr. Amir Patel | ED Medical Director"
+
+      - name: "Dr. Katherine M. Walsh"
+        title: "Anesthesiologist"
+        email: "katherine.walsh@stcatherines-health.org"
+        style: "Precise and cautious. Focused on patient safety protocols. Detailed about medications and dosages."
+        signature: "Katherine M. Walsh, MD | Anesthesiology"
+
+      - name: "Dr. Robert T. Kim"
+        title: "Cardiologist"
+        email: "robert.kim@stcatherines-health.org"
+        style: "Academic and thorough. Quotes studies and guidelines. Verbose in explanations."
+        signature: "Robert T. Kim, MD, FACC | Cardiology"
+
+      - name: "Dr. Lisa M. Thompson"
+        title: "Internal Medicine - Hospitalist"
+        email: "lisa.thompson@stcatherines-health.org"
+        style: "Collaborative and patient-centered. Focused on coordination of care. Empathetic tone."
+        signature: "Lisa Thompson, MD | Hospital Medicine"
+
+      - name: "Dr. James R. Foster"
+        title: "Radiologist"
+        email: "james.foster@stcatherines-health.org"
+        style: "Technical and interpretive. Discusses imaging findings. Precise language about diagnostic details."
+        signature: "James R. Foster, MD | Diagnostic Radiology"
+
+      - name: "Dr. Michelle A. Brooks"
+        title: "Pediatrician"
+        email: "michelle.brooks@stcatherines-health.org"
+        style: "Warm and accessible. Talks about family communication. Uses encouraging language."
+        signature: "Dr. Michelle Brooks | Pediatrics"
+
+      - name: "Dr. Daniel K. Nguyen"
+        title: "Oncologist"
+        email: "daniel.nguyen@stcatherines-health.org"
+        style: "Compassionate but realistic. Discusses treatment protocols. Balances hope with honesty."
+        signature: "Daniel K. Nguyen, MD, PhD | Medical Oncology"
+
+      # Nursing Staff
+      - name: "Amanda R. Stevens"
+        title: "OR Nurse"
+        email: "amanda.stevens@stcatherines-health.org"
+        style: "Procedural and safety-focused. Discusses surgical counts and protocols. Detail-oriented."
+        signature: "Amanda Stevens, RN | Operating Room"
+
+      - name: "Michael J. Davis"
+        title: "ICU Charge Nurse"
+        email: "michael.davis@stcatherines-health.org"
+        style: "Calm under pressure. Manages crises. Direct communication style. Reports status updates."
+        signature: "Michael Davis, RN, CCRN | Intensive Care Unit"
+
+      - name: "Rachel K. Martinez"
+        title: "ED Nurse"
+        email: "rachel.martinez@stcatherines-health.org"
+        style: "Fast-paced and efficient. Deals with high patient volume. Brief and action-oriented."
+        signature: "Rachel Martinez, RN | Emergency Department"
+
+      - name: "Jennifer L. White"
+        title: "Post-Anesthesia Care Nurse"
+        email: "jennifer.white@stcatherines-health.org"
+        style: "Vigilant and observant. Monitors patient recovery closely. Reports subtle changes."
+        signature: "Jennifer White, RN | PACU"
+
+      - name: "Thomas R. Anderson"
+        title: "Nursing Supervisor (Night Shift)"
+        email: "thomas.anderson@stcatherines-health.org"
+        style: "Handles overnight crises. Problem-solver. Coordinates multiple units."
+        signature: "Thomas Anderson, RN, MSN | Nursing Supervisor"
+
+      - name: "Maria C. Gonzalez"
+        title: "Infection Control Nurse"
+        email: "maria.gonzalez@stcatherines-health.org"
+        style: "Strict about protocols. Enforces sterilization procedures. Formal and regulatory-focused."
+        signature: "Maria Gonzalez, RN, CIC | Infection Prevention"
+
+      # Allied Health Professionals
+      - name: "Dr. Susan L. Chang"
+        title: "Physical Therapy Director"
+        email: "susan.chang@stcatherines-health.org"
+        style: "Optimistic and rehabilitation-focused. Discusses patient progress and mobility goals."
+        signature: "Susan Chang, PT, DPT | Physical Therapy"
+
+      - name: "Brian K. Lee"
+        title: "Respiratory Therapist"
+        email: "brian.lee@stcatherines-health.org"
+        style: "Technical about ventilation and oxygen therapy. Monitors critically ill patients."
+        signature: "Brian Lee, RRT | Respiratory Care"
+
+      - name: "Karen M. Phillips"
+        title: "Pharmacist"
+        email: "karen.phillips@stcatherines-health.org"
+        style: "Detail-oriented about medications. Flags drug interactions. Precise about dosing."
+        signature: "Karen Phillips, PharmD | Pharmacy Services"
+
+      - name: "David S. Wilson"
+        title: "Lab Director"
+        email: "david.wilson@stcatherines-health.org"
+        style: "Analytical and precise. Discusses test results and turnaround times."
+        signature: "David Wilson, MT(ASCP) | Laboratory Services"
+
+      # Medical Records & Administration
+      - name: "Patricia A. Johnson"
+        title: "Health Information Management Director"
+        email: "patricia.johnson@stcatherines-health.org"
+        style: "Procedural and compliance-focused. Protects medical record integrity. Formal."
+        signature: "Patricia Johnson, RHIA | Medical Records"
+
+      - name: "Linda R. Taylor"
+        title: "Medical Records Clerk"
+        email: "linda.taylor@stcatherines-health.org"
+        style: "Administrative and transactional. Processes requests for records. Brief communications."
+        signature: "Linda Taylor | HIM Department"
+
+      - name: "George M. Harris"
+        title: "Coding Specialist"
+        email: "george.harris@stcatherines-health.org"
+        style: "Focused on billing codes and documentation requirements. Detail-oriented."
+        signature: "George Harris, CCS | Medical Coding"
+
+      # Quality & Compliance
+      - name: "Dr. Margaret S. Collins"
+        title: "Chief Quality Officer"
+        email: "margaret.collins@stcatherines-health.org"
+        style: "Metrics-driven and improvement-focused. Discusses performance indicators and accreditation."
+        signature: "Margaret S. Collins, MD, MPH | Quality & Patient Safety"
+
+      - name: "Elizabeth M. Turner"
+        title: "Quality Assurance Coordinator"
+        email: "elizabeth.turner@stcatherines-health.org"
+        style: "Process-oriented. Conducts audits and reviews. Formal documentation style."
+        signature: "Elizabeth Turner, RN, BSN | Quality Assurance"
+
+      - name: "Ronald J. Mitchell"
+        title: "Compliance Officer"
+        email: "ronald.mitchell@stcatherines-health.org"
+        style: "Regulatory and strict. Flags compliance violations. Uses formal legal language."
+        signature: "Ronald J. Mitchell, CHC | Corporate Compliance"
+
+      # IT & Systems
+      - name: "Christopher P. Brown"
+        title: "IT Director"
+        email: "christopher.brown@stcatherines-health.org"
+        style: "Technical and systems-focused. Discusses EHR issues, downtimes, and security."
+        signature: "Chris Brown | Information Technology"
+
+      - name: "Angela R. Scott"
+        title: "EHR Systems Administrator"
+        email: "angela.scott@stcatherines-health.org"
+        style: "Troubleshoots electronic health record issues. Technical language about system features."
+        signature: "Angela Scott | EHR Support"
+
+      - name: "Kevin T. Murphy"
+        title: "Network Security Specialist"
+        email: "kevin.murphy@stcatherines-health.org"
+        style: "Paranoid about cybersecurity. Sends alerts about threats and vulnerabilities."
+        signature: "Kevin Murphy | IT Security"
+
+      # Human Resources
+      - name: "Diane L. Cooper"
+        title: "HR Director"
+        email: "diane.cooper@stcatherines-health.org"
+        style: "Professional and policy-focused. Handles employee relations. Diplomatic."
+        signature: "Diane L. Cooper, SPHR | Human Resources"
+
+      - name: "Jessica M. Reed"
+        title: "HR Generalist"
+        email: "jessica.reed@stcatherines-health.org"
+        style: "Helpful and procedural. Discusses benefits, policies, and employee concerns."
+        signature: "Jessica Reed | HR Department"
+
+      - name: "Mark A. Sullivan"
+        title: "Employee Relations Specialist"
+        email: "mark.sullivan@stcatherines-health.org"
+        style: "Handles complaints and investigations. Careful and confidential communications."
+        signature: "Mark Sullivan | Employee Relations"
+
+      # Finance & Administration
+      - name: "Catherine R. Miller"
+        title: "Chief Financial Officer"
+        email: "catherine.miller@stcatherines-health.org"
+        style: "Numbers-focused and strategic. Discusses budgets, revenues, and cost containment."
+        signature: "Catherine R. Miller, CPA | Chief Financial Officer"
+
+      - name: "Andrew J. Bennett"
+        title: "Revenue Cycle Manager"
+        email: "andrew.bennett@stcatherines-health.org"
+        style: "Focused on billing and collections. Discusses claims, denials, and reimbursement."
+        signature: "Andrew Bennett | Revenue Cycle"
+
+      - name: "Sandra K. Gray"
+        title: "Accounts Payable Specialist"
+        email: "sandra.gray@stcatherines-health.org"
+        style: "Transactional and procedural. Processes invoices and vendor payments."
+        signature: "Sandra Gray | Accounting"
+
+      # Facilities & Support Services
+      - name: "Richard T. Howard"
+        title: "Facilities Director"
+        email: "richard.howard@stcatherines-health.org"
+        style: "Practical and maintenance-focused. Discusses building issues, repairs, and safety."
+        signature: "Richard Howard | Facilities Management"
+
+      - name: "William J. Parker"
+        title: "Environmental Services Manager"
+        email: "william.parker@stcatherines-health.org"
+        style: "Focused on cleanliness and sanitation. Discusses housekeeping and sterilization."
+        signature: "William Parker | Environmental Services"
+
+      - name: "Paul R. Nelson"
+        title: "Security Director"
+        email: "paul.nelson@stcatherines-health.org"
+        style: "Safety and access-focused. Discusses badge access, incidents, and visitor control."
+        signature: "Paul Nelson | Hospital Security"
+
+      - name: "Mary E. Carter"
+        title: "Food Services Manager"
+        email: "mary.carter@stcatherines-health.org"
+        style: "Manages dietary services. Discusses meal service, dietary restrictions, and kitchen operations."
+        signature: "Mary Carter | Food & Nutrition Services"
+
+      # Patient Relations & Social Services
+      - name: "Laura A. Hughes"
+        title: "Patient Advocate"
+        email: "laura.hughes@stcatherines-health.org"
+        style: "Empathetic and supportive. Handles patient complaints and concerns. Diplomatic."
+        signature: "Laura Hughes | Patient Relations"
+
+      - name: "Steven M. Wright"
+        title: "Social Worker"
+        email: "steven.wright@stcatherines-health.org"
+        style: "Compassionate and resource-focused. Discusses discharge planning and community support."
+        signature: "Steven Wright, MSW, LCSW | Social Services"
+
+      - name: "Nicole R. Barnes"
+        title: "Patient Services Representative"
+        email: "nicole.barnes@stcatherines-health.org"
+        style: "Front-facing and helpful. Handles patient inquiries and scheduling."
+        signature: "Nicole Barnes | Patient Services"
+
+      # Support Staff
+      - name: "Barbara J. Young"
+        title: "Executive Assistant to CMO"
+        email: "barbara.young@stcatherines-health.org"
+        style: "Gatekeeper and scheduler. Professional and efficient. Manages executive calendar."
+        signature: "Barbara J. Young | Executive Office"
+
+      - name: "James P. Allen"
+        title: "Administrative Assistant"
+        email: "james.allen@stcatherines-health.org"
+        style: "Helpful and organized. Coordinates meetings and handles routine requests."
+        signature: "James Allen | Administration"
+
+      - name: "Melissa K. King"
+        title: "Medical Staff Coordinator"
+        email: "melissa.king@stcatherines-health.org"
+        style: "Manages physician credentialing and privileging. Detail-oriented and procedural."
+        signature: "Melissa King | Medical Staff Office"
+
+      - name: "Robert L. Wright"
+        title: "Volunteer Coordinator"
+        email: "robert.wright@stcatherines-health.org"
+        style: "Friendly and community-focused. Organizes volunteer programs and recognition."
+        signature: "Robert Wright | Volunteer Services"
+
+      - name: "Carol A. Campbell"
+        title: "Supply Chain Manager"
+        email: "carol.campbell@stcatherines-health.org"
+        style: "Logistics-focused. Discusses inventory, vendors, and supply ordering."
+        signature: "Carol Campbell | Supply Chain"
+
+      - name: "Daniel M. Evans"
+        title: "Biomedical Equipment Technician"
+        email: "daniel.evans@stcatherines-health.org"
+        style: "Technical about medical equipment. Discusses maintenance, repairs, and calibration."
+        signature: "Daniel Evans, CBET | Biomedical Engineering"
+
+  # --- EXTERNAL PARTIES (Required for Legal and Investigation Scenarios) ---
+  - name: "Morrison & Associates Law Firm"
+    domain: "morrison-legal.com"
+    personnel:
+      - name: "Katherine E. Morrison"
+        title: "Partner (Defense Counsel)"
+        email: "k.morrison@morrison-legal.com"
+        style: "Sharp defense attorney. Strategic and aggressive in protecting hospital interests."
+        signature: "Katherine E. Morrison, Esq. | Partner | Morrison & Associates"
+
+      - name: "Thomas R. Grant"
+        title: "Associate Attorney"
+        email: "t.grant@morrison-legal.com"
+        style: "Junior attorney assisting with investigation. Thorough and detail-oriented."
+        signature: "Thomas R. Grant, Esq. | Morrison & Associates"
+
+  - name: "State Medical Board"
+    domain: "statemed-board.gov"
+    personnel:
+      - name: "Inspector Helen R. Jacobs"
+        title: "Medical Board Investigator"
+        email: "h.jacobs@statemed-board.gov"
+        style: "Regulatory investigator. Direct questioning style. Focused on finding violations."
+        signature: "Helen R. Jacobs | State Medical Board Investigations Division"
+
+  - name: "Hendricks Family (Plaintiff)"
+    domain: "hendricks-family.net"
+    personnel:
+      - name: "Margaret L. Hendricks"
+        title: "Wife of Deceased Patient"
+        email: "margaret.hendricks@hendricks-family.net"
+        style: "Grieving and seeking answers. Emotional but determined. Increasingly suspicious."
+        signature: "Margaret Hendricks"
+
+# ===================================================================
+# SCENARIOS
+# ===================================================================
+scenarios:
+
+  # --- SCENARIO S_HARM: Main Thread - Serious Adverse Event ---
+  - type: "thread"
+    description: "(S_HARM) Main thread: Serious adverse event (wrong-site surgery)"
+    base_filename: "S_HARM_adverse_event_thread"
+    llm_settings:
+      temperature: 0.4  # Signal: Lower temp for consistency
+    prompt_variables:
+      urgency: ["urgent", "time-sensitive", "immediate attention needed", "CRITICAL"]
+      concern_level: ["significant concern", "serious issue", "major incident", "critical event"]
+      tone: ["professional but concerned", "urgent and direct", "carefully worded"]
+    prompts:
+      - prompt_templates:
+          - "Draft an email from Sarah Morrison (Charge Nurse) to Dr. Marcus Chen and Patricia Vasquez on March 15, 2024 at 3:00 PM with subject 'URGENT: Incident Report - OR3 Surgical Case'. Sarah reports discovering that Dr. Chen performed arthroscopy on patient Robert Hendricks' RIGHT knee when the surgical consent and pre-op marking indicated LEFT knee. Patient is extremely distressed in recovery. She states she is filing an immediate incident report and notifying risk management. Tone is {tone}, showing {concern_level}."
+      - prompt_templates:
+          - "Draft Dr. Marcus Chen's defensive reply sent 20 minutes later, claiming the patient 'may have given conflicting information during pre-op assessment' and that 'the surgical site marking was ambiguous'. He suggests they 'discuss this matter privately before escalating'. Tone shifts between defensive justification and damage control."
+      - prompt_templates:
+          - "Draft Patricia Vasquez's reply to both, sent within 30 minutes, acknowledging the 'serious nature of this incident' and requesting an 'immediate confidential meeting in my office at 5:00 PM today'. She instructs them to 'hold all documentation pending our discussion' and to 'limit any further written communication about this matter'."
+        probability: 0.95
+      - prompt_templates:
+          - "Draft a follow-up email from Patricia Vasquez to David Park (GC) that evening, marked {urgency}, with subject 'CONFIDENTIAL: Adverse Event Requiring Legal Consultation'. She summarizes the wrong-site surgery incident and requests immediate legal guidance on 'incident management strategy, disclosure obligations, and documentation protocols'. Mentions the patient is 'increasingly agitated' and family has been asking questions."
+      - prompt_templates:
+          - "Draft David Park's reply the next morning (March 16) advising Patricia to convene a 'risk mitigation meeting' with the core team. He emphasizes the importance of 'careful documentation review', 'consistent messaging', and 'protecting peer review privilege where applicable'. He requests all communications about the incident be directed through him to maintain attorney-client privilege."
+      - prompt_templates:
+          - "Draft an internal email from Dr. Evelyn Hart (CMO) to Patricia Vasquez and David Park on March 16, expressing concern about 'reputational risk' and 'regulatory exposure'. She asks for a 'comprehensive incident review' and wants to understand 'all potential liability scenarios'. She mentions the hospital 'cannot afford another adverse event scandal'."
+        probability: 0.85
+      - prompt_templates:
+          - "Draft Sarah Morrison's email to Patricia Vasquez on March 17, stating she has completed the formal incident report (IR-2024-0847) and submitted it to patient safety. She attaches the report and notes that two other OR staff members (Amanda Stevens and Jennifer White) witnessed the error and are available to provide statements. She requests guidance on 'next steps for quality review'."
+        probability: 0.9
+      - prompt_templates:
+          - "Draft Patricia Vasquez's terse reply to Sarah Morrison, acknowledging receipt and stating the incident is 'under active legal review' and that Sarah should 'not discuss this matter with other staff members pending completion of our investigation'. She asks Sarah to attend a meeting on March 20 'to discuss your observations in detail'."
+        probability: 0.9
+
+  # --- SCENARIO S_HARM_A: Initial Incident Report ---
+  - type: "standalone"
+    description: "(S_HARM_A) Initial incident report showing concerns"
+    base_filename: "S_HARM_A_initial_incident_report"
+    llm_settings:
+      temperature: 0.4  # Signal: Lower temp for consistency
+    prompts:
+      - prompt_templates:
+          - "Draft an email from Sarah Morrison to the Patient Safety Committee on March 15, 2024 at 3:30 PM with subject 'Incident Report Submission - IR-2024-0847'. She formally submits an incident report regarding wrong-site surgery on patient Robert Hendricks in OR3. She describes: (1) Pre-operative verification showed LEFT knee marked for surgery, (2) Surgical consent documented LEFT knee arthroscopy, (3) Post-operatively discovered RIGHT knee was operated on instead, (4) Patient extremely distressed and in pain from correct surgical site (left knee) still untreated, (5) Dr. Chen was attending surgeon, (6) Surgical time-out procedure may not have been properly completed. She requests immediate patient safety review and root cause analysis. Attach incident report PDF."
+
+  # --- SCENARIO S_HARM_B: Pressure to Modify/Falsify Records ---
+  - type: "thread"
+    description: "(S_HARM_B) Pressure to modify/falsify medical records"
+    base_filename: "S_HARM_B_pressure_to_falsify"
+    llm_settings:
+      temperature: 0.4  # Signal: Lower temp for consistency
+    prompt_variables:
+      pressure_language: ["revise your recollection", "align the documentation", "ensure consistency", "clarify the narrative"]
+      justification: ["for legal protection", "to avoid misunderstanding", "to present accurate context", "to protect the institution"]
+    prompts:
+      - prompt_templates:
+          - "Draft an email from Patricia Vasquez to Sarah Morrison on March 20, 2024 with subject 'Follow-up: Incident Documentation Review'. Patricia thanks Sarah for her 'dedication to patient safety' but suggests that her initial incident report 'may contain some inaccuracies that could be misinterpreted'. She asks Sarah to {pressure_language} and 'consider whether the patient may have given inconsistent information about which knee was problematic during pre-op'. She frames this as helping to 'ensure we have the complete picture' and offers to 'work together on a revised report'. Tone is superficially supportive but clearly directive."
+      - prompt_templates:
+          - "Draft Sarah Morrison's hesitant reply expressing discomfort with revising the report. She states 'I documented what I directly observed in real-time' and 'the surgical consent and pre-op marking were very clear - LEFT knee'. She asks 'Is it standard procedure to revise incident reports after submission?' Tone shows growing concern and confusion."
+      - prompt_templates:
+          - "Draft Patricia Vasquez's reply, now more firm, stating that 'in complex cases, initial reports sometimes require refinement' and that 'our legal team has advised that the current report could create unnecessary liability {justification}'. She says 'I need you to be a team player here' and suggests they meet in person to 'go over the documentation together'. Implies consequences: 'Your cooperation is essential for your continued role on the surgical team'."
+        probability: 0.85
+      - prompt_templates:
+          - "Draft an email from David Park (GC) to Patricia Vasquez and Dr. Evelyn Hart on March 21, advising on 'documentation strategy'. He suggests that 'certain incident report language could be problematic in litigation' and recommends 'working with staff to ensure reports accurately reflect ambiguity in patient communication'. He uses euphemisms like 'narrative alignment' and 'contextual clarification'. Marks the email 'ATTORNEY-CLIENT PRIVILEGED'."
+      - prompt_templates:
+          - "Draft Dr. Evelyn Hart's reply agreeing with the 'need to manage this carefully' and authorizing Patricia to 'work with nursing staff to ensure documentation consistency'. She states 'we cannot allow imprecise language to jeopardize the institution' and asks for 'revised incident reports by end of week'."
+        probability: 0.75
+
+  # --- SCENARIO S_HARM_C: Destruction of Evidence ---
+  - type: "thread"
+    description: "(S_HARM_C) Destruction of evidence communications"
+    base_filename: "S_HARM_C_evidence_destruction"
+    llm_settings:
+      temperature: 0.4  # Signal: Lower temp for consistency
+    prompts:
+      - prompt_templates:
+          - "Draft an email from Patricia Vasquez to David Park on March 22, 2024 with subject 'CONFIDENTIAL: Document Retention Question'. She asks 'Given the sensitivity of the Hendricks incident, what is our obligation regarding the preliminary incident reports and witness statements? Some of the initial documentation contains language that could be inflammatory if taken out of context.' She asks whether 'early drafts and notes' are subject to the same retention requirements as 'final reports'. Carefully worded to seek permission for destruction without explicitly saying so."
+      - prompt_templates:
+          - "Draft David Park's reply advising that 'once final incident reports are completed and approved, preliminary drafts and working notes may be disposed of according to normal document retention policies'. He adds 'However, if you have reason to believe litigation is imminent, all documents should be preserved.' He then adds a strategic caveat: 'Of course, if certain documents have not yet been finalized or officially submitted to the patient safety system, they would not yet be part of the official record.' This creates plausible deniability for destroying evidence."
+      - prompt_templates:
+          - "Draft an email from Patricia Vasquez to Linda Taylor (Medical Records Clerk) on March 23 with subject 'Record Retention - Hendricks Case'. She instructs Linda to 'pull all preliminary documentation related to incident IR-2024-0847 that has not been finalized' and bring it to her office. She specifies this includes 'initial handwritten notes, draft reports, and any working documents'. She states these need to be 'reconciled with the final approved documentation'."
+        probability: 0.8
+      - prompt_templates:
+          - "Draft a brief email from Patricia Vasquez to Dr. Marcus Chen on March 23 stating 'Per our discussion, please dispose of any personal notes or draft documentation related to the Hendricks case. The official surgical record and finalized incident report are the only documents that should be retained. This is standard protocol to avoid confusion with multiple versions.' Uses language suggesting this is routine rather than suspicious."
+        probability: 0.7
+
+  # --- SCENARIO S_HARM_D: Intimidation of Staff Witnesses ---
+  - type: "thread"
+    description: "(S_HARM_D) Intimidation of staff witnesses"
+    base_filename: "S_HARM_D_witness_intimidation"
+    llm_settings:
+      temperature: 0.4  # Signal: Lower temp for consistency
+    prompts:
+      - prompt_templates:
+          - "Draft an email from Patricia Vasquez to Sarah Morrison on March 26, 2024 with subject 'Required Meeting: Performance and Policy Compliance'. Patricia requests Sarah attend a meeting with HR Director Diane Cooper to 'discuss recent concerns about your adherence to hospital communication policies'. She mentions Sarah has been 'sharing details of confidential patient safety matters with other staff members in violation of HIPAA and hospital policy'. She states this is 'a serious matter that could result in disciplinary action up to and including termination'. The allegations are vague but threatening, designed to intimidate."
+      - prompt_templates:
+          - "Draft Sarah Morrison's anxious reply asking for clarification about what policy violations are alleged. She states 'I have only discussed the Hendricks incident with patient safety personnel and the individuals you directed me to meet with' and 'I have not violated any HIPAA rules'. She asks 'Is this related to my incident report?' Tone shows fear and confusion."
+      - prompt_templates:
+          - "Draft Patricia Vasquez's reply stating 'We have received reports that you have been discussing confidential incident details with OR staff members outside the formal investigation process' and that 'your characterization of events in those discussions has been inconsistent with your formal statements'. She says 'We will discuss this in detail at the meeting' and warns Sarah to 'consider carefully how you want to proceed with your employment here'."
+        probability: 0.85
+      - prompt_templates:
+          - "Draft an email from Patricia Vasquez to Amanda Stevens (OR Nurse who witnessed the error) on March 27 with subject 'Witness Statement Clarification'. Patricia asks Amanda to 'review and clarify' her witness statement regarding the Hendricks incident. She suggests Amanda's statement 'may have been influenced by Sarah Morrison's interpretation of events' and asks whether Amanda 'independently verified which knee was marked for surgery or relied on Sarah's assessment'. She asks Amanda to 'carefully reconsider your observations' and submit a revised statement. Subtle but clear pressure to change testimony."
+        probability: 0.75
+      - prompt_templates:
+          - "Draft a concerned email from Amanda Stevens to Sarah Morrison (sent to personal email, not hospital email) saying 'Sarah, I just got a really weird email from Patricia asking me to change my witness statement. She's basically asking me to say I didn't see what I clearly saw. What's going on? Should I talk to someone about this?' Shows that staff are becoming aware of the coverup."
+        probability: 0.6
+
+  # --- SCENARIO S_HARM_E: Abuse of Peer Review Privilege ---
+  - type: "thread"
+    description: "(S_HARM_E) Abuse of peer review privilege to hide evidence"
+    base_filename: "S_HARM_E_peer_review_abuse"
+    llm_settings:
+      temperature: 0.4  # Signal: Lower temp for consistency
+    prompts:
+      - prompt_templates:
+          - "Draft an email from David Park (GC) to Dr. Evelyn Hart and Patricia Vasquez on March 27, 2024 with subject 'ATTORNEY-CLIENT PRIVILEGED: Strategic Use of Peer Review Process'. David advises that they can 'utilize the peer review process to protect certain discussions and documents from discovery' in potential litigation. He explains that 'peer review privilege protects quality improvement discussions from being used in malpractice cases' and suggests they 'convene a peer review committee to review the Hendricks incident'. He notes this will allow them to 'have frank discussions about the incident and our response strategy under the protection of privilege'. This is an improper use of peer review privilege, which is meant for quality improvement, not litigation strategy."
+      - prompt_templates:
+          - "Draft Dr. Evelyn Hart's reply agreeing this is 'an excellent approach' and authorizing David to 'work with the Medical Staff Office to convene an expedited peer review committee meeting'. She asks that the committee include 'only physicians we can trust to understand the institutional perspective on this matter'. Clear intent to manipulate the peer review process."
+      - prompt_templates:
+          - "Draft an email from David Park to Dr. Jennifer Rodriguez (Chief of Surgery) on March 28 requesting she convene a 'peer review committee meeting to evaluate the Hendricks surgical case'. He provides specific language for the meeting notice emphasizing 'This meeting is protected by peer review privilege pursuant to state law' and lists specific agenda items including 'review of incident documentation', 'assessment of surgical team communication', and 'recommendations for process improvements'. Superficially legitimate but intended to hide evidence."
+        probability: 0.9
+      - prompt_templates:
+          - "Draft an email from Melissa King (Medical Staff Coordinator) to peer review committee members scheduling a meeting on April 2, 2024 with subject 'PEER REVIEW PRIVILEGED: Quality Review Meeting - Hendricks Case'. She includes standard peer review confidentiality language but the attendee list reveals this is not a genuine peer review: includes David Park (GC), Patricia Vasquez (Risk Management), and Dr. Hart (CMO) - roles that suggest legal strategy rather than quality improvement."
+        probability: 0.85
+      - prompt_templates:
+          - "Draft meeting minutes (email format) from Melissa King to peer review committee members on April 3 documenting the April 2 meeting. Minutes are marked 'PEER REVIEW PRIVILEGED AND CONFIDENTIAL'. Content reveals the meeting discussed 'documentation consistency', 'witness statement alignment', and 'communication strategy with family' - topics that are legal strategy, not quality improvement. Also discusses 'revised incident reports' and 'clarified surgical records'. This demonstrates abuse of peer review privilege to cover up evidence tampering rather than improve quality."
+        probability: 0.8
+
+  # --- SCENARIO S_HARM_F: Calendar - Secret Meeting ---
+  - type: "calendar_event"
+    description: "(S_HARM_F) Calendar invite for secret 'narrative management' meeting"
+    base_filename: "S_HARM_F_secret_meeting"
+    llm_settings:
+      temperature: 0.4  # Signal: Lower temp for consistency
+    prompts:
+      - prompt_templates:
+          - "Draft a calendar event from Patricia Vasquez to Dr. Evelyn Hart, Dr. Marcus Chen, and David Park on March 21, 2024. Event title: 'Incident Management Strategy Session'. Location: 'Conference Room 5 (Private)'. Date/Time: March 22, 2024, 7:00 AM - 8:00 AM (before normal business hours to avoid attention). Description: 'Confidential discussion regarding Hendricks incident documentation and family communication strategy. Please do not forward or discuss.' The early morning timing and vague description suggest secrecy."
+
+  # --- SCENARIO S_HARM_G: Teams/Slack Chat - Panic After Event ---
+  - type: "chat"
+    description: "(S_HARM_G) Teams/Slack chat showing panic after adverse event"
+    base_filename: "S_HARM_G_panic_chat"
+    llm_settings:
+      temperature: 0.4  # Signal: Lower temp for consistency
+    prompts:
+      - prompt_templates:
+          - "Generate a Microsoft Teams private chat history between Dr. Marcus Chen and Patricia Vasquez on March 15, 2024, starting around 4:00 PM (shortly after the wrong-site surgery was discovered). The chat should show Marcus in a panic, saying things like 'This is bad', 'I don't know how this happened', 'The consent form definitely said left knee'. Patricia responds with damage control advice: 'Stop texting. Come to my office now', 'We need to get ahead of this', 'Do NOT put anything else in writing'. Marcus asks 'What do I tell the family?' Patricia says 'Nothing until we talk to legal. Seriously, stop texting.' The chat should feel authentic, showing real-time panic and immediate coverup instincts. Include timestamps showing rapid exchanges over 10-15 minutes."
+
+  # --- SCENARIO 3: Legal Privilege (Standard Attorney-Client) ---
+  - type: "thread"
+    description: "(S3) Confidential legal consultation with privilege"
+    base_filename: "S3_legal_privilege_thread"
+    llm_settings:
+      temperature: 0.4  # Signal: Lower temp for consistency
+    prompts:
+      - prompt_templates:
+          - "Draft an email from Dr. Evelyn Hart to David Park on March 16, 2024 with subject 'ATTORNEY-CLIENT PRIVILEGED: Urgent Legal Consultation Required'. Evelyn requests immediate confidential legal advice regarding the hospital's disclosure obligations following the wrong-site surgery. She asks about regulatory reporting requirements, potential liability exposure, and whether they need to notify the state medical board. She wants to understand 'what we are legally required to disclose to the patient and family versus what we should disclose'. This is legitimate attorney-client privilege."
+      - prompt_templates:
+          - "Draft David Park's reply providing legal analysis of their disclosure obligations under state law. He explains mandatory adverse event reporting requirements, timeline for notification, and potential liability if they fail to properly disclose. He advises on language to use with the family that 'acknowledges the error without accepting liability'. He notes that 'this communication is protected by attorney-client privilege and should not be shared outside our legal consultation'. Legitimate legal advice."
+      - prompt_templates:
+          - "Draft David Park's email to Katherine Morrison at Morrison & Associates Law Firm, cc'ing Dr. Hart, on March 17. He retains the external law firm to represent the hospital in the anticipated Hendricks litigation. He summarizes the incident and requests they begin investigation and case preparation. He states 'This communication and all subsequent communications regarding this matter are protected by attorney-client privilege.' Legitimate engagement of outside counsel."
+      - prompt_templates:
+          - "Draft Katherine Morrison's reply confirming the engagement and outlining initial case strategy. She requests copies of all incident reports, medical records, and witness statements. She advises the hospital to implement a litigation hold on all documents related to the case. This is proper legal advice from defense counsel."
+
+  # --- SCENARIO 3B: Subtle Privilege (No Header Markers) ---
+  - type: "thread"
+    description: "(S3B) Subtle privilege consultation without obvious markers"
+    base_filename: "S3B_subtle_privilege_thread"
+    llm_settings:
+      temperature: 0.4  # Signal: Lower temp for consistency
+    prompts:
+      - prompt_templates:
+          - "Draft an email from Patricia Vasquez to David Park on March 18, 2024 with subject 'Need your guidance on regulatory reporting'. Patricia asks David (as General Counsel) for legal advice about what they are required to report to the state medical board and when. She wants to know if they can delay reporting until their 'internal investigation is complete'. DO NOT use the words 'privileged', 'confidential', or 'attorney-client' in the subject line. The body should make it clear Patricia is seeking legal counsel from David in his capacity as General Counsel."
+      - prompt_templates:
+          - "Draft David Park's reply providing specific legal analysis of state medical board reporting requirements. He explains they have 30 days to report serious adverse events but notes the timeline starts when they 'determine an event is reportable'. He suggests their 'investigation timeline' could affect when the clock starts. He mentions 'this advice is protected by attorney-client privilege' and recommends they discuss further in person. Include specific legal citations."
+
+  # --- SCENARIO 3C: Privilege by Recipient (Email to GC) ---
+  - type: "thread"
+    description: "(S3C) Business email to General Counsel becomes privileged"
+    base_filename: "S3C_privilege_by_recipient"
+    llm_settings:
+      temperature: 0.4  # Signal: Lower temp for consistency
+    prompts:
+      - prompt_templates:
+          - "Draft an email from Dr. Marcus Chen to David Park on March 19, 2024 with subject 'Question about incident documentation'. Marcus explains he's been asked to review and 'clarify' his surgical notes from the Hendricks case and asks David for guidance on whether this is appropriate and what the legal implications are. The tone is business-casual, seeking advice from the GC."
+      - prompt_templates:
+          - "Draft David Park's reply stating this communication is attorney-client privileged, providing legal analysis of the risks of altering medical records after the fact, and strongly advising against making changes to surgical notes unless correcting clear factual errors through proper amendment procedures. He explains this could be viewed as spoliation of evidence and recommends they discuss in person."
+
+  # --- SCENARIO 3D: Mixed Privilege Thread (Becomes Privileged Mid-Thread) ---
+  - type: "thread"
+    description: "(S3D) Email thread starts non-privileged, becomes privileged mid-conversation"
+    base_filename: "S3D_mixed_privilege_thread"
+    llm_settings:
+      temperature: 0.4  # Signal: Lower temp for consistency
+    prompts:
+      - prompt_templates:
+          - "Draft an email from Dr. Jennifer Rodriguez (Chief of Surgery) to Dr. Evelyn Hart and Dr. Marcus Chen on March 18 with subject 'Surgical timeout protocol review' discussing routine review of timeout procedures following the Hendricks incident. This is standard quality improvement discussion, not legal advice. No privilege markers."
+      - prompt_templates:
+          - "Draft Dr. Evelyn Hart's reply adding David Park to the thread, saying 'David, given the legal implications of the Hendricks case, can you weigh in on what we can and cannot implement as corrective actions without creating additional liability exposure?'"
+      - prompt_templates:
+          - "Draft David Park's reply (keeping all recipients) changing the subject line to 'Re: Surgical timeout protocol review - ATTORNEY-CLIENT PRIVILEGED'. David provides legal analysis of how implementing new protocols could be interpreted as admission of prior inadequacy. He advises on strategies to implement improvements while minimizing liability admissions. He states this communication is now protected by privilege and advises limiting further written discussion of legal strategy."
+
+  # --- SCENARIO 3E: Privilege Waiver (Forwarding to Non-Attorney) ---
+  - type: "thread"
+    description: "(S3E) Privileged email forwarded to non-attorney (waiver scenario)"
+    base_filename: "S3E_privilege_waiver"
+    llm_settings:
+      temperature: 0.4  # Signal: Lower temp for consistency
+    prompts:
+      - prompt_templates:
+          - "Draft an email from David Park to Dr. Evelyn Hart on March 20 with subject 'ATTORNEY-CLIENT PRIVILEGED - Litigation Risk Analysis'. David provides detailed legal analysis of potential malpractice claims, settlement value ranges, and litigation strategy options. Mark this clearly as privileged communication with confidentiality warnings."
+      - prompt_templates:
+          - "Draft Dr. Evelyn Hart forwarding David's privileged email to Catherine Miller (CFO) and Andrew Bennett (Revenue Cycle Manager) with a message: 'FYI - see below for potential financial exposure from the Hendricks case. We need to discuss reserve requirements for this incident.' This is a privilege waiver scenario - forwarding attorney-client privileged communication to non-attorneys for business purposes destroys the privilege."
+
+  # --- SCENARIO 3F: Abuse of Peer Review Privilege (Coverup) ---
+  - type: "thread"
+    description: "(S3F) Abuse of peer review privilege to hide coverup communications"
+    base_filename: "S3F_peer_review_privilege_abuse"
+    llm_settings:
+      temperature: 0.4  # Signal: Lower temp for consistency
+    prompts:
+      - prompt_templates:
+          - "Draft peer review committee meeting minutes (in email format) from Melissa King to committee members on April 3, 2024, marked 'PEER REVIEW PRIVILEGED AND CONFIDENTIAL'. The minutes should reveal the meeting discussed topics that are NOT legitimate quality improvement: 'Documentation consistency strategy', 'Alignment of witness statements', 'Family communication talking points', 'Media response preparation', 'Settlement negotiation parameters'. These are legal and PR strategy topics being improperly cloaked in peer review privilege. The presence of General Counsel David Park as a primary participant (rather than consultant) further demonstrates this is not genuine peer review."
+      - prompt_templates:
+          - "Draft an email from David Park to Dr. Evelyn Hart on April 4 with subject 'PEER REVIEW PRIVILEGED: Committee Recommendations'. David summarizes the peer review committee's 'recommendations' which are actually legal strategy decisions: implementing 'revised incident documentation', 'consistent staff messaging', and 'proactive family engagement to assess settlement appetite'. He emphasizes that 'all of these discussions and documents are protected from discovery by peer review privilege'. This demonstrates clear abuse of the privilege to hide evidence of coverup."
+
+  # --- SCENARIO 4: Routine Hospital Operations (Expanded Variables) ---
+  - &noise_s4_template  # YAML anchor for reuse
+    type: "standalone"
+    description: "(S4) Generic hospital operations emails"
+    base_filename: "noise_hospital_ops"
+    llm_settings:
+      temperature: 0.95  # Noise: Higher temp for variety
+    near_duplicate_probability: 0.15
+    prompt_variables:
+      topic:
+        - "OR schedule conflict resolution"
+        - "patient discharge planning delay"
+        - "medication inventory shortage"
+        - "lab equipment calibration reminder"
+        - "shift coverage request"
+        - "patient fall incident review"
+        - "hand hygiene compliance audit"
+        - "medical records scanning backlog"
+        - "pharmacy formulary update"
+        - "nursing staff meeting agenda"
+        - "patient satisfaction scores"
+        - "emergency code response drill"
+        - "Joint Commission survey preparation"
+        - "infection control protocol update"
+        - "EHR system upgrade schedule"
+        - "supply chain delivery delay"
+        - "patient transport coordination"
+        - "dietary services menu change"
+        - "visitor policy clarification"
+        - "medical staff credentialing renewal"
+        - "continuing education requirements"
+        - "biomedical equipment repair request"
+        - "security badge replacement"
+        - "parking garage maintenance"
+        - "HVAC system in OR wing"
+        - "patient bed availability status"
+        - "nurse-to-patient ratio concerns"
+        - "telemetry monitor malfunction"
+        - "central line infection rate"
+        - "surgical site infection tracking"
+        - "readmission rate analysis"
+        - "length of stay optimization"
+        - "observation vs. inpatient status"
+        - "Medicare reimbursement denial"
+        - "prior authorization frustration"
+        - "insurance verification process"
+        - "charity care application"
+        - "patient financial counseling"
+        - "collections agency referral"
+        - "bad debt write-off approval"
+        - "professional fee billing"
+        - "CPT coding clarification"
+        - "ICD-10 documentation query"
+        - "DRG optimization opportunity"
+        - "clinical documentation improvement"
+        - "physician query response time"
+        - "medical necessity documentation"
+        - "modifier usage guidance"
+        - "claim rejection analysis"
+        - "payment posting discrepancy"
+        - "patient refund processing"
+        - "new patient registration workflow"
+        - "appointment scheduling backlog"
+        - "no-show patient policy"
+        - "referral coordination issue"
+        - "specialty clinic capacity"
+        - "telemedicine platform training"
+        - "patient portal enrollment"
+        - "prescription refill process"
+        - "durable medical equipment order"
+        - "home health referral"
+        - "hospice care consultation"
+        - "palliative care team involvement"
+        - "ethics committee consult"
+        - "advance directive documentation"
+        - "power of attorney verification"
+        - "interpreter services request"
+        - "language line access code"
+        - "cultural competency training"
+        - "patient rights notification"
+        - "grievance procedure explanation"
+        - "patient complaint investigation"
+        - "service recovery intervention"
+        - "staff recognition program"
+        - "employee wellness initiative"
+        - "workplace violence prevention"
+        - "ergonomic assessment request"
+        - "occupational health screening"
+        - "needlestick injury protocol"
+        - "bloodborne pathogen exposure"
+        - "tuberculosis testing schedule"
+        - "flu vaccination campaign"
+        - "PPE supply inventory"
+        - "isolation room availability"
+        - "specimen collection procedure"
+        - "critical lab value reporting"
+        - "radiology report turnaround"
+        - "imaging study authorization"
+        - "contrast allergy protocol"
+        - "radiation safety training"
+        - "MRI safety screening"
+        - "CT protocol optimization"
+        - "ultrasound equipment upgrade"
+        - "PACS system downtime"
+        - "dictation software issues"
+        - "EHR password reset"
+        - "clinical decision support alert"
+        - "medication reconciliation"
+        - "allergy documentation accuracy"
+        - "vaccine administration record"
+        - "blood product transfusion"
+        - "IV pump programming error"
+        - "smart pump library update"
+        - "crash cart inspection"
+        - "defibrillator battery check"
+        - "oxygen tank delivery"
+        - "suction equipment malfunction"
+    prompts:
+      - prompt_templates:
+          - "Invent a specific, realistic healthcare operations problem related to '{topic}'. Then draft a standalone email between relevant St. Catherine's Hospital employees discussing this specific problem and proposing a solution or requesting assistance."
+
+  # --- SCENARIO 5: HR & Admin (Expanded Variables) ---
+  - type: "standalone"
+    description: "(S5) Generic HR or admin announcements"
+    base_filename: "noise_hr_admin"
+    llm_settings:
+      temperature: 0.95  # Noise: Higher temp for variety
+    prompt_variables:
+      topic:
+        - "upcoming hospital holiday closure"
+        - "open enrollment for benefits"
+        - "mandatory compliance training deadline"
+        - "employee flu shot clinic"
+        - "parking permit renewal"
+        - "ID badge photo update"
+        - "payroll direct deposit setup"
+        - "timesheet submission reminder"
+        - "PTO accrual policy change"
+        - "call-in procedure for absences"
+        - "dress code reminder"
+        - "break room refrigerator cleanout"
+        - "employee cafeteria menu change"
+        - "wellness program enrollment"
+        - "employee assistance program"
+        - "retirement planning seminar"
+        - "tuition reimbursement application"
+        - "staff appreciation week events"
+        - "employee recognition awards"
+        - "years of service milestone"
+        - "new hire orientation schedule"
+        - "department staff meeting"
+        - "performance evaluation cycle"
+        - "skills competency assessment"
+        - "BLS/ACLS recertification"
+        - "nursing license renewal reminder"
+        - "DEA registration update"
+        - "OSHA training requirement"
+        - "fire safety drill announcement"
+        - "emergency evacuation procedure"
+        - "severe weather policy"
+        - "on-call scheduling rotation"
+        - "shift differential calculation"
+        - "overtime approval process"
+        - "staffing shortage notice"
+        - "agency nurse coverage"
+        - "float pool assignment"
+        - "unit transfer request"
+        - "job posting internal application"
+        - "exit interview scheduling"
+        - "FMLA leave documentation"
+        - "workers compensation claim"
+        - "reasonable accommodation request"
+        - "harassment prevention training"
+        - "diversity and inclusion initiative"
+        - "employee survey participation"
+        - "suggestion box feedback"
+        - "policy manual update"
+        - "procedure change notification"
+        - "equipment in-service training"
+        - "new technology implementation"
+        - "software upgrade schedule"
+        - "system maintenance downtime"
+        - "network connectivity issue"
+        - "printer troubleshooting"
+        - "VPN access setup"
+        - "email distribution list update"
+        - "voicemail system change"
+        - "pager replacement"
+        - "mobile device management"
+        - "data security reminder"
+        - "phishing email warning"
+        - "password expiration notice"
+        - "access permission request"
+        - "confidentiality agreement"
+        - "social media policy reminder"
+        - "media inquiry protocol"
+        - "community event volunteering"
+        - "charitable fundraising campaign"
+        - "hospital foundation gala"
+        - "physician appreciation luncheon"
+        - "nurses week celebration"
+        - "administrative professionals day"
+    prompts:
+      - prompt_templates:
+          - "Draft a routine company-wide or department-wide announcement from HR, IT, Administration, or Facilities at St. Catherine's Regional Hospital regarding '{topic}'. Feel free to invent specific details (dates, times, locations, procedures) to make the email sound authentic and unique."
+
+  # --- SCENARIO 6: Medical Staff Communications ---
+  - type: "standalone"
+    description: "(S6) Generic medical staff emails"
+    base_filename: "noise_medical_staff"
+    llm_settings:
+      temperature: 0.95  # Noise: Higher temp for variety
+    prompt_variables:
+      topic:
+        - "patient case consultation request"
+        - "diagnostic study interpretation"
+        - "treatment plan recommendation"
+        - "medication adjustment question"
+        - "patient discharge readiness"
+        - "family meeting scheduling"
+        - "consult service sign-off"
+        - "transfer to different unit"
+        - "specialty referral coordination"
+        - "multidisciplinary rounds timing"
+        - "care conference attendance"
+        - "patient care escalation"
+        - "DNR order clarification"
+        - "code status discussion"
+        - "palliative care involvement"
+        - "social work consult need"
+        - "case management coordination"
+        - "insurance authorization delay"
+        - "lab result review"
+        - "imaging findings discussion"
+        - "pathology report interpretation"
+        - "culture sensitivity results"
+        - "antibiotic stewardship question"
+        - "pain management approach"
+        - "wound care protocol"
+        - "nutrition support consult"
+        - "physical therapy evaluation"
+        - "occupational therapy need"
+        - "speech therapy assessment"
+        - "respiratory therapy involvement"
+        - "cardiac monitoring indication"
+        - "telemetry discontinuation"
+        - "IV to PO medication conversion"
+        - "central line removal timing"
+        - "foley catheter discontinuation"
+        - "restraint order review"
+        - "fall risk assessment"
+        - "pressure injury prevention"
+        - "isolation precautions clarification"
+        - "patient mobility status"
+    prompts:
+      - prompt_templates:
+          - "Draft a routine clinical communication email between physicians, nurses, or other clinical staff at St. Catherine's Hospital about {topic}. Invent specific patient details (use only first name or initials for HIPAA protection) and clinical context to make it realistic."
+
+  # --- SCENARIO 7: Personal/Non-Work ---
+  - type: "standalone"
+    description: "(S7) Personal, non-work emails"
+    base_filename: "noise_personal"
+    llm_settings:
+      temperature: 0.95  # Noise: Higher temp for variety
+    prompt_variables:
+      employee_pool: ["Amanda R. Stevens", "Rachel K. Martinez", "Jennifer L. White", "Brian K. Lee", "Nicole R. Barnes", "James P. Allen", "Barbara J. Young", "Linda R. Taylor"]
+      topic:
+        - "weekend plans discussion"
+        - "restaurant recommendation"
+        - "movie/show recommendation"
+        - "recipe sharing"
+        - "workout routine discussion"
+        - "vacation photos sharing"
+        - "pet photos sharing"
+        - "kids' school event"
+        - "home renovation update"
+        - "gardening tips"
+        - "book club discussion"
+        - "sports game discussion"
+        - "concert or event planning"
+        - "birthday gift ideas"
+        - "wedding invitation"
+        - "baby shower planning"
+        - "retirement party"
+        - "thank you note"
+        - "coffee meetup invitation"
+        - "lunch plans coordination"
+        - "carpool arrangement"
+        - "ride share request"
+        - "babysitter recommendation"
+        - "childcare coverage help"
+        - "pet sitting request"
+        - "neighbor noise complaint"
+        - "package delivery issue"
+        - "car trouble help"
+        - "weather small talk"
+        - "holiday greeting"
+    prompts:
+      - prompt_templates:
+          - "Draft a clearly personal (non-work) email between {sender} and {recipient} about {topic}. Make it casual and friendly, clearly not related to hospital business."
+
+  # --- SCENARIO 8: Email Fragments ---
+  - type: "standalone"
+    description: "(S8) Low-quality email fragments"
+    base_filename: "noise_fragments"
+    llm_settings:
+      temperature: 0.95  # Noise: Higher temp for variety
+    prompt_variables:
+      employee_pool: ["James P. Allen", "Robert L. Wright", "Daniel M. Evans", "Paul R. Nelson", "William J. Parker"]
+      fragment_type:
+        - "Draft a one-line reply from {sender} to {recipient}: 'Got it, thanks'"
+        - "Draft a one-line reply from {sender} to {recipient}: 'Will do'"
+        - "Draft a one-line reply from {sender} to {recipient}: 'Sounds good'"
+        - "Draft a one-line reply from {sender} to {recipient}: 'Done'"
+        - "Draft a one-line reply from {sender} to {recipient}: 'OK'"
+        - "Draft a one-line reply from {sender} to {recipient}: 'Received'"
+    prompts:
+      - prompt_templates:
+          - "{fragment_type}"
+
+  # --- SCENARIO 9: Typos and Errors ---
+  - type: "standalone"
+    description: "(S9) Emails with realistic typos"
+    base_filename: "noise_typos"
+    llm_settings:
+      temperature: 0.95  # Noise: Higher temp for variety
+    prompt_variables:
+      employee_pool: ["Amanda Stevens", "Rachel Martines", "Jenifer White", "Brian K Lee", "Nical Barnes", "James Allen"]
+      task:
+        - "Draft a brief email from {sender} to {recipient} asking for 'teh patient chart' (typo for 'the patient chart')"
+        - "Draft a brief email from {sender} to {recipient} saying 'Can you send me hte lab results?' (typo)"
+        - "Draft a brief email from {sender} to {recipient} about 'medciation administration' (typo)"
+        - "Draft a brief email from {sender} to {recipient} mentioning 'post-operativ care' (typo)"
+    prompts:
+      - prompt_templates:
+          - "{task}"
+
+  # --- SCENARIO 10: Vague/Ambiguous Emails ---
+  - type: "standalone"
+    description: "(S10) Vague or unclear emails"
+    base_filename: "noise_vague"
+    llm_settings:
+      temperature: 0.95  # Noise: Higher temp for variety
+    prompt_variables:
+      employee_pool: ["Richard T. Howard", "Mark A. Sullivan", "Steven M. Wright", "Paul R. Nelson", "William J. Parker"]
+      task:
+        - "Draft a vague email from {sender} to {recipient} with subject 'update' and body 'Here is the update we discussed'"
+        - "Draft a brief email from {sender} to {recipient} saying only 'Can we talk?'"
+        - "Draft a brief email from {sender} to {recipient} saying 'FYI' with no other context"
+        - "Draft a brief email from {sender} to {recipient} saying 'See attached' with no explanation"
+    prompts:
+      - prompt_templates:
+          - "{task}"
+
+  # --- SCENARIO 11: Auto-Replies ---
+  - type: "standalone"
+    description: "(S11) Out-of-office auto-replies"
+    base_filename: "noise_autoreply"
+    llm_settings:
+      temperature: 0.95  # Noise: Higher temp for variety
+    prompt_variables:
+      employee_pool: ["Dr. Robert T. Kim", "Dr. Michelle A. Brooks", "Dr. Daniel K. Nguyen", "Karen M. Phillips", "Catherine R. Miller", "Diane L. Cooper"]
+      reason:
+        - "on vacation"
+        - "attending medical conference"
+        - "out sick"
+        - "on family leave"
+        - "at off-site training"
+    prompts:
+      - prompt_templates:
+          - "Draft an out-of-office auto-reply message from {sender} saying they are {reason} and providing alternate contact information."
+
+  # --- SCENARIO 12: Meeting Coordination ---
+  - type: "standalone"
+    description: "(S12) Meeting scheduling back-and-forth"
+    base_filename: "noise_meetings"
+    llm_settings:
+      temperature: 0.95  # Noise: Higher temp for variety
+    prompt_variables:
+      employee_pool: ["Barbara J. Young", "James P. Allen", "Melissa K. King", "Jessica M. Reed", "Nicole R. Barnes"]
+      topic:
+        - "proposing times for staff meeting"
+        - "rescheduling committee meeting"
+        - "confirming attendance"
+        - "requesting room reservation"
+        - "canceling due to conflict"
+        - "requesting conference call number"
+    prompts:
+      - prompt_templates:
+          - "Draft a brief email from {sender} to {recipient} about {topic}."
+
+  # --- SCENARIO 13: Blast Email ---
+  - type: "standalone"
+    description: "(S13) Blast email to large group"
+    base_filename: "stress_test_blast_email"
+    llm_settings:
+      temperature: 0.95  # Noise: Higher temp for variety
+    prompt_variables:
+      employee_pool: ["Dr. Evelyn K. Hart", "Catherine R. Miller", "Diane L. Cooper", "Christopher P. Brown", "Dr. Margaret S. Collins"]
+      topic:
+        - "Hospital-wide Emergency Preparedness Drill"
+        - "Annual Compliance Training Deadline"
+        - "Electronic Health Record System Upgrade"
+        - "Patient Safety Week Activities"
+        - "CEO Town Hall Meeting Announcement"
+    prompts:
+      - prompt_templates:
+          - "Draft a broadcast email from {sender} to all hospital staff regarding '{topic}'."
+
+  # --- SCENARIO 16: Office Life Trivia ---
+  - type: "standalone"
+    description: "(S16) Ultra-mundane hospital life trivia"
+    base_filename: "noise_hospital_trivia"
+    llm_settings:
+      temperature: 1.0  # Maximum variety for mundane topics
+    prompt_variables:
+      employee_pool: ["Linda R. Taylor", "Nicole R. Barnes", "James P. Allen", "Robert L. Wright", "William J. Parker", "Mary E. Carter"]
+      topic:
+        - "Cake in break room"
+        - "Coffee machine broken"
+        - "Microwave smells bad"
+        - "Fridge cleanout needed"
+        - "Someone parked in wrong spot"
+        - "Lost badge in cafeteria"
+        - "Found stethoscope"
+        - "Temperature too cold in unit"
+        - "Temperature too hot in unit"
+        - "Printer jammed again"
+        - "Anyone have phone charger"
+        - "WiFi slow today"
+        - "Elevator slow this morning"
+        - "Birthday card for colleague"
+        - "Lunch recommendation nearby"
+    prompts:
+      - prompt_templates:
+          - "Draft a very brief (1-2 sentences) email from {sender} to {recipient} about: {topic}. Keep it casual and mundane."
+
+  # --- SCENARIO 17: IT/System Issues ---
+  - type: "standalone"
+    description: "(S17) IT and system issues (mundane support requests)"
+    base_filename: "noise_it_issues"
+    llm_settings:
+      temperature: 1.0  # Maximum variety for mundane topics
+    prompt_variables:
+      employee_pool: ["Linda R. Taylor", "Amanda R. Stevens", "Rachel K. Martinez", "Brian K. Lee", "George M. Harris", "Nicole R. Barnes"]
+      issue:
+        - "Can't login to EHR system"
+        - "Password expired need reset"
+        - "Computer won't wake up"
+        - "Mouse not working"
+        - "Keyboard sticky keys"
+        - "Monitor display issue"
+        - "Printer not connecting"
+        - "Scanner not working"
+        - "VPN keeps disconnecting"
+        - "Email not syncing"
+        - "Outlook freezing"
+        - "Can't access shared drive"
+        - "Barcode scanner not scanning"
+        - "Badge reader not working"
+        - "Dictation software crashed"
+    prompts:
+      - prompt_templates:
+          - "Draft a brief (1-2 sentences) IT support request email from {sender} to IT support about: {issue}. Make it sound rushed or frustrated."
+
+  # --- SCENARIO 18: Micro-Collaborations ---
+  - type: "standalone"
+    description: "(S18) Ultra-brief micro-collaboration messages"
+    base_filename: "noise_micro_collab"
+    llm_settings:
+      temperature: 1.0  # Maximum variety for mundane topics
+    prompt_variables:
+      employee_pool: ["Elizabeth M. Turner", "Angela R. Scott", "Jessica M. Reed", "Linda R. Taylor", "George M. Harris", "Andrew J. Bennett"]
+      task:
+        - "Did you see this"
+        - "Quick question"
+        - "Thoughts on attached"
+        - "Can you review"
+        - "Need your input"
+        - "FYI"
+        - "Looping you in"
+        - "Heads up"
+        - "Just checking in"
+        - "Following up"
+        - "Circling back"
+        - "Touching base"
+        - "Update when you can"
+        - "Let me know"
+        - "Sending this your way"
+    prompts:
+      - prompt_templates:
+          - "Draft an extremely brief (5-10 words max) email from {sender} to {recipient} with subject line based on: '{task}'. Body should be minimal, like 'See below' or 'Thoughts?' or just 'FYI'. Simulate someone hitting send too quickly."
+
+# ===================================================================
+# DUPLICATE NOISE SCENARIOS FOR SIGNAL/NOISE RATIO TUNING
+# ===================================================================
+# These are duplicates of S4 to increase noise frequency and
+# achieve target signal-to-noise ratio.
+# S4 duplicated 4x for 4 additional noise scenarios.
+# ===================================================================
+
+  # --- S4 Duplicate 1 (using YAML anchor reference) ---
+  - <<: *noise_s4_template
+    base_filename: "noise_hospital_ops_dup1"
+
+  # --- S4 Duplicate 2 ---
+  - <<: *noise_s4_template
+    base_filename: "noise_hospital_ops_dup2"
+
+  # --- S4 Duplicate 3 ---
+  - <<: *noise_s4_template
+    base_filename: "noise_hospital_ops_dup3"
+
+  # --- S4 Duplicate 4 ---
+  - <<: *noise_s4_template
+    base_filename: "noise_hospital_ops_dup4"

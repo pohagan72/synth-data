@@ -1,0 +1,1223 @@
+# ===================================================================
+# HIPAA DATA BREACH INVESTIGATION DATASET - FOCUSED CONFIGURATION
+# ===================================================================
+# This config generates a focused dataset for HIPAA data breach
+# investigations. Perfect for EAIDA demos of breach detection and response.
+#
+# Key Scenarios (NOW AVAILABLE):
+# - Main breach thread: Unauthorized database access (S_HIPAA)
+# - Evidence of data exfiltration (S_HIPAA_A)
+# - Delayed breach notification/violations (S_HIPAA_B)
+# - Coverup attempts/evidence destruction (S_HIPAA_C)
+# - Emergency response meeting calendar event (S_HIPAA_D)
+# - Teams/Slack chat about the breach (S_HIPAA_E)
+# - Attorney-client privilege documents (S3 - automatic with all investigations)
+# - Realistic healthcare business noise for context (S4-S18)
+#
+# Investigation Narrative:
+# On March 15, 2024, Metropolitan General Hospital's IT Security team discovered
+# unauthorized access to the patient database system. Investigation revealed that
+# an external attacker exploited misconfigured database credentials left exposed
+# in a GitHub repository by a junior developer (Kevin Ramirez, IT Dept).
+#
+# Key Timeline:
+# - March 8: Initial unauthorized access begins (undetected)
+# - March 15: IT Director Morgan Chen discovers suspicious database queries
+# - March 16: CISO Dr. Patricia Williams confirms data exfiltration (47,892 patient records)
+# - March 17-20: Executive team debates notification timing (HIPAA requires 60 days)
+# - March 21: General Counsel David Foster advises immediate notification
+# - March 22: CMO Dr. James Morrison raises concerns about reputational damage
+# - March 23-25: Evidence of attempted coverup by COO attempting to delay disclosure
+# - March 26: Compliance Officer Rebecca Santos threatens resignation if not reported
+# - March 27: External forensics firm (CyberShield Partners) engaged
+# - March 28: Mandatory breach notification sent to HHS OCR (barely within 60-day window)
+#
+# Key Players:
+# - Dr. Patricia Williams (CISO): Discovered breach, pushed for immediate disclosure
+# - Morgan Chen (IT Director): First responder, technical investigation lead
+# - Rebecca Santos (Compliance Officer): HIPAA compliance enforcer, threatened resignation
+# - Dr. James Morrison (CMO): Initially resistant to disclosure due to reputation concerns
+# - David Foster (General Counsel): Advised immediate notification to avoid penalties
+# - Kevin Ramirez (Junior Developer): Inadvertently exposed credentials on GitHub
+# - Sarah Thompson (COO): Attempted to delay notification (not a core custodian but appears in scenarios)
+#
+# Evidence Trail:
+# - Database access logs showing unauthorized queries
+# - GitHub commit history showing exposed credentials
+# - Email threads debating notification timing
+# - Calendar invites for emergency response meetings
+# - Slack messages discussing breach details
+# - Forensic investigation reports
+# - Draft breach notification letters (multiple versions with changing timelines)
+# ===================================================================
+
+
+# Personnel:
+# - 5 core custodians (Dr. Williams, Morgan Chen, Rebecca Santos, Dr. Morrison, David Foster)
+# - 45 expansion personnel for organizational depth and realistic noise
+# - Signal scenarios focus on core custodians, noise uses full roster
+
+general_settings:
+  output_directory: "demo_hipaa_breach_investigation"
+
+  # SCENARIO FILTER: Set to 'hipaa_breach' to focus on HIPAA breach investigation
+  # This includes S_HIPAA* (breach scenarios) + privilege (S3) + noise (S4-S18)
+  scenario_filter: 'hipaa_breach'
+
+# --- Attachments with Scenario Restrictions & Stress Tests ---
+attachments:
+  types:
+    # 1. HIPAA Breach Investigation Documents
+    - name: "patient_access_logs"
+      limit_to_scenarios: ["(S_HIPAA) Main breach thread: Unauthorized database access", "(S_HIPAA_A) Evidence of data exfiltration"]
+      probability: 0.25
+      filenames: ["DB_Access_Log_{date}.csv", "Patient_Query_History_{date}.xlsx", "Unauthorized_Access_Report_{date}.pdf"]
+      mime_type: "application/pdf"
+      content_description: "Database access logs showing unauthorized queries to patient records table between March 8-15, 2024. Contains IP addresses, timestamps, SQL queries, and affected record counts. Shows systematic extraction of patient names, SSNs, diagnoses, and insurance information..."
+
+    - name: "incident_report"
+      limit_to_scenarios: ["(S_HIPAA) Main breach thread: Unauthorized database access", "(S_HIPAA_B) Delayed breach notification (violation)"]
+      probability: 0.20
+      filenames: ["Security_Incident_Report_{date}.pdf", "Breach_Assessment_{date}.docx", "HHS_OCR_Notification_DRAFT_{date}.pdf"]
+      mime_type: "application/pdf"
+      content_description: "Formal security incident report documenting the data breach discovery, scope assessment (47,892 patient records compromised), risk analysis, and recommended remediation steps. Includes timeline of discovery and initial response actions..."
+
+    - name: "forensic_analysis"
+      limit_to_scenarios: ["(S_HIPAA_A) Evidence of data exfiltration", "(S_HIPAA_C) Coverup attempts / evidence destruction"]
+      probability: 0.18
+      filenames: ["CyberShield_Forensic_Report_{date}.pdf", "Network_Traffic_Analysis_{date}.pdf", "Exfiltration_Evidence_{date}.xlsx"]
+      mime_type: "application/pdf"
+      content_description: "External forensic investigation report from CyberShield Partners confirming data exfiltration. Documents 47,892 patient records transmitted to external IP addresses in Eastern Europe. Includes network packet captures, timeline reconstruction, and attribution analysis..."
+
+    - name: "github_credentials_exposure"
+      limit_to_scenarios: ["(S_HIPAA) Main breach thread: Unauthorized database access"]
+      probability: 0.15
+      filenames: ["GitHub_Audit_Report_{date}.pdf", "Exposed_Credentials_Evidence_{date}.png", "Code_Repository_Analysis_{date}.docx"]
+      mime_type: "application/pdf"
+      content_description: "Evidence of database credentials exposed in public GitHub repository by junior developer Kevin Ramirez. Shows commit history, credential strings, and timeline of exposure (Feb 28 - March 15). Includes screenshots of exposed configuration files..."
+
+    - name: "breach_notification_drafts"
+      limit_to_scenarios: ["(S_HIPAA_B) Delayed breach notification (violation)", "(S_HIPAA_C) Coverup attempts / evidence destruction"]
+      probability: 0.12
+      filenames: ["Patient_Notification_Letter_DRAFT_v{version}_{date}.docx", "HHS_OCR_Filing_{date}.pdf", "Media_Statement_DRAFT_{date}.docx"]
+      mime_type: "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+      content_description: "Multiple draft versions of breach notification letters showing evolving timelines and changing disclosure details. Early versions (v1-3) downplay severity and delay notification dates. Later versions (v4-6) include full disclosure after legal counsel intervention..."
+
+    - name: "hipaa_compliance_docs"
+      limit_to_scenarios: ["(S_HIPAA_B) Delayed breach notification (violation)"]
+      probability: 0.10
+      filenames: ["HIPAA_Breach_Notification_Rule_Summary_{date}.pdf", "OCR_60Day_Requirement_{date}.pdf", "Compliance_Checklist_{date}.xlsx"]
+      mime_type: "application/pdf"
+      content_description: "HIPAA compliance documentation outlining the 60-day breach notification requirement under 45 CFR § 164.408. Includes penalty structure for delayed notification and case studies of previous OCR enforcement actions against hospitals..."
+
+    - name: "medical_records_sample"
+      limit_to_scenarios: ["(S_HIPAA_A) Evidence of data exfiltration"]
+      probability: 0.08
+      filenames: ["Compromised_PHI_Sample_{date}.xlsx", "Patient_Records_Evidence_{date}.csv", "Exfiltrated_Data_Summary_{date}.pdf"]
+      mime_type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+      content_description: "Sample of compromised Protected Health Information (PHI) from the breach. Contains synthetic/redacted patient records showing the types of data exfiltrated: names, SSNs, birth dates, diagnoses (oncology, HIV, mental health), insurance details, and treatment history. For evidence purposes only..."
+
+    # 2. Stress Test Files (Logs)
+    - name: "small_debug_log"
+      limit_to_scenarios: ["(S4) Patient scheduling emails"]
+      probability: 0.1
+      filenames: ["application_debug_{date}.log"]
+      mime_type: "text/x-log"
+      fixed_size_mb: 1
+
+    - name: "medium_server_log"
+      limit_to_scenarios: ["(S13) Meeting scheduling", "(S5) Staff meeting announcements"]
+      probability: 0.05
+      filenames: ["ehr_system_log_{date}.log", "server_access_{date}.log"]
+      mime_type: "text/x-log"
+      fixed_size_mb: 15
+
+    - name: "stress_test_dump"
+      limit_to_scenarios: ["(S4) Patient scheduling emails"]
+      probability: 0.02
+      filenames: ["CRITICAL_DATABASE_DUMP_{date}.log"]
+      mime_type: "text/x-log"
+      # User defined size
+
+company_profiles:
+  - name: "Metropolitan General Hospital"
+    domain: "metrogenhospital.org"
+    personnel:
+      # --- THE CORE 5 CUSTODIANS ONLY ---
+      - name: "Dr. Patricia Williams"
+        title: "Chief Information Security Officer (CISO)"
+        email: "p.williams@metrogenhospital.org"
+        style: "Technical, precise, and security-focused. Direct communicator who doesn't sugarcoat risks. Uses cybersecurity terminology. Advocates strongly for transparency and compliance. Often includes severity ratings (CRITICAL, HIGH, MEDIUM, LOW) in subject lines."
+        signature: |
+          Dr. Patricia Williams, CISSP, CISM
+          Chief Information Security Officer
+          Metropolitan General Hospital
+          "Security is not a product, but a process."
+
+      - name: "Morgan Chen"
+        title: "IT Director / Systems Administrator"
+        email: "m.chen@metrogenhospital.org"
+        style: "Highly technical and detailed. Provides step-by-step troubleshooting. Uses bullet points and numbered lists. Often includes log snippets and technical output. Works long hours during incidents. Communicates urgency through rapid-fire emails."
+        signature: |
+          Morgan Chen
+          IT Director | Systems & Infrastructure
+          Metropolitan General Hospital
+          Direct: (555) 0142 | IT Emergency: (555) 0911
+
+      - name: "Rebecca Santos"
+        title: "Compliance Officer / Privacy Officer"
+        email: "r.santos@metrogenhospital.org"
+        style: "Formal, policy-driven, and risk-averse. Constantly references HIPAA regulations (cites specific CFR sections). Meticulous about documentation and audit trails. Not afraid to escalate issues. Uses phrases like 'regulatory requirement,' 'mandatory notification,' and 'OCR enforcement.'"
+        signature: |
+          Rebecca Santos, CHC, CHPC
+          Chief Compliance & Privacy Officer
+          Metropolitan General Hospital
+          **CONFIDENTIALITY NOTICE:** This message contains privileged and confidential information...
+
+      - name: "Dr. James Morrison"
+        title: "Chief Medical Officer (CMO)"
+        email: "j.morrison@metrogenhospital.org"
+        style: "Clinical perspective with patient care focus. Initially defensive about hospital reputation. Balances patient safety against operational concerns. Uses medical terminology. Emails can be terse during stressful situations. Eventually prioritizes patient welfare over reputation."
+        signature: |
+          James Morrison, MD, FACP
+          Chief Medical Officer
+          Metropolitan General Hospital
+          Board Certified Internal Medicine
+
+      - name: "David Foster"
+        title: "General Counsel"
+        email: "d.foster@metrogenhospital.org"
+        style: "Measured, precise, and legally cautious. Frames issues in terms of legal risk and liability. Frequently uses 'attorney-client privilege' headers. Advises on regulatory compliance. Recommends limiting written communication on sensitive topics. References case law and regulatory guidance."
+        signature: |
+          David Foster, J.D.
+          General Counsel | Metropolitan General Hospital
+          **ATTORNEY-CLIENT PRIVILEGED COMMUNICATION**
+          This message is intended only for the use of the individual or entity to which it is addressed...
+
+      # --- EXPANSION PERSONNEL (45 New Profiles for Organizational Depth) ---
+      # These personnel provide realistic noise and organizational context.
+      # Signal scenarios (S_HIPAA*) still focus on the core 5 custodians above.
+
+      # Medical Staff (12 personnel)
+      - name: "Dr. Sarah Mitchell"
+        title: "Emergency Department Physician"
+        email: "s.mitchell@metrogenhospital.org"
+        style: "Fast-paced and urgent. Emails are brief and to the point. Often sent from mobile. Focuses on immediate patient care needs."
+        signature: "Dr. Sarah Mitchell, MD | Emergency Medicine"
+
+      - name: "Dr. Michael Rodriguez"
+        title: "Cardiology Attending"
+        email: "m.rodriguez@metrogenhospital.org"
+        style: "Clinical and detail-oriented. Discusses patient cases with thorough medical reasoning. Uses medical abbreviations extensively."
+        signature: "Michael Rodriguez, MD, FACC | Cardiology"
+
+      - name: "Dr. Emily Chen"
+        title: "Pediatrics Attending"
+        email: "e.chen@metrogenhospital.org"
+        style: "Warm and patient-focused. Advocates for children's welfare. Balances medical decisions with family communication."
+        signature: "Emily Chen, MD | Pediatrics"
+
+      - name: "Dr. Robert Jackson"
+        title: "Chief of Surgery"
+        email: "r.jackson@metrogenhospital.org"
+        style: "Authoritative and decisive. Brief emails with clear directives. Focused on OR scheduling and surgical outcomes."
+        signature: "Robert Jackson, MD, FACS | Chief of Surgery"
+
+      - name: "Dr. Jennifer Lee"
+        title: "Psychiatry Attending"
+        email: "j.lee@metrogenhospital.org"
+        style: "Thoughtful and careful with words. Emphasizes patient confidentiality. Uses therapeutic language."
+        signature: "Jennifer Lee, MD | Psychiatry & Behavioral Health"
+
+      - name: "Dr. Amanda Foster"
+        title: "Oncology Attending"
+        email: "a.foster@metrogenhospital.org"
+        style: "Compassionate but realistic. Discusses complex treatment plans. Coordinates with multiple specialties."
+        signature: "Amanda Foster, MD | Medical Oncology"
+
+      - name: "Dr. Thomas Nguyen"
+        title: "Radiology Attending"
+        email: "t.nguyen@metrogenhospital.org"
+        style: "Analytical and precise. Interprets imaging studies. Communicates findings clearly to referring physicians."
+        signature: "Thomas Nguyen, MD | Diagnostic Radiology"
+
+      - name: "Dr. Maria Gonzalez"
+        title: "OB/GYN Attending"
+        email: "m.gonzalez@metrogenhospital.org"
+        style: "Nurturing and thorough. Balances obstetric urgency with patient education. Coordinates prenatal care."
+        signature: "Maria Gonzalez, MD | Obstetrics & Gynecology"
+
+      - name: "Nicole Parker"
+        title: "Nurse Manager - ICU"
+        email: "n.parker@metrogenhospital.org"
+        style: "Organized and protective of nursing staff. Advocates for safe staffing ratios. Coordinates complex patient care."
+        signature: "Nicole Parker, RN, BSN | ICU Nurse Manager"
+
+      - name: "Jessica Martinez"
+        title: "Charge Nurse - Emergency"
+        email: "j.martinez@metrogenhospital.org"
+        style: "Fast-paced multitasker. Brief communications. Focused on patient flow and bed management."
+        signature: "Jessica Martinez, RN | Emergency Department"
+
+      - name: "David Thompson"
+        title: "Nurse Practitioner - Primary Care"
+        email: "d.thompson@metrogenhospital.org"
+        style: "Patient educator. Thorough documentation. Collaborates closely with attending physicians."
+        signature: "David Thompson, NP-C | Primary Care Clinic"
+
+      - name: "Lisa Anderson"
+        title: "Physician Assistant - Surgery"
+        email: "l.anderson@metrogenhospital.org"
+        style: "Clinically focused. Assists in OR and manages post-operative care. Concise communicator."
+        signature: "Lisa Anderson, PA-C | General Surgery"
+
+      # IT Staff (8 personnel)
+      - name: "Kevin Ramirez"
+        title: "Junior Developer"
+        email: "k.ramirez@metrogenhospital.org"
+        style: "Nervous and apologetic after the breach incident. Over-explains technical details. Eager to fix mistakes. Recently learned not to commit credentials to repositories."
+        signature: "Kevin Ramirez | Application Development"
+
+      - name: "Samantha Brooks"
+        title: "Database Administrator"
+        email: "s.brooks@metrogenhospital.org"
+        style: "Protective of database integrity. Very cautious about granting access. Monitors query performance obsessively. Frustrated by security breaches."
+        signature: "Samantha Brooks | Database Administration"
+
+      - name: "Eric Palmer"
+        title: "Network Engineer"
+        email: "e.palmer@metrogenhospital.org"
+        style: "Infrastructure focused. Discusses VLANs, firewalls, and network segmentation. Security-minded."
+        signature: "Eric Palmer | Network Operations"
+
+      - name: "Michelle Washington"
+        title: "Help Desk Manager"
+        email: "m.washington@metrogenhospital.org"
+        style: "Patient and helpful. Manages ticket queue. Triages user issues. Communicates in non-technical terms."
+        signature: "Michelle Washington | IT Help Desk"
+
+      - name: "Brian Cooper"
+        title: "EHR Systems Analyst"
+        email: "b.cooper@metrogenhospital.org"
+        style: "Specializes in Epic/Cerner systems. Troubleshoots clinical workflow issues. Trains medical staff on EHR features."
+        signature: "Brian Cooper | EHR Systems & Training"
+
+      - name: "Angela Kim"
+        title: "IT Security Analyst"
+        email: "a.kim@metrogenhospital.org"
+        style: "Works closely with CISO. Monitors security alerts. Investigates anomalies. Reports on vulnerabilities."
+        signature: "Angela Kim | Information Security"
+
+      - name: "Robert Hayes"
+        title: "Systems Engineer"
+        email: "r.hayes@metrogenhospital.org"
+        style: "Maintains servers and virtualization infrastructure. On-call rotations. Deals with outages and patching."
+        signature: "Robert Hayes | Systems Engineering"
+
+      - name: "Christina Patel"
+        title: "IT Compliance Specialist"
+        email: "c.patel@metrogenhospital.org"
+        style: "Bridges IT and compliance. Ensures technical controls meet HIPAA requirements. Conducts audits and risk assessments."
+        signature: "Christina Patel, HCISPP | IT Compliance"
+
+      # Administration & HR (8 personnel)
+      - name: "Sarah Thompson"
+        title: "Chief Operating Officer (COO)"
+        email: "s.thompson@metrogenhospital.org"
+        style: "Business-focused and cost-conscious. Initially resistant to breach disclosure due to reputation and financial concerns. Pragmatic but sometimes prioritizes optics over compliance. Eventually defers to legal counsel."
+        signature: "Sarah Thompson, MHA | Chief Operating Officer"
+
+      - name: "Margaret Davis"
+        title: "HR Director"
+        email: "m.davis@metrogenhospital.org"
+        style: "Employee relations focused. Handles staffing issues, benefits, and performance management. Diplomatic communicator."
+        signature: "Margaret Davis | Human Resources"
+
+      - name: "Daniel Wright"
+        title: "HR Generalist"
+        email: "d.wright@metrogenhospital.org"
+        style: "Handles onboarding, terminations, and employee inquiries. Procedural and policy-focused."
+        signature: "Daniel Wright | HR"
+
+      - name: "Rachel Adams"
+        title: "Executive Assistant to CEO"
+        email: "r.adams@metrogenhospital.org"
+        style: "Gatekeeper. Manages executive calendars. Polite but firm about access. Coordinates meetings and travel."
+        signature: "Rachel Adams | Executive Office"
+
+      - name: "Karen Wilson"
+        title: "Patient Relations Manager"
+        email: "k.wilson@metrogenhospital.org"
+        style: "Handles patient complaints and satisfaction. Empathetic listener. Works to resolve grievances."
+        signature: "Karen Wilson | Patient Relations"
+
+      - name: "Steven Martinez"
+        title: "Quality Improvement Director"
+        email: "s.martinez@metrogenhospital.org"
+        style: "Data-driven. Focuses on clinical outcomes and process improvement. Uses quality metrics and dashboards."
+        signature: "Steven Martinez, MSN, RN | Quality & Patient Safety"
+
+      - name: "Linda Turner"
+        title: "Medical Staff Coordinator"
+        email: "l.turner@metrogenhospital.org"
+        style: "Manages physician credentialing and privileging. Detail-oriented with deadlines. Coordinates committee meetings."
+        signature: "Linda Turner | Medical Staff Services"
+
+      - name: "Christopher Bell"
+        title: "Risk Management Director"
+        email: "c.bell@metrogenhospital.org"
+        style: "Identifies and mitigates operational risks. Works closely with legal and compliance. Handles incident reporting."
+        signature: "Christopher Bell, ARM-P | Risk Management"
+
+      # Billing & Finance (5 personnel)
+      - name: "Patricia Clark"
+        title: "Revenue Cycle Director"
+        email: "p.clark@metrogenhospital.org"
+        style: "Focused on billing efficiency and reimbursement. Monitors denials and accounts receivable. Financial communicator."
+        signature: "Patricia Clark, CPC | Revenue Cycle"
+
+      - name: "James Robinson"
+        title: "Medical Billing Specialist"
+        email: "j.robinson@metrogenhospital.org"
+        style: "Transactional. Discusses coding, claims, and insurance issues. Uses billing terminology and CPT codes."
+        signature: "James Robinson | Medical Billing"
+
+      - name: "Elizabeth Moore"
+        title: "Patient Financial Services"
+        email: "e.moore@metrogenhospital.org"
+        style: "Customer service oriented. Explains bills and payment options to patients. Handles payment plans."
+        signature: "Elizabeth Moore | Patient Accounts"
+
+      - name: "Richard Taylor"
+        title: "CFO"
+        email: "r.taylor@metrogenhospital.org"
+        style: "Financial strategist. Discusses budgets, margins, and capital investments. Concerned about breach financial impact."
+        signature: "Richard Taylor, CPA | Chief Financial Officer"
+
+      - name: "Michelle Baker"
+        title: "Payroll Specialist"
+        email: "m.baker@metrogenhospital.org"
+        style: "Procedural. Emails about timesheets, direct deposit, and tax forms. Very transactional."
+        signature: "Michelle Baker | Payroll"
+
+      # Facilities & Support (7 personnel)
+      - name: "John Sanders"
+        title: "Facilities Director"
+        email: "j.sanders@metrogenhospital.org"
+        style: "Practical and straightforward. Manages building operations, maintenance, and environmental services."
+        signature: "John Sanders | Facilities Management"
+
+      - name: "Maria Lopez"
+        title: "Environmental Services Manager"
+        email: "m.lopez@metrogenhospital.org"
+        style: "Focus on cleanliness and infection control. Manages housekeeping staff. Responds to sanitation concerns."
+        signature: "Maria Lopez | Environmental Services"
+
+      - name: "Timothy Green"
+        title: "Security Director"
+        email: "t.green@metrogenhospital.org"
+        style: "Physical security focused. Manages badge access, cameras, and security officers. Serious and protective."
+        signature: "Timothy Green | Hospital Security"
+
+      - name: "Sandra Phillips"
+        title: "Receptionist - Main Lobby"
+        email: "s.phillips@metrogenhospital.org"
+        style: "Friendly and welcoming. First point of contact. Handles visitor inquiries and directions."
+        signature: "Sandra Phillips | Front Desk"
+
+      - name: "Andrew Scott"
+        title: "Supply Chain Manager"
+        email: "a.scott@metrogenhospital.org"
+        style: "Manages medical supply inventory and vendor relationships. Focused on availability and cost."
+        signature: "Andrew Scott | Supply Chain"
+
+      - name: "Jennifer White"
+        title: "Medical Records Clerk"
+        email: "j.white@metrogenhospital.org"
+        style: "Detail-oriented. Processes medical record requests. Understands HIPAA release requirements."
+        signature: "Jennifer White | Health Information Management"
+
+      - name: "Mark Johnson"
+        title: "Biomedical Equipment Technician"
+        email: "m.johnson@metrogenhospital.org"
+        style: "Technical. Maintains and repairs medical equipment. Responds to equipment failures urgently."
+        signature: "Mark Johnson | Biomedical Engineering"
+
+      # Communications & Other (5 personnel)
+      - name: "Laura Bennett"
+        title: "Marketing Director"
+        email: "l.bennett@metrogenhospital.org"
+        style: "Brand conscious. Manages hospital reputation and community outreach. Concerned about breach PR impact."
+        signature: "Laura Bennett | Marketing & Communications"
+
+      - name: "Jason Reed"
+        title: "Public Relations Specialist"
+        email: "j.reed@metrogenhospital.org"
+        style: "Media relations. Drafts press releases and statements. Crisis communication experience."
+        signature: "Jason Reed | Public Relations"
+
+      - name: "Ashley Morgan"
+        title: "Social Worker"
+        email: "a.morgan@metrogenhospital.org"
+        style: "Patient advocate. Coordinates discharge planning and community resources. Empathetic communicator."
+        signature: "Ashley Morgan, LCSW | Social Services"
+
+      - name: "Gregory Hughes"
+        title: "Chaplain"
+        email: "g.hughes@metrogenhospital.org"
+        style: "Spiritual care provider. Compassionate. Supports patients, families, and staff during difficult times."
+        signature: "Gregory Hughes | Spiritual Care Services"
+
+      - name: "Melissa Carter"
+        title: "Volunteer Coordinator"
+        email: "m.carter@metrogenhospital.org"
+        style: "Enthusiastic organizer. Manages volunteer program. Communicates schedules and training opportunities."
+        signature: "Melissa Carter | Volunteer Services"
+
+  # --- EXTERNAL PARTIES (Required for Legal Scenarios) ---
+  - name: "CyberShield Partners LLC"
+    domain: "cybershieldpartners.com"
+    personnel:
+      - name: "Dr. Marcus Brennan"
+        title: "Lead Forensic Investigator"
+        email: "m.brennan@cybershieldpartners.com"
+        style: "Highly technical forensic expert. Methodical and evidence-focused. Provides detailed technical reports. Uses forensic terminology."
+        signature: "Dr. Marcus Brennan, GCFA, EnCE | Lead Forensic Investigator | CyberShield Partners"
+
+      - name: "Jennifer Walsh"
+        title: "Incident Response Consultant"
+        email: "j.walsh@cybershieldpartners.com"
+        style: "Experienced incident responder. Direct and action-oriented. Provides clear remediation recommendations."
+        signature: "Jennifer Walsh, CISSP, GCIH | Incident Response | CyberShield Partners"
+
+  - name: "Morrison & Associates LLP"
+    domain: "morrison-law.com"
+    personnel:
+      - name: "Eleanor Hastings"
+        title: "Partner (External Healthcare Counsel)"
+        email: "e.hastings@morrison-law.com"
+        style: "Healthcare law specialist. Expert in HIPAA and OCR enforcement. No-nonsense legal advisor. Prioritizes compliance over optics."
+        signature: "Eleanor Hastings, Esq. | Partner, Healthcare Regulatory Practice | Morrison & Associates LLP"
+
+  - name: "U.S. Department of Health & Human Services"
+    domain: "hhs.gov"
+    personnel:
+      - name: "Robert Chen"
+        title: "OCR Investigator"
+        email: "robert.chen@hhs.gov"
+        style: "Federal investigator. Formal and procedural. Requests documentation and evidence. Cites regulatory requirements."
+        signature: "Robert Chen | Office for Civil Rights | U.S. Department of Health & Human Services"
+
+# ===================================================================
+# SCENARIOS
+# ===================================================================
+scenarios:
+
+  # --- SCENARIO S_HIPAA: Main Breach Thread ---
+  - type: "thread"
+    description: "(S_HIPAA) Main breach thread: Unauthorized database access discovered"
+    base_filename: "S_HIPAA_main_breach_thread"
+    llm_settings:
+      temperature: 0.4  # Signal: Lower temp for consistency
+    prompt_variables:
+      urgency: ["URGENT", "CRITICAL", "TIME-SENSITIVE", "IMMEDIATE ACTION REQUIRED"]
+      tone: ["concerned", "alarmed", "professional but worried", "matter-of-fact"]
+    prompts:
+      - prompt_templates:
+          - "Draft an email from Morgan Chen to Dr. Patricia Williams with subject '[{urgency}] Suspicious database activity detected'. Morgan reports discovering unusual database queries accessing patient records tables on March 15, 2024 at 3:42 AM. The queries appear to be systematic extraction of patient PHI (names, SSNs, diagnoses). IP address traced to Eastern Europe. Requests immediate investigation. Tone: {tone}."
+      - prompt_templates:
+          - "Draft Dr. Patricia Williams' reply to Morgan Chen, acknowledging receipt and escalating to CRITICAL incident response. She confirms this is likely a data breach. Directs Morgan to preserve all logs immediately. CC's Rebecca Santos (Compliance Officer) and David Foster (General Counsel). Schedules emergency meeting for 8 AM. Tone: authoritative and urgent."
+      - prompt_templates:
+          - "Draft Rebecca Santos' reply-all expressing serious concern about potential HIPAA breach notification requirements. She cites 45 CFR § 164.404 (60-day notification rule) and emphasizes the clock is ticking. Requests full scope assessment ASAP. Asks if this meets the threshold for 'breach' under HIPAA (low probability harm exception assessment needed). Tone: regulatory compliance-focused."
+        probability: 0.95
+      - prompt_templates:
+          - "Draft David Foster's (General Counsel) reply-all with subject line changed to 'Re: Suspicious database activity - ATTORNEY-CLIENT PRIVILEGED'. He confirms this is a serious matter requiring immediate investigation. Advises limiting written communication and requests in-person meeting. Mentions potential OCR notification obligations and possible penalties for delayed notification. Tone: legally cautious."
+      - prompt_templates:
+          - "Draft Morgan Chen's follow-up email to Dr. Patricia Williams (CC: Rebecca Santos, David Foster) providing initial investigation findings. Discovered that junior developer Kevin Ramirez accidentally committed database credentials to public GitHub repository on Feb 28. Credentials were exposed for 16 days before being removed. Access logs show unauthorized access began March 8. Estimated 47,892 patient records queried. Includes types of PHI accessed: demographics, SSNs, diagnoses, insurance info. Attaches log files. Tone: detailed technical report."
+        probability: 0.9
+      - prompt_templates:
+          - "Draft Dr. Patricia Williams' email to executive team (Sarah Thompson COO, Dr. James Morrison CMO, Richard Taylor CFO) with subject 'CONFIDENTIAL: Data Security Incident - Exec Briefing Required'. Summarizes the breach: 47,892 patient records compromised, external attacker, data exfiltration confirmed. Breach notification to HHS OCR likely required within 60 days. Requests emergency executive meeting. Tone: serious and direct."
+      - prompt_templates:
+          - "Draft Dr. James Morrison's (CMO) reply expressing alarm about patient safety and hospital reputation. Asks what patients were affected and whether this includes sensitive diagnoses (oncology, HIV, mental health). Questions whether notification is truly required or if there's a way to minimize disclosure. Tone: defensive and concerned about reputation."
+        probability: 0.7
+      - prompt_templates:
+          - "Draft Rebecca Santos' firm reply to Dr. Morrison. She explains that HIPAA breach notification is NOT optional when PHI is compromised without a low probability of harm finding. This breach clearly exceeds that threshold. She outlines mandatory notifications: HHS OCR (within 60 days), affected patients (within 60 days), and media (if >500 patients in one state). Emphasizes that attempting to avoid notification could result in massive OCR penalties ($50,000 per violation, up to $1.5M annual max). Tone: firm compliance enforcement."
+        probability: 0.7
+
+  # --- SCENARIO S_HIPAA_A: Evidence of Data Exfiltration ---
+  - type: "thread"
+    description: "(S_HIPAA_A) Evidence of data exfiltration"
+    base_filename: "S_HIPAA_A_exfiltration_evidence"
+    llm_settings:
+      temperature: 0.4  # Signal: Lower temp for consistency
+    prompts:
+      - prompt_templates:
+          - "Draft an email from Samantha Brooks (Database Admin) to Morgan Chen and Dr. Patricia Williams with subject 'Database Audit Results - Confirmed Exfiltration'. She reports analyzing database logs and network traffic. Confirms that patient data was not just accessed but actively transmitted to external IP addresses (185.220.101.45 in Romania). Data transfer occurred over 7 days (March 8-15). Total of 47,892 records exported. Includes detailed log analysis showing SELECT queries followed by outbound data packets. Attaches network traffic analysis report. Tone: technical and definitive."
+      - prompt_templates:
+          - "Draft Dr. Patricia Williams' reply to Samantha, thanking her for the thorough analysis. She confirms this constitutes data exfiltration and requires immediate engagement of external forensic investigators. She's contacting CyberShield Partners for incident response. Asks Samantha to prepare a complete timeline of unauthorized access events for the forensic team. CC's David Foster (GC) and Rebecca Santos (Compliance). Tone: action-oriented."
+      - prompt_templates:
+          - "Draft an email from Dr. Marcus Brennan (CyberShield Partners) to Dr. Patricia Williams after initial forensic assessment. His team has confirmed the breach scope: 47,892 patient records exfiltrated. Data included full names, SSNs, DOB, addresses, diagnoses, treatment history, insurance information. Attack vector confirmed as exposed GitHub credentials. Recommends immediate credential rotation, GitHub security audit, and penetration testing. Mentions that forensic report will be ready in 5 business days. Attaches preliminary findings PDF. Tone: professional forensic expert."
+        probability: 0.85
+
+  # --- SCENARIO S_HIPAA_B: Delayed Breach Notification (Violation) ---
+  - type: "thread"
+    description: "(S_HIPAA_B) Delayed breach notification (violation)"
+    base_filename: "S_HIPAA_B_notification_delay"
+    llm_settings:
+      temperature: 0.4  # Signal: Lower temp for consistency
+    prompts:
+      - prompt_templates:
+          - "Draft an email from Sarah Thompson (COO) to Dr. Patricia Williams, Dr. James Morrison, and David Foster with subject 'Data Breach - Notification Timing Discussion'. Sarah expresses concern about the reputational and financial impact of public breach disclosure. Questions whether the hospital could delay notification to 'fully investigate' the scope first. Suggests waiting until the end of Q2 to avoid impacting patient volumes and revenue. Asks legal counsel for options to minimize disclosure. Tone: business-focused, concerned about optics."
+      - prompt_templates:
+          - "Draft David Foster's (General Counsel) immediate reply with subject 'Re: Data Breach Notification - LEGAL ADVICE REQUIRED'. He firmly advises AGAINST delaying notification beyond the 60-day HIPAA requirement. Explains that today is Day 12 since discovery (March 15), giving them until May 14 deadline. Any delay beyond that date would constitute a HIPAA violation with severe penalties. Cites OCR enforcement actions against hospitals that delayed notification (Advocate Health $5.5M fine). Recommends notification be sent by April 30 to allow buffer time. Tone: legally firm and cautionary."
+        probability: 0.95
+      - prompt_templates:
+          - "Draft Rebecca Santos' reply-all supporting David's position. She states unequivocally that delaying notification is NOT an option under HIPAA regulations. Reminds the team that 45 CFR § 164.408 requires notification 'without unreasonable delay and in no case later than 60 days'. She's already begun drafting the HHS OCR notification and patient letters. States that if the hospital fails to comply, she will be forced to report the violation herself as Compliance Officer. Tone: firm and non-negotiable."
+        probability: 0.9
+      - prompt_templates:
+          - "Draft Dr. James Morrison's email reluctantly agreeing with legal and compliance. He acknowledges that patient safety and regulatory compliance must come first, despite the reputational damage. Asks that the breach notification letter emphasize the hospital's rapid response and remediation steps. Requests involvement in drafting patient-facing communications. Tone: resigned but professional."
+        probability: 0.7
+      - prompt_templates:
+          - "Draft Sarah Thompson's (COO) follow-up email after internal discussion. She concedes to the legal and compliance position. Acknowledges the 60-day deadline must be met. Directs Laura Bennett (Marketing Director) to develop crisis communication plan and media strategy. Requests that all breach notification materials be reviewed by executive team before sending. Tone: pragmatic acceptance."
+        probability: 0.6
+
+  # --- SCENARIO S_HIPAA_C: Coverup Attempts / Evidence Destruction ---
+  - type: "thread"
+    description: "(S_HIPAA_C) Coverup attempts / evidence destruction"
+    base_filename: "S_HIPAA_C_coverup_evidence"
+    llm_settings:
+      temperature: 0.4  # Signal: Lower temp for consistency
+    prompts:
+      - prompt_templates:
+          - "Draft an email from Kevin Ramirez (Junior Developer) to Morgan Chen with subject 'About the GitHub repository'. Kevin nervously admits he realized his mistake about the exposed credentials a few days after the breach was discovered. He confesses he deleted his local Git history and removed the repository from GitHub on March 17 (2 days after breach discovery) in a panic, hoping to 'clean up' the evidence. He now realizes this was wrong and wants to disclose this to the investigation team. He's very apologetic. Tone: anxious and remorseful."
+      - prompt_templates:
+          - "Draft Morgan Chen's immediate reply to Kevin (CC: Dr. Patricia Williams, David Foster) with subject 'Re: GitHub repository - PRESERVE ALL EVIDENCE'. Morgan firmly but kindly explains that deleting evidence during an investigation is a serious problem. He directs Kevin to immediately provide any remaining backups, screenshots, or commit history he can recover. Assures Kevin that honesty now is crucial. Mentions this will need to be disclosed to the forensic team and potentially OCR. Tone: serious but not punitive."
+      - prompt_templates:
+          - "Draft Dr. Patricia Williams' email to David Foster and Rebecca Santos with subject 'CONFIDENTIAL: Potential evidence destruction by employee'. She reports Kevin's deletion of Git repository history during active investigation. Questions whether this constitutes obstruction or evidence spoliation. Asks legal counsel for guidance on how to handle this disclosure in the OCR notification. Notes that the forensic team may still be able to recover the deleted commits. Tone: concerned about legal implications."
+        probability: 0.85
+      - prompt_templates:
+          - "Draft David Foster's legal advice email to Dr. Patricia Williams (CC: Rebecca Santos) with subject 'Re: Evidence destruction - ATTORNEY-CLIENT PRIVILEGED'. He explains this is a significant complication. While Kevin's actions appear to be panic rather than malicious intent, OCR may view it negatively. Recommends full disclosure to OCR in the breach notification, emphasizing employee's immediate self-reporting and cooperation. Suggests the hospital emphasize its preservation of all server-side logs and forensic evidence. Advises immediate interview with Kevin to document timeline and intent. Tone: legally strategic."
+        probability: 0.85
+
+  # --- SCENARIO S_HIPAA_D: Calendar Event - Emergency Response Meeting ---
+  - type: "calendar_event"
+    description: "(S_HIPAA_D) Calendar event: Emergency response meeting"
+    base_filename: "S_HIPAA_D_emergency_meeting"
+    llm_settings:
+      temperature: 0.4  # Signal: Lower temp for consistency
+    prompts:
+      - prompt_templates:
+          - "Draft a calendar event from Dr. Patricia Williams to Rebecca Santos, David Foster, Dr. James Morrison, Sarah Thompson, and Morgan Chen. Summary: 'URGENT: Data Breach Response Meeting - CONFIDENTIAL'. Location: Executive Conference Room A. Date: March 16, 2024 at 8:00 AM. Duration: 2 hours. Description should indicate this is an emergency meeting to discuss the data security incident discovered on March 15. Agenda: (1) Breach scope assessment, (2) HIPAA notification requirements, (3) Forensic investigation plan, (4) Communication strategy. Mark as private and confidential. Tone: urgent but professional."
+
+  # --- SCENARIO S_HIPAA_E: Teams/Slack Chat About the Breach ---
+  - type: "chat"
+    description: "(S_HIPAA_E) Teams Chat: Informal breach discussion"
+    base_filename: "S_HIPAA_E_breach_chat"
+    llm_settings:
+      temperature: 0.4  # Signal: Lower temp for consistency
+    prompts:
+      - prompt_templates:
+          - "Generate a Microsoft Teams private chat history between Morgan Chen and Dr. Patricia Williams on March 15, 2024 starting at 11:30 PM (after the initial breach discovery). Morgan messages Patricia late at night saying he can't sleep and is still analyzing the logs. He's found more evidence of data exfiltration. Shares that this is worse than initially thought - systematic extraction over multiple days. Patricia responds that they need to engage external forensics immediately. Discussion includes technical details about the attack vector (GitHub credential exposure), scope (47K+ records), and next steps. Both express concern about HIPAA notification timeline. Conversation should feel urgent, somewhat informal due to late-night timing, but still professional. Include 15-20 messages back and forth."
+
+  # --- SCENARIO 3: Legal Privilege ---
+  - type: "thread"
+    description: "(S3) Confidential legal consultation with privilege"
+    base_filename: "S3_legal_privilege_thread"
+    llm_settings:
+      temperature: 0.4  # Signal: Lower temp for consistency
+    prompts:
+      - prompt_templates:
+          - "Draft an email from Dr. Patricia Williams to David Foster with subject 'CONFIDENTIAL AND PRIVILEGED - Breach Legal Strategy'. Dr. Williams requests confidential legal advice regarding potential OCR penalties and liability exposure from the data breach. Asks about attorney-client privileged communication regarding response strategy. Mentions concern about individual liability for CISO role. Tone: seeking legal protection."
+      - prompt_templates:
+          - "Draft David Foster's reply with clear attorney-client privilege header. He advises Dr. Williams that their communications are protected. Provides analysis of potential OCR penalty exposure ($100-$50,000 per violation depending on culpability level). Explains that CISO is generally not personally liable if hospital acted reasonably. Recommends engaging external healthcare counsel (Eleanor Hastings at Morrison & Associates) for specialized HIPAA defense expertise. Advises limiting written communications and suggests in-person discussion for sensitive strategy topics. Tone: protective legal counsel."
+      - prompt_templates:
+          - "Draft David Foster's email to Eleanor Hastings (external counsel) at Morrison & Associates (CC: Dr. Patricia Williams) with subject 'ATTORNEY-CLIENT PRIVILEGED - Metropolitan General Hospital Data Breach Representation'. He formally engages Eleanor's firm to represent the hospital in the HIPAA breach matter. Provides high-level overview of the incident. Requests urgent consultation on OCR notification strategy and potential penalty mitigation. Asks for assistance in drafting the breach notification to minimize legal exposure. Tone: formal legal engagement."
+      - prompt_templates:
+          - "Draft Eleanor Hastings' reply confirming engagement and establishing attorney-client relationship. She confirms her healthcare regulatory practice handles these matters regularly. Provides initial advice on OCR notification best practices. Mentions she's successfully defended hospitals in similar breach investigations. Suggests conference call within 24 hours to discuss comprehensive response strategy. Requests all forensic reports and evidence under attorney work product privilege. Tone: confident healthcare law specialist."
+
+  # --- SCENARIO 3B: Subtle Privilege (No Header Markers) ---
+  - type: "thread"
+    description: "(S3) Subtle privilege consultation without obvious markers"
+    base_filename: "S3B_subtle_privilege_thread"
+    llm_settings:
+      temperature: 0.4  # Signal: Lower temp for consistency
+    prompts:
+      - prompt_templates:
+          - "Draft an email from Rebecca Santos to David Foster with subject 'Need your guidance on notification timing'. Rebecca asks David (General Counsel) for confidential legal advice about whether they could potentially justify delaying the breach notification beyond 60 days based on ongoing investigation. She's getting pressure from COO Sarah Thompson to delay. DO NOT use the words 'privileged', 'confidential', or 'attorney-client' in the subject line. The body should make it clear Rebecca is seeking legal counsel from David in his capacity as General Counsel."
+      - prompt_templates:
+          - "Draft David Foster's reply providing legal advice about HIPAA notification deadlines. He mentions that this conversation is protected by attorney-client privilege. Provides specific legal analysis citing 45 CFR § 164.408 and explaining that 'ongoing investigation' is NOT a valid reason to delay notification beyond 60 days under HIPAA regulations. Cites OCR enforcement guidance. Strongly advises against delay. Suggests they discuss further in person given the sensitive nature. Tone: firm legal guidance."
+
+  # --- SCENARIO 3C: Privilege by Recipient (Email to GC) ---
+  - type: "thread"
+    description: "(S3) Business email to General Counsel becomes privileged"
+    base_filename: "S3C_privilege_by_recipient"
+    llm_settings:
+      temperature: 0.4  # Signal: Lower temp for consistency
+    prompts:
+      - prompt_templates:
+          - "Draft an email from Dr. James Morrison to David Foster with subject 'Question about breach disclosure requirements'. Dr. Morrison explains he's getting questions from medical staff about whether they need to disclose the breach to their patients during appointments. He asks David for guidance on what physicians should and shouldn't say to patients before official notification goes out. Also asks whether individual physicians could face liability. The tone is business-casual, seeking advice from the GC."
+      - prompt_templates:
+          - "Draft David Foster's reply stating this communication is attorney-client privileged. He provides legal analysis that individual physicians are not liable for the hospital's data breach, but they should refer patient questions to Patient Relations until official notification is sent. Advises physicians NOT to discuss breach details with patients until coordinated communication plan is executed. Explains this protects both the hospital and individual providers legally. Recommends physician talking points be developed by legal and compliance. Tone: legal guidance to protect hospital and staff."
+
+  # --- SCENARIO 3D: Mixed Privilege Thread (Becomes Privileged Mid-Thread) ---
+  - type: "thread"
+    description: "(S3) Email thread starts non-privileged, becomes privileged mid-conversation"
+    base_filename: "S3D_mixed_privilege_thread"
+    llm_settings:
+      temperature: 0.4  # Signal: Lower temp for consistency
+    prompts:
+      - prompt_templates:
+          - "Draft an email from Morgan Chen to Dr. Patricia Williams and Rebecca Santos with subject 'Breach remediation status update' discussing technical remediation steps completed: credential rotation, GitHub security audit, firewall rules updated, penetration testing scheduled. This is routine technical update, no legal tone."
+      - prompt_templates:
+          - "Draft Rebecca Santos' reply adding David Foster to the thread, saying 'David, can you advise on whether these remediation steps are sufficient from a legal/regulatory perspective? I want to make sure we can document adequate response for OCR.'"
+      - prompt_templates:
+          - "Draft David Foster's reply (keeping all recipients) with subject line changed to 'Re: Breach remediation status update - ATTORNEY-CLIENT PRIVILEGED'. David provides legal analysis stating that documentation of remediation efforts is critical for OCR investigation. These steps demonstrate 'reasonable' response under HIPAA. Advises this conversation is now protected by privilege. Recommends creating formal remediation report for potential OCR inquiry. Suggests limiting further written discussion of legal strategy."
+
+  # --- SCENARIO 4: Patient Scheduling Emails ---
+  - type: "standalone"
+    description: "(S4) Patient scheduling emails"
+    base_filename: "noise_patient_scheduling"
+    llm_settings:
+      temperature: 0.95  # Noise: Higher temp for variety
+    near_duplicate_probability: 0.15
+    prompt_variables:
+      topic:
+        - "appointment reminder confirmation"
+        - "reschedule request from patient"
+        - "follow-up appointment scheduling"
+        - "new patient intake scheduling"
+        - "specialist referral appointment"
+        - "surgery pre-op appointment"
+        - "lab work appointment scheduling"
+        - "imaging study scheduling (MRI/CT)"
+        - "physical therapy appointment"
+        - "post-discharge follow-up"
+        - "annual wellness visit reminder"
+        - "vaccination appointment scheduling"
+        - "patient no-show notification"
+        - "same-day appointment request"
+        - "telemedicine appointment setup"
+        - "pediatric well-child visit"
+        - "appointment cancellation notification"
+        - "wait list notification for earlier appointment"
+        - "insurance authorization delay affecting scheduling"
+        - "provider schedule change requiring reschedule"
+        - "urgent care walk-in time estimation"
+        - "multi-specialty appointment coordination"
+        - "interpreter services request for appointment"
+        - "transportation assistance scheduling"
+        - "appointment reminder - bring insurance card"
+    prompts:
+      - prompt_templates:
+          - "Draft a routine patient scheduling email between Metropolitan General Hospital staff members regarding '{topic}'. Invent specific patient names (first name only for privacy), dates, times, and relevant clinical details to make the email sound authentic. Keep it professional and HIPAA-appropriate."
+
+  # --- SCENARIO 5: Staff Meeting Announcements ---
+  - type: "standalone"
+    description: "(S5) Staff meeting announcements"
+    base_filename: "noise_staff_meetings"
+    llm_settings:
+      temperature: 0.95  # Noise: Higher temp for variety
+    prompt_variables:
+      topic:
+        - "monthly all-staff meeting agenda"
+        - "department huddle reminder"
+        - "quality improvement committee meeting"
+        - "medical staff credentialing meeting"
+        - "nursing unit council meeting"
+        - "infection control committee"
+        - "safety committee meeting"
+        - "code blue training session"
+        - "HIPAA compliance training (unrelated to breach)"
+        - "electronic health record update training"
+        - "patient satisfaction improvement workshop"
+        - "grand rounds presentation"
+        - "morbidity and mortality conference"
+        - "journal club meeting"
+        - "interdisciplinary care team meeting"
+        - "new hire orientation schedule"
+        - "annual skills competency training"
+        - "fire safety drill announcement"
+        - "disaster preparedness exercise"
+        - "diversity and inclusion workshop"
+        - "wellness program kickoff meeting"
+        - "employee satisfaction survey discussion"
+        - "performance improvement meeting"
+        - "budget planning session"
+        - "strategic planning retreat"
+    prompts:
+      - prompt_templates:
+          - "Draft a routine meeting announcement from a Metropolitan General Hospital staff member regarding '{topic}'. Include specific meeting details (date, time, location, agenda items) to make it sound authentic. Feel free to invent realistic details."
+
+  # --- SCENARIO 6: Medical Supply Orders ---
+  - type: "standalone"
+    description: "(S6) Medical supply orders"
+    base_filename: "noise_medical_supplies"
+    llm_settings:
+      temperature: 0.95  # Noise: Higher temp for variety
+    prompt_variables:
+      topic:
+        - "PPE supply reorder (masks, gowns, gloves)"
+        - "surgical instrument set request"
+        - "medication inventory alert"
+        - "contrast dye order for radiology"
+        - "IV supplies running low"
+        - "wound care dressing supplies"
+        - "dialysis supplies requisition"
+        - "laboratory reagent order"
+        - "oxygen tank delivery schedule"
+        - "defibrillator pad replacement"
+        - "suture kit restocking"
+        - "catheter supply request"
+        - "bandage and gauze bulk order"
+        - "sterilization supply order"
+        - "patient monitoring equipment cables"
+        - "blood collection tubes order"
+        - "sharps container replacement"
+        - "patient identification wristbands"
+        - "specimen collection supplies"
+        - "crash cart medication check"
+        - "emergency department supply par levels"
+        - "operating room supply shortage alert"
+        - "pharmacy medication back-order notification"
+        - "central line insertion kit"
+        - "rapid response team equipment check"
+    prompts:
+      - prompt_templates:
+          - "Draft a routine medical supply order or inventory email between Metropolitan General Hospital staff members regarding '{topic}'. Include specific quantities, product names, and realistic healthcare supply details."
+
+  # --- SCENARIO 7: HR and Payroll Communications ---
+  - type: "standalone"
+    description: "(S7) HR/payroll communications"
+    base_filename: "noise_hr_payroll"
+    llm_settings:
+      temperature: 0.95  # Noise: Higher temp for variety
+    prompt_variables:
+      topic:
+        - "timesheet submission reminder"
+        - "benefits enrollment deadline"
+        - "PTO request approval"
+        - "shift swap request"
+        - "on-call schedule assignment"
+        - "mandatory overtime notification"
+        - "new hire paperwork completion"
+        - "performance review scheduling"
+        - "continuing education credit documentation"
+        - "license renewal reminder (RN, MD)"
+        - "employee handbook acknowledgment"
+        - "workplace injury reporting procedure"
+        - "family medical leave request"
+        - "retirement plan contribution update"
+        - "employee assistance program information"
+        - "flu shot clinic for staff"
+        - "employee appreciation event"
+        - "staff recognition nomination"
+        - "uniform allowance processing"
+        - "parking permit renewal"
+        - "badge access request"
+        - "direct deposit change request"
+        - "W-4 tax form update"
+        - "reference check for former employee"
+        - "exit interview scheduling"
+    prompts:
+      - prompt_templates:
+          - "Draft a routine HR or payroll email between Metropolitan General Hospital staff members regarding '{topic}'. Include specific dates, policy references, and realistic details."
+
+  # --- SCENARIO 8: Billing and Insurance Questions ---
+  - type: "standalone"
+    description: "(S8) Billing and insurance questions"
+    base_filename: "noise_billing_insurance"
+    llm_settings:
+      temperature: 0.95  # Noise: Higher temp for variety
+    prompt_variables:
+      topic:
+        - "insurance authorization denial appeal"
+        - "missing documentation for claim"
+        - "patient payment plan setup"
+        - "Medicare coding question"
+        - "out-of-network claim processing"
+        - "charity care application review"
+        - "ambulance billing coordination"
+        - "emergency department charge reconciliation"
+        - "insurance verification for scheduled procedure"
+        - "duplicate payment investigation"
+        - "unbilled services report"
+        - "aging accounts receivable review"
+        - "claim rejection due to incorrect code"
+        - "patient financial assistance inquiry"
+        - "Medicaid eligibility verification"
+        - "co-pay collection at registration"
+        - "self-pay discount policy question"
+        - "workers compensation claim filing"
+        - "auto insurance medical payment claim"
+        - "balance billing compliance question"
+        - "third-party liability investigation"
+        - "clinical documentation query for billing"
+        - "charge capture audit findings"
+        - "revenue cycle denial trend analysis"
+        - "bad debt write-off approval"
+    prompts:
+      - prompt_templates:
+          - "Draft a routine billing or insurance-related email between Metropolitan General Hospital staff members regarding '{topic}'. Include realistic billing terminology, insurance details, and procedural references."
+
+  # --- SCENARIO 9: Facility Maintenance ---
+  - type: "standalone"
+    description: "(S9) Facility maintenance"
+    base_filename: "noise_facility_maintenance"
+    llm_settings:
+      temperature: 0.95  # Noise: Higher temp for variety
+    prompt_variables:
+      topic:
+        - "HVAC system temperature complaints"
+        - "elevator maintenance schedule"
+        - "plumbing issue in patient bathroom"
+        - "parking lot lighting repair"
+        - "roof leak in west wing"
+        - "generator testing notification"
+        - "fire alarm system inspection"
+        - "door lock malfunction"
+        - "flooring replacement project"
+        - "paint refresh in main lobby"
+        - "landscaping service schedule"
+        - "snow removal and salting plan"
+        - "pest control service visit"
+        - "biohazard waste disposal pickup"
+        - "water fountain not working"
+        - "ceiling tile replacement"
+        - "electrical outlet repair"
+        - "window cleaning schedule"
+        - "furniture repair request"
+        - "signage replacement order"
+        - "medical gas system inspection"
+        - "backup power system test"
+        - "construction noise mitigation"
+        - "loading dock repair"
+        - "cafeteria equipment maintenance"
+    prompts:
+      - prompt_templates:
+          - "Draft a routine facility maintenance email between Metropolitan General Hospital staff members regarding '{topic}'. Include specific locations, work order numbers, and realistic facility details."
+
+  # --- SCENARIO 10: IT Helpdesk Tickets ---
+  - type: "standalone"
+    description: "(S10) IT helpdesk tickets"
+    base_filename: "noise_it_helpdesk"
+    llm_settings:
+      temperature: 0.95  # Noise: Higher temp for variety
+    prompt_variables:
+      issue:
+        - "Epic/Cerner login failure"
+        - "PACS imaging system slow performance"
+        - "printer not connecting in nursing station"
+        - "password reset request"
+        - "new employee computer setup"
+        - "VPN connection issues for remote access"
+        - "email not syncing on mobile device"
+        - "software installation request"
+        - "computer running slow"
+        - "monitor display problems"
+        - "wireless mouse not working"
+        - "badge reader malfunction"
+        - "teleconference equipment setup"
+        - "shared drive access request"
+        - "application error message"
+        - "keyboard replacement needed"
+        - "external monitor setup"
+        - "laptop won't wake from sleep"
+        - "browser freezing issues"
+        - "cannot access specific website"
+        - "file recovery request"
+        - "spam email reporting"
+        - "calendar sync problems"
+        - "scanner not functioning"
+        - "access denied error message"
+    prompts:
+      - prompt_templates:
+          - "Draft a brief IT helpdesk ticket or support request email between Metropolitan General Hospital staff members regarding: {issue}. Include ticket numbers and realistic IT support language. Keep it concise."
+
+  # --- SCENARIO 11: Training Reminders ---
+  - type: "standalone"
+    description: "(S11) Training reminders"
+    base_filename: "noise_training_reminders"
+    llm_settings:
+      temperature: 0.95  # Noise: Higher temp for variety
+    prompt_variables:
+      training:
+        - "ACLS certification renewal due"
+        - "BLS certification expiring soon"
+        - "PALS training registration"
+        - "annual HIPAA privacy training (routine, not breach-related)"
+        - "infection control annual competency"
+        - "medication administration safety training"
+        - "fall prevention education"
+        - "pressure ulcer prevention training"
+        - "restraint use and documentation training"
+        - "sepsis recognition training"
+        - "stroke protocol update"
+        - "trauma certification renewal"
+        - "neonatal resuscitation program"
+        - "conscious sedation competency"
+        - "chemotherapy administration certification"
+        - "wound care training session"
+        - "IV therapy skills validation"
+        - "central line insertion training"
+        - "ventilator management course"
+        - "cardiac monitoring competency"
+        - "blood transfusion protocol training"
+        - "sterile technique review"
+        - "emergency response training"
+        - "disaster triage training"
+        - "crisis intervention de-escalation"
+    prompts:
+      - prompt_templates:
+          - "Draft a training reminder email at Metropolitan General Hospital regarding '{training}'. Include registration deadlines, certification expiration dates, and training logistics details."
+
+  # --- SCENARIO 12: Personal/Non-Work Emails ---
+  - type: "standalone"
+    description: "(S12) Personal, non-work emails"
+    base_filename: "noise_personal"
+    llm_settings:
+      temperature: 0.95  # Noise: Higher temp for variety
+    prompt_variables:
+      employee_pool: ["Jessica Martinez", "David Thompson", "Lisa Anderson", "Sandra Phillips", "Mark Johnson", "Ashley Morgan", "Melissa Carter"]
+      topic:
+        - "potluck lunch signup"
+        - "fundraiser for colleague's family"
+        - "baby shower planning"
+        - "retirement party organization"
+        - "coffee run group order"
+        - "weekend hiking trip discussion"
+        - "March Madness bracket pool"
+        - "birthday card for coworker"
+        - "recipe sharing"
+        - "book club recommendation"
+        - "fantasy football league"
+        - "restaurant recommendation request"
+        - "lost tupperware in breakroom"
+        - "carpool coordination"
+        - "gym membership group discount"
+        - "wellness challenge participation"
+        - "secret santa gift exchange"
+        - "happy hour after work"
+        - "charity 5K race signup"
+        - "thank you note for coverage"
+        - "condolence message"
+        - "congratulations on new baby"
+        - "vacation photos shared"
+        - "weekend plans discussion"
+        - "sports game ticket share"
+    prompts:
+      - prompt_templates:
+          - "Draft a clearly personal email between {sender} and {recipient} at Metropolitan General Hospital about {topic}. Keep it friendly and non-work related."
+
+  # --- SCENARIO 13: Meeting Scheduling ---
+  - type: "standalone"
+    description: "(S13) Meeting scheduling back-and-forth"
+    base_filename: "noise_meeting_scheduling"
+    llm_settings:
+      temperature: 0.95  # Noise: Higher temp for variety
+    prompt_variables:
+      employee_pool: ["Rachel Adams", "Linda Turner", "Karen Wilson", "Laura Bennett", "Jennifer White"]
+      topic:
+        - "proposing times for next week's meeting"
+        - "asking to reschedule Friday meeting"
+        - "confirming attendance at meeting"
+        - "requesting conference room booking"
+        - "adding agenda item to meeting"
+        - "declining meeting invitation"
+        - "requesting dial-in number for remote attendance"
+        - "asking if meeting is still happening"
+        - "running late to meeting notification"
+        - "canceling meeting due to conflict"
+    prompts:
+      - prompt_templates:
+          - "Draft a brief meeting scheduling email from {sender} to {recipient} about {topic}."
+
+  # --- SCENARIO 14: External Vendor Communications ---
+  - type: "standalone"
+    description: "(S14) External vendor communications"
+    base_filename: "noise_vendor_communications"
+    llm_settings:
+      temperature: 0.95  # Noise: Higher temp for variety
+    prompt_variables:
+      topic:
+        - "medical equipment service contract renewal"
+        - "pharmacy vendor pricing negotiation"
+        - "linen service delivery schedule"
+        - "food service catering order"
+        - "IT support vendor ticket escalation"
+        - "waste management pickup schedule"
+        - "temporary nursing staffing request"
+        - "continuing education vendor course catalog"
+        - "lab equipment calibration appointment"
+        - "office supply order confirmation"
+        - "insurance broker benefit plan review"
+        - "accounting services invoice question"
+        - "legal services retainer agreement"
+        - "recruitment agency candidate search"
+        - "marketing agency campaign proposal"
+        - "building maintenance contractor bid"
+        - "security system upgrade quote"
+        - "telecommunications service issue"
+        - "software vendor license renewal"
+        - "consultant engagement agreement"
+    prompts:
+      - prompt_templates:
+          - "Draft a routine vendor communication email from a Metropolitan General Hospital staff member regarding '{topic}'. Make it sound like a typical vendor relationship interaction."
+
+  # --- SCENARIO 15: Regulatory Compliance Reminders (Non-Breach) ---
+  - type: "standalone"
+    description: "(S15) Regulatory compliance reminders (non-breach)"
+    base_filename: "noise_compliance_reminders"
+    llm_settings:
+      temperature: 0.95  # Noise: Higher temp for variety
+    prompt_variables:
+      topic:
+        - "Joint Commission survey preparation"
+        - "CMS quality reporting deadline"
+        - "state health department inspection upcoming"
+        - "OSHA log review and posting"
+        - "medication diversion monitoring report"
+        - "patient rights posting compliance"
+        - "emergency preparedness plan annual review"
+        - "environment of care rounds schedule"
+        - "medical staff bylaws revision review"
+        - "informed consent form update"
+        - "advance directive policy compliance"
+        - "restraint use documentation audit"
+        - "infection rate reporting to CDC"
+        - "needle stick injury log review"
+        - "hazardous material inventory update"
+        - "patient satisfaction survey compliance"
+        - "medical record documentation audit"
+        - "medication reconciliation compliance"
+        - "time-out procedure compliance check"
+        - "surgical site infection prevention protocol"
+    prompts:
+      - prompt_templates:
+          - "Draft a routine compliance reminder email at Metropolitan General Hospital regarding '{topic}'. This is standard regulatory compliance, NOT related to the data breach. Include relevant regulatory references and deadlines."
+
+  # --- SCENARIO 16: Ultra-Mundane Office Trivia ---
+  - type: "standalone"
+    description: "(S16) Ultra-mundane office trivia"
+    base_filename: "noise_office_trivia"
+    llm_settings:
+      temperature: 1.0  # Maximum variety for mundane topics
+    prompt_variables:
+      employee_pool: ["Sandra Phillips", "Mark Johnson", "Jessica Martinez", "David Thompson", "Melissa Carter", "Lisa Anderson"]
+      topic:
+        - "Leftover donuts in breakroom"
+        - "Coffee machine not working"
+        - "AC is too cold in this wing"
+        - "Who left dishes in sink"
+        - "Lost jacket in staff lounge"
+        - "Birthday cake for coworker"
+        - "Fridge cleanout this Friday"
+        - "Someone parked in my spot"
+        - "Found keys in hallway"
+        - "Thermostat temperature complaint"
+        - "Printer jammed again"
+        - "WiFi slow in this area"
+        - "Anyone have phone charger"
+        - "Lunch spot recommendation"
+        - "Broken microwave in breakroom"
+    prompts:
+      - prompt_templates:
+          - "Draft a very brief (1-2 sentences) email from {sender} to {recipient} about: {topic}. Keep it casual and mundane. Hospital setting."
+
+  # --- SCENARIO 17: IT System Issues (Mundane) ---
+  - type: "standalone"
+    description: "(S17) IT and system issues (mundane support requests)"
+    base_filename: "noise_it_issues_mundane"
+    llm_settings:
+      temperature: 1.0  # Maximum variety for mundane topics
+    prompt_variables:
+      employee_pool: ["Brian Cooper", "Michelle Washington", "Robert Hayes", "Eric Palmer", "Kevin Ramirez"]
+      issue:
+        - "Can't login to timesheet system"
+        - "VPN keeps disconnecting"
+        - "Mouse battery dead"
+        - "Need access to shared folder"
+        - "Computer running slow after update"
+        - "Forgot password for supply ordering system"
+        - "Screen went black"
+        - "Keyboard spacebar sticking"
+        - "Can't connect to wireless printer"
+        - "Outlook not syncing"
+        - "Zoom app crashing on launch"
+        - "Need software installed (Adobe)"
+        - "Computer won't wake up"
+        - "Microphone not working on Teams"
+        - "Files not saving to network drive"
+    prompts:
+      - prompt_templates:
+          - "Draft a brief (1-2 sentences) IT support request email from {sender} to {recipient} about: {issue}. Make it sound rushed or slightly frustrated. Hospital setting."
+
+  # --- SCENARIO 18: Micro-Collaborations ---
+  - type: "standalone"
+    description: "(S18) Ultra-brief micro-collaboration messages"
+    base_filename: "noise_micro_collab"
+    llm_settings:
+      temperature: 1.0  # Maximum variety for mundane topics
+    prompt_variables:
+      employee_pool: ["Nicole Parker", "Christina Patel", "Steven Martinez", "Christopher Bell", "Patricia Clark", "Angela Kim"]
+      task:
+        - "Did you see this"
+        - "Quick question"
+        - "Thoughts on attached"
+        - "Can you review"
+        - "Need your input"
+        - "FYI"
+        - "Looping you in"
+        - "Heads up"
+        - "Just checking in"
+        - "Following up"
+        - "Circling back"
+        - "Touching base"
+        - "Update when you can"
+        - "Let me know"
+        - "Sending this your way"
+    prompts:
+      - prompt_templates:
+          - "Draft an extremely brief (5-10 words max) email from {sender} to {recipient} with subject line based on: '{task}'. Body should be minimal, like 'See below' or 'Thoughts?' or just 'FYI'. Hospital setting. Simulate someone hitting send too quickly."
+
+# ===================================================================
+# DUPLICATE NOISE SCENARIOS FOR SIGNAL/NOISE RATIO TUNING
+# ===================================================================
+# These are duplicates of S4 (Patient Scheduling) to increase noise frequency
+# and achieve target signal-to-noise ratio appropriate for realistic dataset.
+# ===================================================================
+
+  # --- S4 Duplicate 1 (using YAML anchor reference) ---
+  - &noise_s4_template
+    type: "standalone"
+    description: "(S4) Patient scheduling emails - duplicate 1"
+    base_filename: "noise_patient_scheduling_dup1"
+    llm_settings:
+      temperature: 0.95
+    near_duplicate_probability: 0.15
+    prompt_variables:
+      topic:
+        - "appointment reminder confirmation"
+        - "reschedule request from patient"
+        - "follow-up appointment scheduling"
+        - "new patient intake scheduling"
+        - "specialist referral appointment"
+        - "surgery pre-op appointment"
+        - "lab work appointment scheduling"
+        - "imaging study scheduling (MRI/CT)"
+        - "physical therapy appointment"
+        - "post-discharge follow-up"
+    prompts:
+      - prompt_templates:
+          - "Draft a routine patient scheduling email between Metropolitan General Hospital staff members regarding '{topic}'. Invent specific patient names (first name only for privacy), dates, times, and relevant clinical details to make the email sound authentic. Keep it professional and HIPAA-appropriate."
+
+  # --- S4 Duplicate 2 ---
+  - <<: *noise_s4_template
+    base_filename: "noise_patient_scheduling_dup2"
+
+  # --- S4 Duplicate 3 ---
+  - <<: *noise_s4_template
+    base_filename: "noise_patient_scheduling_dup3"
+
+  # --- S4 Duplicate 4 ---
+  - <<: *noise_s4_template
+    base_filename: "noise_patient_scheduling_dup4"

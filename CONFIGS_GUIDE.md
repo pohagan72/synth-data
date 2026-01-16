@@ -12,7 +12,7 @@ This project includes multiple YAML configuration files optimized for different 
 
 **Note:** Config-acme-dense.yaml was removed in v2.0.0. Use the focused investigation configs below for smaller, targeted datasets.
 
-### Focused Investigation Configs
+### Focused Investigation Configs - Corporate
 
 | Config File | Investigation Type | Key Scenarios | Output Directory |
 |------------|-------------------|---------------|------------------|
@@ -21,6 +21,14 @@ This project includes multiple YAML configuration files optimized for different 
 | [config-acme-hr-misconduct.yaml](config-acme-hr-misconduct.yaml) | HR/Workplace Misconduct | (S_HR)* + privilege + noise | demo_hr_misconduct_investigation |
 
 *Note: HR misconduct config requires adding (S_HR) tagged scenarios to your YAML
+
+### Focused Investigation Configs - Healthcare
+
+| Config File | Investigation Type | Key Scenarios | Output Directory |
+|------------|-------------------|---------------|------------------|
+| [config-hospital-hipaa-breach.yaml](config-hospital-hipaa-breach.yaml) | HIPAA Data Breach | S_HIPAA + privilege + noise | demo_hipaa_breach_investigation |
+| [config-hospital-billing-fraud.yaml](config-hospital-billing-fraud.yaml) | Medicare/Medicaid Billing Fraud | S_FRAUD + privilege + noise | demo_billing_fraud_investigation |
+| [config-hospital-patient-harm.yaml](config-hospital-patient-harm.yaml) | Medical Malpractice with Coverup | S_HARM + privilege + noise | demo_patient_harm_investigation |
 
 ## Important: Privilege is Now Automatic
 
@@ -61,6 +69,24 @@ This project includes multiple YAML configuration files optimized for different 
   - **Plus privilege docs to screen** (realistic!)
   - Perfect for workplace investigations
 
+- **HIPAA Breach Demo:** Use `config-hospital-hipaa-breach.yaml`
+  - Shows unauthorized patient data access and exfiltration
+  - Includes breach notification delays and coverup attempts
+  - **Plus privilege docs to screen** (realistic!)
+  - Perfect for healthcare compliance and data privacy investigations
+
+- **Healthcare Billing Fraud Demo:** Use `config-hospital-billing-fraud.yaml`
+  - Shows Medicare/Medicaid upcoding and kickback schemes
+  - Includes phantom billing and pressure on coding staff
+  - **Plus privilege docs to screen** (realistic!)
+  - Perfect for healthcare fraud detection and qui tam investigations
+
+- **Medical Malpractice Demo:** Use `config-hospital-patient-harm.yaml`
+  - Shows wrong-site surgery with evidence destruction
+  - Includes record falsification and witness intimidation
+  - **Plus privilege docs to screen** (realistic!)
+  - Perfect for medical negligence and obstruction of justice investigations
+
 ### For Stress Testing
 
 **Use `config-acme.yaml` with "All Scenarios Mixed" option:**
@@ -76,7 +102,8 @@ This project includes multiple YAML configuration files optimized for different 
 - Signal scenarios focus on core 5, noise uses full roster
 - Single investigation type per config
 - Realistic organizational depth for volume testing
-- **Recommended:** config-acme-antitrust.yaml, config-acme-safety-fraud.yaml, or config-acme-hr-misconduct.yaml
+- **Recommended Corporate:** config-acme-antitrust.yaml, config-acme-safety-fraud.yaml, or config-acme-hr-misconduct.yaml
+- **Recommended Healthcare:** config-hospital-hipaa-breach.yaml, config-hospital-billing-fraud.yaml, or config-hospital-patient-harm.yaml
 
 ## How to Use
 
@@ -164,6 +191,8 @@ To add more duplicates, follow the same pattern for other noise scenarios (S5-S1
 
 ## Quick Reference: Scenario Tags
 
+### Corporate Investigation Tags
+
 | Tag | Description | Included In |
 |-----|-------------|-------------|
 | (S1) | Price-fixing email thread | config-acme-antitrust.yaml |
@@ -171,10 +200,26 @@ To add more duplicates, follow the same pattern for other noise scenarios (S5-S1
 | (S1B) | Teams/Slack pricing chat | config-acme-antitrust.yaml |
 | (S2) | Safety test manipulation thread | config-acme-safety-fraud.yaml |
 | (S2A-D) | **Safety investigation calendar events** | config-acme-safety-fraud.yaml |
-| (S3) | **Attorney-client privilege** | **ALL focused configs (automatic)** |
-| (S4-S15) | Contextual noise | ALL focused configs (automatic) |
 | (S_HR) | HR misconduct scenarios | config-acme-hr-misconduct.yaml |
 | (HR5-8) | **HR investigation calendar events** | config-acme-hr-misconduct.yaml |
+
+### Healthcare Investigation Tags
+
+| Tag | Description | Included In |
+|-----|-------------|-------------|
+| (S_HIPAA) | HIPAA breach discovery and coverup | config-hospital-hipaa-breach.yaml |
+| (S_HIPAA_A-G) | Data exfiltration, delayed notification, evidence destruction | config-hospital-hipaa-breach.yaml |
+| (S_FRAUD) | Medicare/Medicaid billing fraud | config-hospital-billing-fraud.yaml |
+| (S_FRAUD_A-F) | Kickbacks, phantom billing, upcoding, evidence destruction | config-hospital-billing-fraud.yaml |
+| (S_HARM) | Medical malpractice with coverup | config-hospital-patient-harm.yaml |
+| (S_HARM_A-G) | Wrong-site surgery, record falsification, witness intimidation | config-hospital-patient-harm.yaml |
+
+### Universal Tags (All Configs)
+
+| Tag | Description | Included In |
+|-----|-------------|-------------|
+| (S3) | **Attorney-client privilege** | **ALL focused configs (automatic)** |
+| (S4-S18) | Contextual noise | ALL focused configs (automatic) |
 
 ## Examples
 
@@ -197,6 +242,36 @@ python app.py
 ```
 
 **Result:** Safety test manipulation emails + privilege docs to screen + R&D noise
+
+### Generate 200-item HIPAA Breach Dataset with Privilege Screening
+```bash
+python app.py
+# Select: config-hospital-hipaa-breach.yaml
+# Enter: 200
+# Format: Teams
+```
+
+**Result:** HIPAA data breach investigation emails + privilege docs to screen + healthcare operations noise
+
+### Generate 300-item Billing Fraud Dataset with Privilege Screening
+```bash
+python app.py
+# Select: config-hospital-billing-fraud.yaml
+# Enter: 300
+# Format: Slack
+```
+
+**Result:** Medicare/Medicaid billing fraud emails + privilege docs to screen + hospital billing noise
+
+### Generate 250-item Patient Harm Dataset with Privilege Screening
+```bash
+python app.py
+# Select: config-hospital-patient-harm.yaml
+# Enter: 250
+# Format: All
+```
+
+**Result:** Medical malpractice coverup emails + privilege docs to screen + clinical operations noise
 
 ### Generate All Scenarios (Stress Test)
 ```bash

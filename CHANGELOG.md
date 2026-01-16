@@ -4,6 +4,115 @@ All notable changes to the Synthetic E-Discovery Dataset Generator.
 
 ---
 
+## [2.2.0] - 2026-01-16
+
+### Added
+
+#### 🏥 Healthcare Investigation Configs (Three New Focused Configs)
+- **Feature:** Three comprehensive healthcare investigation configurations following the same professional structure as ACME corporate configs
+- **Why:** Healthcare e-discovery is a major use case for EAIDA - HIPAA breaches, billing fraud, and medical malpractice investigations require specialized scenarios
+- **New Config Files:**
+
+**1. config-hospital-hipaa-breach.yaml** - HIPAA Data Breach Investigation
+- **Organization:** Metropolitan General Hospital (metrogenhospital.org)
+- **Investigation:** Unauthorized patient database access and data exfiltration (March 2024)
+- **Narrative:** Junior developer accidentally exposed database credentials on GitHub → external attacker accessed 47,892 patient records → executive team debated notification timing → compliance officer threatened resignation → breach reported within 60-day HIPAA window
+- **Signal Scenarios (temp 0.4):**
+  - (S_HIPAA) Main breach discovery thread
+  - (S_HIPAA_A) Evidence of data exfiltration
+  - (S_HIPAA_B) Delayed breach notification debate
+  - (S_HIPAA_C) Coverup attempts / evidence destruction
+  - (S_HIPAA_D) Emergency response meeting calendar event
+  - (S_HIPAA_E) Teams chat showing real-time panic
+  - (S3) Attorney-client privilege scenarios (4 variations)
+- **Personnel:** 50 total (5 core custodians + 45 expansion)
+  - Core: CISO, IT Director, Compliance Officer, CMO, General Counsel
+  - Expansion: Doctors, nurses, IT staff, billing, HR, facilities (realistic hospital depth)
+- **Attachments:** Patient access logs, incident reports, forensic analysis, breach notifications
+- **Output:** demo_hipaa_breach_investigation
+
+**2. config-hospital-billing-fraud.yaml** - Medicare/Medicaid Billing Fraud Investigation
+- **Organization:** Riverside Regional Medical Center (riversideregional.org)
+- **Investigation:** Systematic upcoding and kickback scheme (2022-2024, $11M+ fraudulent claims)
+- **Narrative:** CFO and Billing Director implemented "revenue optimization" strategy → systematic upcoding using DRG manipulation → kickback scheme with MedTech Solutions Inc. disguised as consulting fees → phantom billing for cancelled appointments → pressure on billing staff to "code creatively" → whistleblower (Karen Phillips) filed qui tam lawsuit → evidence destruction attempts
+- **Signal Scenarios (temp 0.4):**
+  - (S_FRAUD) Main fraud thread: Upcoding discovery
+  - (S_FRAUD_A) Kickback scheme with medical device vendor
+  - (S_FRAUD_B) Phantom billing for services not rendered
+  - (S_FRAUD_C) Pressure on billing staff to maximize reimbursement
+  - (S_FRAUD_D) Destruction of audit evidence
+  - (S_FRAUD_E) "Revenue Optimization Strategy" calendar meeting
+  - (S_FRAUD_F) Teams chat about coding "creatively"
+  - (S3) Attorney-client privilege scenarios (4 variations)
+- **Personnel:** 50 total (5 core custodians + 45 expansion)
+  - Core: CFO, Billing Director, Compliance Officer, Senior Physician, General Counsel
+  - Expansion: Medical coders, billing specialists, physicians, nurses, auditors, IT, HR, facilities
+- **Attachments:** Upcoding analysis spreadsheets, Medicare claims (CMS-1500), kickback agreements, coding guidelines, audit reports
+- **Output:** demo_billing_fraud_investigation
+
+**3. config-hospital-patient-harm.yaml** - Medical Malpractice with Coverup Investigation
+- **Organization:** St. Catherine's Regional Hospital (stcatherines-health.org)
+- **Investigation:** Wrong-site surgery with evidence destruction and witness intimidation (March-April 2024)
+- **Narrative:** Dr. Marcus Chen performed LEFT knee arthroscopy on wrong patient (operated on RIGHT knee instead) → patient Robert Hendricks died from complications of corrective surgery → Risk Management Director orchestrated coverup → original incident reports destroyed → falsified versions created → nursing witnesses intimidated → abuse of peer review privilege to hide legal strategy → cover story blamed "patient confusion"
+- **Signal Scenarios (temp 0.4):**
+  - (S_HARM) Main thread: Wrong-site surgery discovery
+  - (S_HARM_A) Initial incident report showing legitimate concerns
+  - (S_HARM_B) Pressure to modify/falsify medical records
+  - (S_HARM_C) Destruction of evidence communications
+  - (S_HARM_D) Intimidation of staff witnesses
+  - (S_HARM_E) Abuse of peer review privilege (using quality review to hide coverup)
+  - (S_HARM_F) Secret "Incident Management Strategy" calendar meeting
+  - (S_HARM_G) Teams chat showing real-time panic after discovery
+  - (S3) Attorney-client privilege scenarios (6 variations, including privilege abuse detection)
+- **Personnel:** 50 total (5 core custodians + 45 expansion)
+  - Core: CMO, Attending Physician (surgeon), Charge Nurse, Risk Management Director, General Counsel
+  - Expansion: Physicians across specialties, nurses, medical records staff, quality/compliance, IT, HR, facilities
+- **Attachments:** Original vs. modified incident reports, medical records, surgical logs, peer review minutes, witness statements (original and coerced)
+- **Output:** demo_patient_harm_investigation
+
+#### Shared Healthcare Config Features
+- **50 personnel** (5 core custodians + 45 expansion for realistic organizational depth)
+- **Temperature control** (0.4 for signal, 0.95 for noise, 1.0 for ultra-mundane)
+- **Privilege scenarios** (S3 automatic with all investigations)
+- **Noise scenarios** (S4-S18: patient scheduling, medical supplies, IT helpdesk, HR, facilities, ultra-mundane)
+- **Realistic healthcare communication styles** (clinical terminology, EHR systems, medical abbreviations)
+- **External parties** (law firms, forensic investigators, regulators)
+- **Coded language** appropriate to each fraud type
+- **Evidence trails** showing consciousness of guilt and obstruction
+
+### Changed
+
+#### Documentation Updates
+- **CONFIGS_GUIDE.md:** Added "Healthcare Investigations" section with all three new configs
+  - Updated scenario tags table with S_HIPAA, S_FRAUD, S_HARM tags
+  - Added three healthcare config examples with usage instructions
+  - Reorganized config tables into "Corporate" and "Healthcare" categories
+- **README.md:** Added healthcare configs to Available Configurations table
+  - Added three healthcare investigation example outputs
+  - Reorganized into "Corporate Investigations" and "Healthcare Investigations" sections
+- **CHANGELOG.md:** This entry documenting v2.2.0
+
+### Impact Summary
+
+**Before v2.2.0:**
+- Only corporate investigation configs available (ACME Inc.)
+- Healthcare investigations required manual scenario creation
+- No HIPAA breach, billing fraud, or malpractice scenarios
+
+**After v2.2.0:**
+- **Six focused investigation configs total** (3 corporate + 3 healthcare)
+- Healthcare e-discovery fully supported with realistic scenarios
+- Medical organizations can use professional, healthcare-specific datasets
+- EAIDA can be tested on:
+  - HIPAA compliance and data breach detection
+  - Healthcare fraud detection (Medicare/Medicaid)
+  - Medical malpractice coverup and obstruction of justice
+  - Healthcare-specific privilege abuse (peer review privilege)
+
+**Result:** Comprehensive healthcare investigation support matching the quality and professionalism of corporate configs. Healthcare demos now as realistic and compelling as antitrust/safety fraud scenarios.
+
+---
+
 ## [2.1.1] - 2026-01-16
 
 ### Changed

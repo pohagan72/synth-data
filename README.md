@@ -129,12 +129,22 @@ Which investigation type do you want to generate?
 
 ### Available Configurations
 
+#### Corporate Investigations
+
 | Config File | Investigation | Personnel | Output Directory |
 |------------|---------------|-----------|------------------|
 | [config-acme-antitrust.yaml](config-acme-antitrust.yaml) | Price-fixing | 50 (5 core + 45 expansion) | demo_antitrust_investigation |
 | [config-acme-safety-fraud.yaml](config-acme-safety-fraud.yaml) | Safety fraud | 50 (5 core + 45 expansion) | demo_product_safety_fraud |
 | [config-acme-hr-misconduct.yaml](config-acme-hr-misconduct.yaml) | HR harassment | 50 (5 core + 45 expansion) | demo_hr_misconduct_investigation |
 | [config-acme.yaml](config-acme.yaml) | **Interactive** - Choose your type | 50+ | ediscovery_dataset_stress_test |
+
+#### Healthcare Investigations
+
+| Config File | Investigation | Personnel | Output Directory |
+|------------|---------------|-----------|------------------|
+| [config-hospital-hipaa-breach.yaml](config-hospital-hipaa-breach.yaml) | HIPAA data breach | 50 (5 core + 45 expansion) | demo_hipaa_breach_investigation |
+| [config-hospital-billing-fraud.yaml](config-hospital-billing-fraud.yaml) | Medicare/Medicaid fraud | 50 (5 core + 45 expansion) | demo_billing_fraud_investigation |
+| [config-hospital-patient-harm.yaml](config-hospital-patient-harm.yaml) | Medical malpractice coverup | 50 (5 core + 45 expansion) | demo_patient_harm_investigation |
 
 **Note on config-acme.yaml:** When you select this config, you'll be prompted to choose which investigation type(s) to generate:
 - Antitrust only
@@ -224,6 +234,61 @@ demo_hr_misconduct_investigation/
 └── casey.mitchell@acmeinc.com/
     ├── S_HR_witness_statement_001.eml  (Corroboration)
     └── noise_*.eml
+```
+
+### HIPAA Breach Investigation (100 items, ~15 minutes)
+
+```
+demo_hipaa_breach_investigation/
+├── p.williams@metrogenhospital.org/
+│   ├── S_HIPAA_breach_thread_001.eml  (Breach discovery)
+│   ├── S_HIPAA_A_exfiltration_001.eml (Forensic evidence)
+│   └── attachments/
+│       └── Patient_Access_Logs_March_2024.csv
+├── m.chen@metrogenhospital.org/
+│   ├── S_HIPAA_E_teams_chat_001.json  (Late night panic)
+│   └── noise_it_helpdesk_*.eml
+└── d.foster@metrogenhospital.org/
+    ├── S_HIPAA_B_delayed_notification_001.eml  (Coverup debate)
+    ├── S3_legal_privilege_*.eml                (Attorney-client)
+    └── noise_*.eml
+```
+
+### Billing Fraud Investigation (100 items, ~15 minutes)
+
+```
+demo_billing_fraud_investigation/
+├── r.brennan@riversideregional.org/
+│   ├── S_FRAUD_thread_001.eml         (Upcoding scheme)
+│   ├── S_FRAUD_A_kickback_001.eml     (Device vendor kickback)
+│   └── attachments/
+│       └── Upcoding_Analysis_Q4_2023.xlsx
+├── s.walsh@riversideregional.org/
+│   ├── S_FRAUD_C_pressure_001.eml     (Pressure on billing staff)
+│   ├── S_FRAUD_F_teams_chat_001.json  ("Code creatively")
+│   └── noise_billing_*.eml
+└── t.harper@riversideregional.org/
+    ├── S_FRAUD_D_evidence_destruction_001.eml  (Coverup)
+    └── S3_legal_privilege_*.eml
+```
+
+### Medical Malpractice Investigation (100 items, ~15 minutes)
+
+```
+demo_patient_harm_investigation/
+├── dr.hart@stcatherines-health.org/
+│   ├── S_HARM_thread_001.eml          (Wrong-site surgery)
+│   ├── S_HARM_F_calendar_001.ics      (Secret meeting)
+│   └── noise_*.eml
+├── dr.chen@stcatherines-health.org/
+│   ├── S_HARM_A_incident_report_001.eml  (Initial concerns)
+│   ├── S_HARM_B_falsify_records_001.eml  (Pressured to alter)
+│   └── attachments/
+│       └── Surgical_Log_March_15_2024_ORIGINAL.pdf
+└── p.vasquez@stcatherines-health.org/
+    ├── S_HARM_C_evidence_destruction_001.eml  (Destroy originals)
+    ├── S_HARM_D_intimidation_001.eml          (Witness threats)
+    └── S3_legal_privilege_*.eml
 ```
 
 ---

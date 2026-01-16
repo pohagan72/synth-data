@@ -1,0 +1,1121 @@
+# ===================================================================
+# MEDICARE/MEDICAID BILLING FRAUD INVESTIGATION DATASET - FOCUSED CONFIGURATION
+# ===================================================================
+# This config generates a focused dataset for Medicare/Medicaid billing fraud
+# investigations. Perfect for EAIDA demos of fraud detection and compliance analysis.
+#
+# Key Scenarios (NOW AVAILABLE):
+# - Main fraud thread: Discovery of systematic upcoding (S_FRAUD)
+# - Kickback scheme with medical device vendor (S_FRAUD_A)
+# - False claims - billing for services not rendered (S_FRAUD_B)
+# - Pressure on billing staff to maximize reimbursement (S_FRAUD_C)
+# - Destruction of audit evidence (S_FRAUD_D)
+# - Calendar event: Secret meeting about "revenue optimization" (S_FRAUD_E)
+# - Teams/Slack chat about coding "creatively" (S_FRAUD_F)
+# - Attorney-client privilege documents (S3 - automatic with all investigations)
+# - Realistic healthcare business noise for context (S4-S18)
+#
+# Investigation Narrative:
+# Riverside Regional Medical Center, a 350-bed community hospital in suburban Virginia,
+# became the subject of a federal Medicare/Medicaid fraud investigation in early 2024
+# after a whistleblower complaint from a former medical billing specialist.
+#
+# Key Timeline:
+# - January 2022: CFO Richard Brennan initiates "revenue optimization" strategy
+# - March 2022: Billing Director Susan Walsh implements systematic upcoding protocols
+# - June 2022: Kickback arrangement established with MedTech Solutions Inc. (device vendor)
+# - September 2022: Dr. Marcus Chen (Senior Physician) begins participating in upcoding scheme
+# - December 2022: Compliance Officer Linda Martinez raises initial concerns (ignored)
+# - March 2023: Internal audit by Jennifer Taylor (Coding Auditor) finds discrepancies
+# - May 2023: Evidence of phantom billing (services never rendered) emerges
+# - August 2023: Billing staff report pressure to "maximize codes" and "be creative"
+# - October 2023: Senior coder Karen Phillips documents destruction of audit records
+# - January 2024: Whistleblower files qui tam lawsuit under False Claims Act
+# - February 2024: Federal investigation launched (DOJ, HHS-OIG)
+# - March 2024: Document preservation orders issued
+#
+# Key Players (Core 5 Custodians):
+# - Richard Brennan (CFO): Architect of the fraud scheme, financial mastermind
+# - Susan Walsh (Billing Director/Revenue Cycle Director): Implemented upcoding protocols
+# - Linda Martinez (Compliance Officer): Raised concerns early, eventually threatened resignation
+# - Dr. Marcus Chen (Senior Physician - Cardiology): Participated in upcoding, performed unnecessary procedures
+# - Thomas Harper (General Counsel): Advised on legal risks, involved in privilege discussions
+#
+# Types of Fraud Identified:
+# 1. Upcoding: Billing higher-level E&M codes (99215 instead of 99213), upgrading procedures
+# 2. Kickbacks: Receiving payments from MedTech Solutions for device referrals (Anti-Kickback Statute violation)
+# 3. Phantom Billing: Billing for services never rendered (ghost patients, cancelled appointments)
+# 4. Unbundling: Separating procedure codes to maximize reimbursement
+# 5. Obstruction: Destruction of audit documents, pressure on staff to falsify records
+#
+# Discovery Mechanism:
+# - Whistleblower: Former medical billing specialist Karen Phillips filed qui tam lawsuit
+# - Initial tip to HHS-OIG hotline in January 2024
+# - Internal audit findings by Jennifer Taylor (suppressed by management)
+# - Pattern analysis by Medicare contractor showing abnormal billing patterns
+#
+# Estimated Financial Impact:
+# - $8.7 million in fraudulent Medicare claims (2022-2023)
+# - $2.3 million in fraudulent Medicaid claims (2022-2023)
+# - $850,000 in kickback payments from MedTech Solutions
+# - Potential treble damages under False Claims Act: $33 million
+# - Civil penalties: Additional $11-22 million
+# - Criminal exposure for key individuals
+# ===================================================================
+
+
+# Personnel:
+# - 5 core custodians (Richard Brennan, Susan Walsh, Linda Martinez, Dr. Marcus Chen, Thomas Harper)
+# - 45 expansion personnel for organizational depth and realistic noise
+# - Signal scenarios focus on core custodians, noise uses full roster
+
+general_settings:
+  output_directory: "demo_billing_fraud_investigation"
+
+  # SCENARIO FILTER: Set to 'billing_fraud' to focus on Medicare/Medicaid billing fraud investigation
+  # This includes S_FRAUD* (fraud scenarios) + privilege (S3) + noise (S4-S18)
+  scenario_filter: 'billing_fraud'
+
+# --- Attachments with Scenario Restrictions & Stress Tests ---
+attachments:
+  types:
+    # 1. Billing Fraud Investigation Documents
+    - name: "upcoding_analysis"
+      limit_to_scenarios: ["(S_FRAUD) Main fraud thread: Discovery of systematic upcoding", "(S_FRAUD_C) Pressure on billing staff to maximize reimbursement"]
+      probability: 0.25
+      filenames: ["Billing_Code_Analysis_{date}.xlsx", "E&M_Coding_Comparison_{date}.pdf", "Upcoding_Pattern_Report_{date}.xlsx"]
+      mime_type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+      content_description: "Detailed analysis of billing codes showing systematic pattern of upcoding. Comparison between actual documentation and billed CPT/E&M codes. Shows 99215 (highest complexity) billed at 3x national average, when documentation only supports 99213. Includes financial impact calculations showing $2.4M excess Medicare reimbursement in 12-month period..."
+
+    - name: "medicare_claims_cms1500"
+      limit_to_scenarios: ["(S_FRAUD) Main fraud thread: Discovery of systematic upcoding", "(S_FRAUD_B) False claims - billing for services not rendered"]
+      probability: 0.22
+      filenames: ["CMS1500_Claims_Batch_{date}.pdf", "Medicare_Claims_Submission_{date}.pdf", "Claim_Forms_Evidence_{date}.pdf"]
+      mime_type: "application/pdf"
+      content_description: "Batch of CMS-1500 claim forms submitted to Medicare showing fraudulent billing patterns. Includes claims for services not rendered, upcoded procedures, and unbundled services. Patient encounter documentation does not match billed services. Contains provider NPI numbers, diagnosis codes, and procedure codes as evidence..."
+
+    - name: "kickback_agreement"
+      limit_to_scenarios: ["(S_FRAUD_A) Kickback scheme with medical device vendor"]
+      probability: 0.20
+      filenames: ["MedTech_Consulting_Agreement_{date}.pdf", "Vendor_Partnership_Contract_{date}.pdf", "Referral_Fee_Schedule_{date}.pdf"]
+      mime_type: "application/pdf"
+      content_description: "Disguised kickback agreement between Riverside Regional Medical Center and MedTech Solutions Inc. Structured as 'consulting agreement' and 'education partnership,' but payment amounts directly correlate to device purchase volumes. Contains quarterly payment schedules showing $850K in total payments over 18 months. Violates federal Anti-Kickback Statute (42 U.S.C. § 1320a-7b)..."
+
+    - name: "phantom_billing_evidence"
+      limit_to_scenarios: ["(S_FRAUD_B) False claims - billing for services not rendered"]
+      probability: 0.18
+      filenames: ["Ghost_Patient_Analysis_{date}.xlsx", "Cancelled_Appointment_Bills_{date}.pdf", "No_Show_Billing_Report_{date}.xlsx"]
+      mime_type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+      content_description: "Evidence of phantom billing showing claims submitted for services never rendered. Cross-reference of billing records against appointment attendance logs reveals 487 instances where cancelled or no-show appointments were still billed to Medicare/Medicaid. Includes patient names, appointment dates, cancellation timestamps, and fraudulent claim submissions..."
+
+    - name: "coding_guidelines_deviations"
+      limit_to_scenarios: ["(S_FRAUD) Main fraud thread: Discovery of systematic upcoding", "(S_FRAUD_C) Pressure on billing staff to maximize reimbursement"]
+      probability: 0.16
+      filenames: ["Internal_Coding_Guidelines_{date}.docx", "CMS_Compliance_Deviations_{date}.pdf", "Upcoding_Instructions_{date}.docx"]
+      mime_type: "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+      content_description: "Internal coding guidelines document showing deliberate deviations from CMS and AMA coding standards. Contains instructions to 'always default to highest complexity codes' and 'maximize reimbursement regardless of documentation.' Directly contradicts Medicare coding compliance requirements. Includes email chain where Susan Walsh (Billing Director) instructs staff to ignore official guidelines..."
+
+    - name: "audit_reports_discrepancies"
+      limit_to_scenarios: ["(S_FRAUD) Main fraud thread: Discovery of systematic upcoding", "(S_FRAUD_D) Destruction of audit evidence"]
+      probability: 0.14
+      filenames: ["Internal_Audit_Report_{date}.pdf", "Coding_Compliance_Audit_{date}.xlsx", "Billing_Discrepancy_Analysis_{date}.pdf"]
+      mime_type: "application/pdf"
+      content_description: "Internal audit report by Jennifer Taylor (Coding Auditor) documenting systematic billing discrepancies. Audit of 500 random patient encounters found 68% error rate in E&M coding, with 95% of errors favoring higher reimbursement. Report was suppressed by management and auditor was instructed to 'revise findings.' Original version recovered from auditor's personal files shows evidence of fraud..."
+
+    - name: "financial_analysis_abnormal_patterns"
+      limit_to_scenarios: ["(S_FRAUD) Main fraud thread: Discovery of systematic upcoding", "(S_FRAUD_A) Kickback scheme with medical device vendor"]
+      probability: 0.12
+      filenames: ["Revenue_Trend_Analysis_{date}.xlsx", "Medicare_Reimbursement_Anomalies_{date}.pdf", "Financial_Impact_Assessment_{date}.xlsx"]
+      mime_type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+      content_description: "Financial analysis showing abnormal billing patterns and revenue spikes. Medicare reimbursement increased 47% year-over-year despite only 8% patient volume increase. Cardiology department showing 340% increase in high-complexity E&M codes. Statistical analysis demonstrates patterns inconsistent with legitimate coding practices and consistent with systematic fraud..."
+
+    - name: "pressure_on_staff_documentation"
+      limit_to_scenarios: ["(S_FRAUD_C) Pressure on billing staff to maximize reimbursement", "(S_FRAUD_D) Destruction of audit evidence"]
+      probability: 0.10
+      filenames: ["Staff_Complaint_Documentation_{date}.pdf", "HR_Meeting_Notes_{date}.docx", "Billing_Staff_Concerns_{date}.pdf"]
+      mime_type: "application/pdf"
+      content_description: "Documentation of complaints from billing specialists and medical coders reporting pressure from management to engage in fraudulent billing practices. Includes written complaints to HR, meeting notes where staff raised concerns, and email evidence of retaliation threats. Multiple employees report being told to 'code creatively,' 'maximize everything,' and 'don't worry about audits'..."
+
+    - name: "destroyed_evidence_recovery"
+      limit_to_scenarios: ["(S_FRAUD_D) Destruction of audit evidence"]
+      probability: 0.08
+      filenames: ["Deleted_Files_Recovery_{date}.pdf", "Audit_Trail_Destruction_{date}.xlsx", "Evidence_Spoliation_Report_{date}.pdf"]
+      mime_type: "application/pdf"
+      content_description: "IT forensic analysis showing deliberate deletion of audit documents and compliance records. Email server logs show Susan Walsh and Richard Brennan deleted emails containing keywords 'audit,' 'compliance,' 'overbilling' during investigation period. Forensic recovery partially successful. Includes metadata showing deletion timestamps, file recovery logs, and evidence of obstruction..."
+
+    # 2. Stress Test Files (Logs)
+    - name: "small_debug_log"
+      limit_to_scenarios: ["(S4) Patient scheduling emails"]
+      probability: 0.1
+      filenames: ["billing_system_debug_{date}.log"]
+      mime_type: "text/x-log"
+      fixed_size_mb: 1
+
+    - name: "medium_server_log"
+      limit_to_scenarios: ["(S13) Meeting scheduling", "(S5) Staff meeting announcements"]
+      probability: 0.05
+      filenames: ["ehr_billing_log_{date}.log", "claims_processing_{date}.log"]
+      mime_type: "text/x-log"
+      fixed_size_mb: 15
+
+    - name: "stress_test_dump"
+      limit_to_scenarios: ["(S4) Patient scheduling emails"]
+      probability: 0.02
+      filenames: ["CRITICAL_BILLING_DATABASE_DUMP_{date}.log"]
+      mime_type: "text/x-log"
+      # User defined size
+
+company_profiles:
+  - name: "Riverside Regional Medical Center"
+    domain: "riversideregional.org"
+    personnel:
+      # --- THE CORE 5 CUSTODIANS ONLY ---
+      - name: "Richard A. Brennan"
+        title: "Chief Financial Officer (CFO)"
+        email: "r.brennan@riversideregional.org"
+        style: "Business-focused and financially aggressive. Uses euphemisms like 'revenue optimization,' 'maximizing reimbursement opportunities,' and 'competitive positioning.' Frames fraud as legitimate business strategy. Dismissive of compliance concerns. Often references 'industry best practices' and 'benchmarking against top performers.' Calculated and strategic in written communication."
+        signature: |
+          Richard A. Brennan, CPA, MBA
+          Chief Financial Officer
+          Riverside Regional Medical Center
+          "Driving financial excellence through strategic revenue management"
+
+      - name: "Susan M. Walsh"
+        title: "Billing Director / Revenue Cycle Director"
+        email: "s.walsh@riversideregional.org"
+        style: "Operationally focused and results-driven. Direct implementer of fraudulent billing schemes. Uses coded language like 'aggressive coding,' 'optimized documentation,' and 'creative interpretation of guidelines.' Pressures staff to meet unrealistic targets. Defensive when questioned. Often references productivity metrics and reimbursement rates. Tends to be blunt in internal communications but more careful in formal emails."
+        signature: |
+          Susan M. Walsh, CPC, CPMA
+          Director of Revenue Cycle Management
+          Riverside Regional Medical Center
+          Certified Professional Coder
+
+      - name: "Linda J. Martinez"
+        title: "Compliance Officer / Privacy Officer"
+        email: "l.martinez@riversideregional.org"
+        style: "Ethical and policy-driven. Frequently references federal regulations (False Claims Act, Anti-Kickback Statute, Stark Law). Initially raises concerns diplomatically, becomes increasingly firm when ignored. Cites specific USC and CFR sections. Documents everything meticulously. Uses phrases like 'regulatory violation,' 'compliance risk,' 'federal investigation exposure,' and 'mandatory reporting obligations.' Eventually threatens resignation if fraud continues."
+        signature: |
+          Linda J. Martinez, CHC, CCEP
+          Chief Compliance & Privacy Officer
+          Riverside Regional Medical Center
+          **CONFIDENTIALITY NOTICE:** This message contains privileged and confidential information...
+
+      - name: "Dr. Marcus Chen"
+        title: "Senior Physician - Cardiology Attending"
+        email: "m.chen@riversideregional.org"
+        style: "Clinical but financially motivated. Participates in upcoding scheme for personal gain (compensation tied to billing). Initially hesitant but becomes complicit. Uses medical terminology to justify fraudulent billing. References 'clinical judgment,' 'medical necessity,' and 'appropriate level of service' when defending questionable billing. Shows conflict between medical ethics and financial incentives. More cautious in written communication as investigation heats up."
+        signature: |
+          Marcus Chen, MD, FACC
+          Senior Attending Physician - Cardiology
+          Riverside Regional Medical Center
+          Board Certified Cardiovascular Disease
+
+      - name: "Thomas R. Harper"
+        title: "General Counsel"
+        email: "t.harper@riversideregional.org"
+        style: "Legally cautious but sometimes complicit. Walks fine line between protecting hospital and enabling fraud. Frequently uses attorney-client privilege headers. References DOJ enforcement actions, False Claims Act qui tam cases, and OIG guidance. Advises limiting written communication on sensitive topics. As investigation approaches, becomes more defensive and protective of executive team. Uses legalistic phrasing and often recommends 'discussing offline' or 'in person'."
+        signature: |
+          Thomas R. Harper, J.D.
+          General Counsel | Riverside Regional Medical Center
+          **ATTORNEY-CLIENT PRIVILEGED COMMUNICATION**
+          This message is intended only for the use of the individual or entity to which it is addressed...
+
+      # --- EXPANSION PERSONNEL (45 New Profiles for Organizational Depth) ---
+      # These personnel provide realistic noise and organizational context.
+      # Signal scenarios (S_FRAUD*) still focus on the core 5 custodians above.
+
+      # Medical Staff (12 personnel)
+      - name: "Dr. Rachel Morrison"
+        title: "Emergency Department Physician"
+        email: "r.morrison@riversideregional.org"
+        style: "Fast-paced and patient-focused. Brief emails sent from mobile. Prioritizes clinical care over billing concerns. Occasionally questions coding for her patients."
+        signature: "Dr. Rachel Morrison, MD | Emergency Medicine"
+
+      - name: "Dr. James Peterson"
+        title: "Chief of Surgery"
+        email: "j.peterson@riversideregional.org"
+        style: "Authoritative and decisive. Focused on surgical outcomes and OR efficiency. Minimal involvement in billing discussions."
+        signature: "James Peterson, MD, FACS | Chief of Surgery"
+
+      - name: "Dr. Emily Nguyen"
+        title: "Pediatrics Attending"
+        email: "e.nguyen@riversideregional.org"
+        style: "Compassionate and detail-oriented. Advocates for appropriate documentation. Questions aggressive billing practices."
+        signature: "Emily Nguyen, MD, FAAP | Pediatrics"
+
+      - name: "Dr. Robert Williams"
+        title: "Orthopedic Surgeon"
+        email: "r.williams@riversideregional.org"
+        style: "Clinically focused. High surgical volume. Generates significant revenue. Minimal attention to coding details."
+        signature: "Robert Williams, MD | Orthopedic Surgery"
+
+      - name: "Dr. Jennifer Brooks"
+        title: "Internal Medicine Attending"
+        email: "j.brooks@riversideregional.org"
+        style: "Thorough documentor. Follows coding guidelines carefully. Sometimes frustrated by pressure to upcode."
+        signature: "Jennifer Brooks, MD | Internal Medicine"
+
+      - name: "Dr. Michael Santos"
+        title: "Radiology Attending"
+        email: "m.santos@riversideregional.org"
+        style: "Technical and precise. Interprets imaging studies. Uninvolved in E&M coding issues."
+        signature: "Michael Santos, MD | Diagnostic Radiology"
+
+      - name: "Dr. Angela Foster"
+        title: "Oncology Attending"
+        email: "a.foster@riversideregional.org"
+        style: "Patient-centered. Complex billing cases. Relies on billing staff for coding accuracy."
+        signature: "Angela Foster, MD | Medical Oncology"
+
+      - name: "Dr. David Richardson"
+        title: "Anesthesiology Attending"
+        email: "d.richardson@riversideregional.org"
+        style: "Procedural focus. Time-based billing. Less exposure to E&M coding fraud."
+        signature: "David Richardson, MD | Anesthesiology"
+
+      - name: "Sarah Mitchell"
+        title: "Nurse Practitioner - Primary Care"
+        email: "s.mitchell@riversideregional.org"
+        style: "Patient educator. Detailed clinical notes. Questions when billing codes don't match her documentation."
+        signature: "Sarah Mitchell, NP-C | Primary Care Clinic"
+
+      - name: "Karen Anderson"
+        title: "Physician Assistant - Cardiology"
+        email: "k.anderson@riversideregional.org"
+        style: "Works closely with Dr. Chen. Aware of coding pressures. Sometimes uncomfortable with billing practices."
+        signature: "Karen Anderson, PA-C | Cardiology"
+
+      - name: "Nicole Thompson"
+        title: "Nurse Manager - Medical/Surgical Unit"
+        email: "n.thompson@riversideregional.org"
+        style: "Focused on nursing care and staffing. Minimal involvement in billing operations."
+        signature: "Nicole Thompson, RN, MSN | Med/Surg Nurse Manager"
+
+      - name: "Jessica Martinez"
+        title: "Charge Nurse - Emergency Department"
+        email: "j.martinez@riversideregional.org"
+        style: "Fast-paced multitasker. Patient flow and bed management. No billing involvement."
+        signature: "Jessica Martinez, RN | Emergency Department"
+
+      # Billing & Revenue Cycle Staff (10 personnel)
+      - name: "Jennifer L. Taylor"
+        title: "Coding Auditor / Internal Auditor"
+        email: "j.taylor@riversideregional.org"
+        style: "Detail-oriented and ethical. Discovered systematic fraud in internal audit. Report was suppressed by management. Frustrated by lack of action on findings. Documents everything carefully. Increasingly concerned about personal liability. Tone shifts from professional to alarmed as fraud evidence mounts."
+        signature: "Jennifer L. Taylor, CPC, CCS | Coding Auditor & Compliance"
+
+      - name: "Karen M. Phillips"
+        title: "Senior Medical Billing Specialist"
+        email: "k.phillips@riversideregional.org"
+        style: "Experienced coder who resisted pressure to engage in fraud. Eventually became whistleblower. Documented instances of management pressure to upcode. Initially tried to work within system to fix problems. Became increasingly uncomfortable and eventually filed qui tam lawsuit. Detailed and evidence-focused in communications."
+        signature: "Karen M. Phillips, CPC | Medical Billing"
+
+      - name: "Amanda Rogers"
+        title: "Revenue Cycle Manager"
+        email: "a.rogers@riversideregional.org"
+        style: "Middle management. Caught between executive pressure for results and staff concerns about compliance. Sometimes pushes staff to meet unrealistic targets but shows occasional discomfort."
+        signature: "Amanda Rogers, CRCR | Revenue Cycle Operations"
+
+      - name: "Michael Turner"
+        title: "Medical Coder - E&M Specialist"
+        email: "m.turner@riversideregional.org"
+        style: "Follows instructions from Susan Walsh even when uncomfortable. Codes aggressively per management direction. Keeps personal notes about questionable practices for self-protection."
+        signature: "Michael Turner, CPC | E&M Coding Specialist"
+
+      - name: "Lisa Campbell"
+        title: "Medical Coder - Surgical Services"
+        email: "l.campbell@riversideregional.org"
+        style: "Focuses on procedural coding. Less involved in E&M fraud but aware of issues. Occasionally unbundles codes per management instruction."
+        signature: "Lisa Campbell, CCS | Surgical Coding"
+
+      - name: "Robert Dixon"
+        title: "Claims Manager"
+        email: "r.dixon@riversideregional.org"
+        style: "Submits claims as coded. Handles denials and appeals. Nervous about high denial rates for certain codes but directed to appeal aggressively."
+        signature: "Robert Dixon, CMRS | Claims Management"
+
+      - name: "Patricia Hayes"
+        title: "Charge Description Master (CDM) Coordinator"
+        email: "p.hayes@riversideregional.org"
+        style: "Maintains hospital chargemaster. Updates pricing and codes. Directed by Susan Walsh to maximize charges."
+        signature: "Patricia Hayes, RHIT | CDM Coordinator"
+
+      - name: "Daniel White"
+        title: "Billing Specialist"
+        email: "d.white@riversideregional.org"
+        style: "Junior billing staff. Follows procedures without questioning. Limited understanding of compliance implications."
+        signature: "Daniel White | Medical Billing"
+
+      - name: "Christina Lee"
+        title: "Patient Financial Services Representative"
+        email: "c.lee@riversideregional.org"
+        style: "Front-end revenue cycle. Insurance verification and pre-authorization. Uninvolved in coding fraud."
+        signature: "Christina Lee | Patient Financial Services"
+
+      - name: "Steven Clark"
+        title: "Denial Management Specialist"
+        email: "s.clark@riversideregional.org"
+        style: "Works appeals and denials. Frustrated by high denial rates on certain providers. Suspects coding issues but keeps quiet."
+        signature: "Steven Clark | Denial Management"
+
+      # Finance & Administration (8 personnel)
+      - name: "Margaret Davis"
+        title: "Controller"
+        email: "m.davis@riversideregional.org"
+        style: "Financial accounting focus. Reports to CFO Richard Brennan. Processes vendor payments including MedTech Solutions kickbacks (disguised as consulting fees). May or may not realize the illegal nature."
+        signature: "Margaret Davis, CPA | Controller"
+
+      - name: "Laura Bennett"
+        title: "Chief Executive Officer (CEO)"
+        email: "l.bennett@riversideregional.org"
+        style: "Strategic leader. Focused on hospital financial performance and community reputation. Receives high-level financial reports from CFO but may not know details of fraud. Becomes concerned as investigation develops."
+        signature: "Laura Bennett, MHA, FACHE | Chief Executive Officer"
+
+      - name: "Kevin Johnson"
+        title: "Chief Operating Officer (COO)"
+        email: "k.johnson@riversideregional.org"
+        style: "Operations focused. Oversees clinical departments. Aware of pressure on physicians to generate revenue. Less involved in billing mechanics."
+        signature: "Kevin Johnson, MBA | Chief Operating Officer"
+
+      - name: "Rachel Adams"
+        title: "Executive Assistant to CFO"
+        email: "r.adams@riversideregional.org"
+        style: "Schedules meetings and manages CFO calendar. Privy to confidential discussions. Schedules 'revenue optimization' meetings. Professional and discreet."
+        signature: "Rachel Adams | Executive Office"
+
+      - name: "Elizabeth Moore"
+        title: "Accounts Payable Manager"
+        email: "e.moore@riversideregional.org"
+        style: "Processes vendor invoices. Pays MedTech Solutions consulting fees without questioning legitimacy. Transactional communicator."
+        signature: "Elizabeth Moore | Accounts Payable"
+
+      - name: "Christopher Bell"
+        title: "Risk Management Director"
+        email: "c.bell@riversideregional.org"
+        style: "Focused on clinical risk and malpractice. Limited involvement in billing compliance. Works with GC on legal matters."
+        signature: "Christopher Bell, ARM-P | Risk Management"
+
+      - name: "Michelle Baker"
+        title: "HR Director"
+        email: "m.baker@riversideregional.org"
+        style: "Employee relations. Receives complaints from billing staff about pressure to engage in questionable practices. Escalates to compliance and legal."
+        signature: "Michelle Baker, SPHR | Human Resources"
+
+      - name: "Daniel Wright"
+        title: "Payroll Manager"
+        email: "d.wright@riversideregional.org"
+        style: "Processes physician compensation including RVU-based incentives. Uninvolved in billing fraud."
+        signature: "Daniel Wright | Payroll"
+
+      # IT Staff (5 personnel)
+      - name: "Andrew Scott"
+        title: "IT Director"
+        email: "a.scott@riversideregional.org"
+        style: "Manages information systems. Maintains EHR and billing systems. Receives requests to delete audit logs and emails during investigation."
+        signature: "Andrew Scott | Information Technology"
+
+      - name: "Brian Cooper"
+        title: "EHR Systems Analyst"
+        email: "b.cooper@riversideregional.org"
+        style: "Supports Epic/Cerner billing modules. Trains staff on documentation and coding tools. Aware of system misuse."
+        signature: "Brian Cooper | EHR Systems"
+
+      - name: "Angela Kim"
+        title: "IT Security Analyst"
+        email: "a.kim@riversideregional.org"
+        style: "Monitors system access and security. May notice unusual deletion of files and emails. Reports to IT Director."
+        signature: "Angela Kim | Information Security"
+
+      - name: "Robert Hayes"
+        title: "Database Administrator"
+        email: "r.hayes@riversideregional.org"
+        style: "Maintains billing databases. Runs reports and queries. Sometimes asked to produce reports that mask fraud patterns."
+        signature: "Robert Hayes | Database Administration"
+
+      - name: "Michelle Washington"
+        title: "IT Help Desk Manager"
+        email: "m.washington@riversideregional.org"
+        style: "Supports end users. Handles password resets and system issues. Uninvolved in billing operations."
+        signature: "Michelle Washington | IT Help Desk"
+
+      # Facilities & Support (5 personnel)
+      - name: "John Sanders"
+        title: "Facilities Director"
+        email: "j.sanders@riversideregional.org"
+        style: "Building operations and maintenance. No involvement in billing fraud."
+        signature: "John Sanders | Facilities Management"
+
+      - name: "Maria Lopez"
+        title: "Environmental Services Manager"
+        email: "m.lopez@riversideregional.org"
+        style: "Housekeeping and sanitation. No billing involvement."
+        signature: "Maria Lopez | Environmental Services"
+
+      - name: "Timothy Green"
+        title: "Security Director"
+        email: "t.green@riversideregional.org"
+        style: "Physical security and badge access. No billing involvement."
+        signature: "Timothy Green | Hospital Security"
+
+      - name: "Sandra Phillips"
+        title: "Receptionist - Main Lobby"
+        email: "s.phillips@riversideregional.org"
+        style: "Friendly front desk. Patient check-in. No billing involvement."
+        signature: "Sandra Phillips | Front Desk"
+
+      - name: "Mark Johnson"
+        title: "Biomedical Equipment Technician"
+        email: "m.johnson@riversideregional.org"
+        style: "Maintains medical equipment. No billing involvement."
+        signature: "Mark Johnson | Biomedical Engineering"
+
+      # Communications & Other (5 personnel)
+      - name: "Laura Harrison"
+        title: "Marketing Director"
+        email: "l.harrison@riversideregional.org"
+        style: "Brand management and community outreach. Concerned about fraud investigation impact on reputation."
+        signature: "Laura Harrison | Marketing & Communications"
+
+      - name: "Jason Reed"
+        title: "Public Relations Specialist"
+        email: "j.reed@riversideregional.org"
+        style: "Media relations. Prepares for crisis communication if investigation becomes public."
+        signature: "Jason Reed | Public Relations"
+
+      - name: "Ashley Morgan"
+        title: "Social Worker"
+        email: "a.morgan@riversideregional.org"
+        style: "Patient advocate. Discharge planning. No billing involvement."
+        signature: "Ashley Morgan, LCSW | Social Services"
+
+      - name: "Gregory Hughes"
+        title: "Chaplain"
+        email: "g.hughes@riversideregional.org"
+        style: "Spiritual care. Supports patients and staff. No billing involvement."
+        signature: "Gregory Hughes | Spiritual Care Services"
+
+      - name: "Melissa Carter"
+        title: "Volunteer Coordinator"
+        email: "m.carter@riversideregional.org"
+        style: "Manages volunteer program. No billing involvement."
+        signature: "Melissa Carter | Volunteer Services"
+
+  # --- EXTERNAL PARTIES (Required for Investigation Scenarios) ---
+  - name: "MedTech Solutions Inc."
+    domain: "medtechsolutions.com"
+    personnel:
+      - name: "Douglas Westfield"
+        title: "Senior Vice President - Strategic Partnerships"
+        email: "d.westfield@medtechsolutions.com"
+        style: "Sales-focused and aggressive. Structured kickback arrangement as 'consulting agreement' and 'education partnership.' Uses euphemisms like 'strategic alignment,' 'preferred provider relationship,' and 'value-based partnership.' Knows the arrangement violates Anti-Kickback Statute but structures it to appear legitimate."
+        signature: "Douglas Westfield | SVP Strategic Partnerships | MedTech Solutions Inc."
+
+      - name: "Patricia Reynolds"
+        title: "Account Executive"
+        email: "p.reynolds@medtechsolutions.com"
+        style: "Implements kickback payments. Processes quarterly payments to Riverside Regional. References 'consulting fees' and 'education grants' in communications. Tracks device purchase volumes to calculate kickback amounts."
+        signature: "Patricia Reynolds | Account Executive | MedTech Solutions"
+
+  - name: "Morrison & Sullivan LLP"
+    domain: "morrison-sullivan.com"
+    personnel:
+      - name: "Eleanor Hastings"
+        title: "Partner (External Healthcare Counsel)"
+        email: "e.hastings@morrison-sullivan.com"
+        style: "Healthcare fraud defense specialist. Expert in False Claims Act, qui tam litigation, and DOJ investigations. No-nonsense legal advisor. Prioritizes defense strategy and damage control. References past DOJ settlements and OIG guidance."
+        signature: "Eleanor Hastings, Esq. | Partner, Healthcare Fraud Defense | Morrison & Sullivan LLP"
+
+  - name: "Federal Investigators"
+    domain: "usdoj.gov"
+    personnel:
+      - name: "Special Agent Robert Chen"
+        title: "HHS-OIG Investigator"
+        email: "robert.chen@oig.hhs.gov"
+        style: "Federal investigator. Formal and procedural. Issues subpoenas and document preservation orders. Conducts interviews. Cites federal statutes and regulations."
+        signature: "Robert Chen | Special Agent | Office of Inspector General | U.S. Department of Health & Human Services"
+
+      - name: "Assistant U.S. Attorney Jennifer Walsh"
+        title: "DOJ Civil Fraud Section"
+        email: "jennifer.walsh@usdoj.gov"
+        style: "Federal prosecutor. Handles False Claims Act cases. Direct and authoritative. References qui tam relator, treble damages, and civil monetary penalties."
+        signature: "Jennifer Walsh | Assistant U.S. Attorney | Civil Fraud Section | U.S. Department of Justice"
+
+# ===================================================================
+# SCENARIOS
+# ===================================================================
+scenarios:
+
+  # --- SCENARIO S_FRAUD: Main Fraud Thread - Discovery of Systematic Upcoding ---
+  - type: "thread"
+    description: "(S_FRAUD) Main fraud thread: Discovery of systematic upcoding"
+    base_filename: "S_FRAUD_main_upcoding_thread"
+    llm_settings:
+      temperature: 0.4  # Signal: Lower temp for consistency
+    prompt_variables:
+      urgency: ["urgent", "time-sensitive", "needs attention", "ASAP"]
+      tone: ["concerned", "alarmed", "professional but worried", "matter-of-fact"]
+    prompts:
+      - prompt_templates:
+          - "Draft an email from Jennifer Taylor (Coding Auditor) to Linda Martinez (Compliance Officer) with subject 'Internal Audit Findings - Coding Compliance Review'. Jennifer reports completing internal audit of 500 random patient encounters. Found 68% error rate in E&M coding, with 95% of errors favoring higher reimbursement. Specific findings: 99215 (highest complexity office visit) billed at 340% above national benchmark, but documentation only supports 99213 in most cases. Estimates $2.4M excess Medicare reimbursement in past 12 months. Attaches detailed audit report. Requests meeting to discuss findings. Tone: {tone}."
+      - prompt_templates:
+          - "Draft Linda Martinez's (Compliance Officer) reply expressing serious concern about audit findings. She confirms this appears to be systematic upcoding in violation of Medicare billing regulations. Cites False Claims Act exposure (31 U.S.C. § 3729) and potential treble damages. Recommends immediate disclosure to CFO and GC, implementation of corrective action plan, and consideration of voluntary self-disclosure to OIG. Asks to meet with Jennifer tomorrow. CC's Thomas Harper (General Counsel). Tone: regulatory compliance-focused and urgent."
+        probability: 0.95
+      - prompt_templates:
+          - "Draft Richard Brennan's (CFO) email to Linda Martinez and Thomas Harper after being briefed on audit findings. Subject: 'Re: Coding Audit - Let's discuss context'. Richard downplays the findings, suggesting they reflect 'aggressive but defensible coding practices' and 'clinical judgment by providers.' Claims that high-complexity codes are justified by patient acuity and quality of documentation. References 'industry benchmarking' showing other hospitals code similarly. Suggests the audit methodology is flawed. Resists corrective action. Tone: dismissive and defensive."
+      - prompt_templates:
+          - "Draft Susan Walsh's (Billing Director) email to Richard Brennan (CC: Thomas Harper) supporting CFO's position. She argues that coding reflects 'revenue optimization' and 'appropriate documentation improvement initiatives.' Claims coders are following internal guidelines she developed to 'maximize legitimate reimbursement opportunities.' Mentions that Medicare contractors have not raised issues with their coding patterns. Suggests Jennifer Taylor's audit is overly conservative and doesn't understand 'modern revenue cycle best practices.' Tone: defensive and strategic."
+        probability: 0.9
+      - prompt_templates:
+          - "Draft Linda Martinez's firm reply-all stating that 'aggressive coding' that doesn't match documentation is fraud, not legitimate revenue optimization. She cites OIG guidance on E&M coding and Medicare contractor education materials. Explains that absence of Medicare audit so far doesn't mean practices are compliant - many fraud cases are discovered years later. Warns that if hospital doesn't implement corrective action, she is obligated under compliance program to report to OIG. References past cases where hospitals paid tens of millions in False Claims Act settlements for upcoding. Tone: firm compliance enforcement."
+        probability: 0.85
+      - prompt_templates:
+          - "Draft Thomas Harper's (General Counsel) email with subject 'Re: Coding Audit - ATTORNEY-CLIENT PRIVILEGED'. He requests all parties limit further written discussion and schedule in-person meeting. Acknowledges Linda's concerns have merit. Explains potential legal exposure under False Claims Act if coding practices constitute systematic fraud. Mentions qui tam whistleblower risk if employees report to government. Advises engaging external healthcare counsel for independent review. Suggests meeting tomorrow to develop response strategy. Tone: legally cautious."
+      - prompt_templates:
+          - "Draft Richard Brennan's reply agreeing to meeting but pushing back on characterization as 'fraud.' Uses language like 'coding optimization,' 'documentation improvement,' and 'defending clinical judgment.' Suggests they should focus on 'clarifying guidelines' rather than 'self-reporting' to government. Questions whether external counsel is necessary. Tone: resistant to compliance action."
+        probability: 0.7
+
+  # --- SCENARIO S_FRAUD_A: Kickback Scheme with Medical Device Vendor ---
+  - type: "thread"
+    description: "(S_FRAUD_A) Kickback scheme with medical device vendor"
+    base_filename: "S_FRAUD_A_kickback_scheme"
+    llm_settings:
+      temperature: 0.4  # Signal: Lower temp for consistency
+    prompts:
+      - prompt_templates:
+          - "Draft an email from Douglas Westfield (MedTech Solutions VP) to Richard Brennan (CFO) with subject 'Q2 Strategic Partnership Payment - Consulting Agreement'. Douglas confirms that per their consulting agreement dated June 2022, MedTech Solutions will process Q2 payment of $125,000 to Riverside Regional. References that this reflects 'educational partnership activities' and 'strategic consulting services.' Mentions that device purchase volumes have been excellent this quarter. Attaches invoice structured as consulting fees. Tone: professional but using obvious coded language."
+      - prompt_templates:
+          - "Draft Richard Brennan's reply acknowledging receipt and directing Margaret Davis (Controller) to process payment. Uses language like 'value-based partnership' and 'educational collaboration.' Asks Douglas to schedule call to discuss 'expanding our strategic relationship' for next quarter. Tone: business-focused, treating illegal kickback as routine transaction."
+      - prompt_templates:
+          - "Draft Linda Martinez (Compliance Officer) email to Richard Brennan and Thomas Harper with subject 'MedTech Solutions Consulting Agreement - Compliance Review Required'. Linda reports discovering the consulting agreement during routine contract review. Expresses concern that payment amounts appear to correlate directly with device purchase volumes, which would violate federal Anti-Kickback Statute (42 U.S.C. § 1320a-7b). Requests copy of deliverables and documentation of consulting services rendered. Notes that 'educational partnerships' that are really kickbacks for referrals are classic AKS violation pattern. Asks for meeting to review arrangement. Tone: compliance red flag alert."
+        probability: 0.85
+      - prompt_templates:
+          - "Draft Richard Brennan's defensive reply stating the MedTech relationship is a 'legitimate consulting arrangement' for 'strategic advisory services' and 'continuing medical education.' Claims payments are for services rendered, not tied to purchases. Says this is 'industry standard practice' for vendor partnerships. Resists Linda's characterization of kickback arrangement. Tone: defensive and dismissive of compliance concerns."
+        probability: 0.8
+      - prompt_templates:
+          - "Draft Thomas Harper's (General Counsel) email to Richard Brennan and Linda Martinez with subject 'Re: MedTech Agreement - ATTORNEY-CLIENT PRIVILEGED - Legal Analysis Required'. He acknowledges Linda's concerns are valid. Explains that under AKS, both parties to kickback arrangement can face criminal prosecution, civil monetary penalties, and exclusion from federal healthcare programs. Notes that safe harbor requirements for legitimate consulting arrangements are very specific and this arrangement may not qualify. Recommends immediate review by external healthcare counsel. Advises suspending payments pending review. Tone: legally worried."
+        probability: 0.8
+
+  # --- SCENARIO S_FRAUD_B: False Claims - Billing for Services Not Rendered ---
+  - type: "thread"
+    description: "(S_FRAUD_B) False claims - billing for services not rendered"
+    base_filename: "S_FRAUD_B_phantom_billing"
+    llm_settings:
+      temperature: 0.4  # Signal: Lower temp for consistency
+    prompts:
+      - prompt_templates:
+          - "Draft an email from Karen Phillips (Senior Medical Billing Specialist) to Jennifer Taylor (Coding Auditor) with subject 'Concerns about cancelled appointment billing'. Karen reports noticing pattern where Dr. Marcus Chen's office appointments that were cancelled or no-show are still being billed to Medicare. She discovered this while working denials - Medicare is rejecting some claims as duplicates because patient wasn't actually seen on billed date. She cross-referenced 20 claims against appointment system and found 18 were cancelled or no-show but still billed. Asks if Jennifer can review this in her audit work. Tone: concerned employee raising red flag."
+      - prompt_templates:
+          - "Draft Jennifer Taylor's reply thanking Karen for bringing this to her attention. She says she'll expand her audit to include verification of patient encounters against billing records. Asks Karen to document specific examples with dates, patient names, and claim numbers. Mentions this is separate issue from upcoding problem she already found. Says she'll report findings to Linda Martinez (Compliance Officer). Tone: audit investigator following up on tip."
+      - prompt_templates:
+          - "Draft Jennifer Taylor's email to Linda Martinez (CC: Karen Phillips) with subject 'URGENT: Additional Audit Findings - Phantom Billing'. Reports expanded audit found 487 instances over 18-month period where cancelled or no-show appointments were billed to Medicare/Medicaid. Pattern concentrated in Dr. Marcus Chen's cardiology practice. Total fraudulent billing estimated at $380,000. Attached spreadsheet cross-references billing records against appointment attendance logs. This is separate from upcoding issue and constitutes billing for services not rendered - classic False Claims Act violation. Recommends immediate investigation. Tone: alarmed auditor."
+        probability: 0.9
+      - prompt_templates:
+          - "Draft Linda Martinez's immediate reply escalating to Thomas Harper (GC) and marking as URGENT. She confirms this is serious fraud exposure - billing for services not rendered is indefensible and shows intent to defraud Medicare. Combined with upcoding findings, hospital now has evidence of multiple fraud schemes. Recommends immediate engagement of external counsel, suspension of Dr. Chen pending investigation, and consideration of voluntary self-disclosure to OIG. States she cannot continue as Compliance Officer if hospital fails to take immediate corrective action. Tone: compliance officer drawing line in sand."
+        probability: 0.85
+      - prompt_templates:
+          - "Draft Richard Brennan's email to Linda Martinez, Thomas Harper, and Susan Walsh with subject 'Re: Phantom Billing - Need Context Before Overreacting'. Richard suggests there may be innocent explanation - perhaps clerical errors or billing lag where patient was seen on different date. Cautions against 'jumping to conclusions' about fraud. Says they should investigate internally before involving external parties. Resists suspension of Dr. Chen (high revenue producer). Suggests 'corrective action plan' rather than self-disclosure. Tone: defensive CFO trying to minimize fraud findings."
+        probability: 0.75
+
+  # --- SCENARIO S_FRAUD_C: Pressure on Billing Staff to Maximize Reimbursement ---
+  - type: "thread"
+    description: "(S_FRAUD_C) Pressure on billing staff to maximize reimbursement"
+    base_filename: "S_FRAUD_C_staff_pressure"
+    llm_settings:
+      temperature: 0.4  # Signal: Lower temp for consistency
+    prompts:
+      - prompt_templates:
+          - "Draft an email from Susan Walsh (Billing Director) to all medical coding staff with subject 'Q3 Productivity Goals - Coding Optimization Initiative'. Susan announces new productivity standards requiring coders to 'maximize reimbursement on every encounter.' Instructs staff to 'default to highest appropriate code when documentation is ambiguous' and to 'give physicians benefit of the doubt regarding complexity.' Sets target that 99215 (highest complexity) should represent at least 40% of E&M codes (far above national average of 12%). States that coder performance reviews will be based on reimbursement per encounter. Mentions that Medicare allows 'clinical judgment' in code selection. Tone: aggressive manager setting unrealistic targets."
+      - prompt_templates:
+          - "Draft an email from Michael Turner (Medical Coder) to Karen Phillips (Senior Billing Specialist) with subject 'Concerned about new coding targets'. Michael says he's uncomfortable with Susan's directive to 'maximize codes' when documentation doesn't support it. He's been coding for 8 years and knows that defaulting to 99215 without proper documentation is upcoding and violates Medicare guidelines. Asks if Karen has same concerns and what they should do. Mentions he's keeping personal documentation of the directive. Tone: worried employee seeking validation from colleague."
+      - prompt_templates:
+          - "Draft Karen Phillips' reply agreeing she has same concerns. Says Susan has been pressuring her similarly for months. Mentions she's documented multiple instances where she was told to 'code creatively' and 'not worry so much about guidelines.' Says she's thinking about reporting to HR or Compliance Officer. Asks Michael if he'd be willing to support her if she reports. Tone: fellow employee commiserating and considering whistleblowing."
+        probability: 0.85
+      - prompt_templates:
+          - "Draft an email from Karen Phillips to Michelle Baker (HR Director) with subject 'CONFIDENTIAL - Staff Concerns About Billing Practices'. Karen reports that billing staff are receiving pressure from Susan Walsh to engage in coding practices that may violate Medicare regulations. Describes directive to maximize codes regardless of documentation, aggressive productivity targets tied to reimbursement, and retaliation threats for raising compliance concerns. Multiple staff members are uncomfortable but afraid to speak up. Requests confidential meeting to discuss. Tone: employee formally reporting concerns to HR."
+        probability: 0.8
+      - prompt_templates:
+          - "Draft Michelle Baker's (HR) email to Linda Martinez (Compliance Officer) forwarding Karen's complaint and recommending compliance investigation. Notes this is not first complaint she's received about billing department pressure. Says this raises both compliance and employee relations concerns. Recommends interviewing billing staff confidentially. Tone: HR escalating to compliance."
+        probability: 0.75
+
+  # --- SCENARIO S_FRAUD_D: Destruction of Audit Evidence ---
+  - type: "thread"
+    description: "(S_FRAUD_D) Destruction of audit evidence"
+    base_filename: "S_FRAUD_D_evidence_destruction"
+    llm_settings:
+      temperature: 0.4  # Signal: Lower temp for consistency
+    prompts:
+      - prompt_templates:
+          - "Draft an email from Susan Walsh (Billing Director) to Richard Brennan (CFO) with subject 'Cleaning up audit documentation'. Susan reports she's been 'organizing files' and has deleted old audit reports and compliance documentation that showed coding discrepancies. Says she wants to 'present cleaner picture' if external auditors or regulators request documentation. Mentions she's also deleted email threads discussing 'coding optimization strategies.' Asks if Richard wants her to clean up his email folders too. Tone: deliberately vague language suggesting obstruction."
+      - prompt_templates:
+          - "Draft Richard Brennan's reply agreeing and suggesting they implement 'more aggressive email retention policy' going forward. Says they should 'avoid creating unnecessary paper trail' on 'routine billing discussions.' Suggests using phone calls instead of emails for 'sensitive operational topics.' Tone: CFO supporting evidence destruction using coded language."
+      - prompt_templates:
+          - "Draft an email from Angela Kim (IT Security Analyst) to Andrew Scott (IT Director) with subject 'Unusual deletion activity flagged'. Angela reports that automated security monitoring flagged unusual deletion activity on Susan Walsh and Richard Brennan's email accounts. Thousands of emails containing keywords like 'audit,' 'compliance,' 'upcoding,' 'Medicare,' and 'billing' were bulk-deleted over past 48 hours. Asks if this was authorized and if she should preserve logs for investigation. Tone: IT security professional flagging suspicious activity."
+        probability: 0.85
+      - prompt_templates:
+          - "Draft Andrew Scott's reply to Angela instructing her to preserve all deletion logs and notify him before responding to any requests to delete additional files. He says he needs to consult with General Counsel before taking action. Asks Angela to keep this confidential for now. Tone: IT Director recognizing potential evidence spoliation."
+        probability: 0.8
+      - prompt_templates:
+          - "Draft Andrew Scott's email to Thomas Harper (General Counsel) with subject 'CONFIDENTIAL - Evidence of File Deletion by Executives'. Reports the suspicious deletion activity by CFO and Billing Director. Notes this occurred shortly after compliance concerns were raised about billing practices. Asks for legal guidance on preservation obligations. Mentions IT has forensic tools that may be able to recover deleted files. Tone: IT Director alerting GC to potential obstruction of investigation."
+        probability: 0.8
+      - prompt_templates:
+          - "Draft Thomas Harper's immediate reply instructing Andrew to preserve all logs and implement litigation hold on all email accounts and files related to billing and compliance. States that destruction of evidence during investigation could constitute obstruction and separate federal offense. Asks Andrew to prepare forensic recovery report. Plans to address with Richard and Susan directly. Tone: General Counsel concerned about criminal obstruction."
+        probability: 0.75
+
+  # --- SCENARIO S_FRAUD_E: Calendar Event - Secret "Revenue Optimization" Meeting ---
+  - type: "calendar_event"
+    description: "(S_FRAUD_E) Calendar event: Secret meeting about revenue optimization"
+    base_filename: "S_FRAUD_E_revenue_optimization_meeting"
+    llm_settings:
+      temperature: 0.4  # Signal: Lower temp for consistency
+    prompts:
+      - prompt_templates:
+          - "Draft a calendar event from Richard Brennan (CFO) to Susan Walsh (Billing Director), Dr. Marcus Chen (Senior Physician), and Thomas Harper (GC). Summary: 'Revenue Optimization Strategy - Private Discussion'. Location: CFO Office - Private Conference Room. Date: March 2022 (early in fraud scheme). Duration: 90 minutes. Description should indicate this is confidential meeting to discuss 'maximizing reimbursement opportunities,' 'aggressive coding strategies,' and 'vendor partnership arrangements.' Mark as private. No other attendees. Instructions to 'discuss offline' rather than email. Tone: deliberately vague calendar entry for meeting where fraud scheme will be discussed."
+
+  # --- SCENARIO S_FRAUD_F: Teams/Slack Chat About Coding "Creatively" ---
+  - type: "chat"
+    description: "(S_FRAUD_F) Teams Chat: Informal discussion about creative coding"
+    base_filename: "S_FRAUD_F_creative_coding_chat"
+    llm_settings:
+      temperature: 0.4  # Signal: Lower temp for consistency
+    prompts:
+      - prompt_templates:
+          - "Generate a Microsoft Teams private chat history between Susan Walsh (Billing Director) and Amanda Rogers (Revenue Cycle Manager) discussing coding practices. Susan messages Amanda saying they need to 'push the team harder' to code more aggressively. Uses phrases like 'code creatively,' 'maximize everything,' 'default to highest codes,' and 'don't be too conservative.' Amanda expresses some discomfort but ultimately agrees. Susan mentions that CFO is demanding higher revenue and they need to 'find creative solutions.' Discussion includes specific instructions to increase 99215 codes and reduce 99213 codes. Both acknowledge this is pushing boundaries but rationalize it as 'industry standard.' Chat should feel somewhat informal but show clear evidence of direction to engage in upcoding. Include 15-20 messages back and forth showing progression from suggestion to directive."
+
+  # --- SCENARIO 3: Legal Privilege ---
+  - type: "thread"
+    description: "(S3) Confidential legal consultation with privilege"
+    base_filename: "S3_legal_privilege_thread"
+    llm_settings:
+      temperature: 0.4  # Signal: Lower temp for consistency
+    prompts:
+      - prompt_templates:
+          - "Draft an email from Richard Brennan (CFO) to Thomas Harper (GC) with subject 'CONFIDENTIAL AND PRIVILEGED - Billing Investigation Legal Strategy'. Richard requests confidential legal advice regarding potential DOJ investigation and False Claims Act exposure. Asks about attorney-client privileged communication regarding defense strategy. Mentions concern about whistleblower lawsuit and personal liability. Tone: executive seeking legal protection."
+      - prompt_templates:
+          - "Draft Thomas Harper's reply with clear attorney-client privilege header. He advises Richard that their communications are protected. Provides analysis of potential False Claims Act exposure - treble damages (3x the fraud amount) plus per-claim penalties of $11,000-22,000 per false claim. Explains that if systematic fraud is proven, damages could exceed $30 million. Mentions individual liability for executives who knowingly participated. Recommends engaging external healthcare fraud defense counsel (Eleanor Hastings at Morrison & Sullivan). Advises limiting written communications on sensitive topics. Tone: protective legal counsel providing strategic advice."
+      - prompt_templates:
+          - "Draft Thomas Harper's email to Eleanor Hastings (external counsel) at Morrison & Sullivan LLP (CC: Richard Brennan) with subject 'ATTORNEY-CLIENT PRIVILEGED - Riverside Regional Medical Center Fraud Investigation Representation'. He formally engages Eleanor's firm to represent the hospital in potential Medicare fraud investigation. Provides high-level overview of upcoding scheme, kickback arrangement, and phantom billing. Requests urgent consultation on defense strategy, potential voluntary disclosure, and damage mitigation. Asks for assistance in responding to potential government investigation. Tone: formal legal engagement."
+      - prompt_templates:
+          - "Draft Eleanor Hastings' reply confirming engagement and establishing attorney-client relationship. She confirms her healthcare fraud defense practice handles these matters regularly. Provides initial strategic advice on DOJ investigations and qui tam whistleblower cases. Mentions she's successfully negotiated False Claims Act settlements for hospitals in similar situations. Suggests conference call within 24 hours to discuss comprehensive defense strategy. Requests all audit reports and evidence under attorney work product privilege. Tone: experienced fraud defense attorney."
+
+  # --- SCENARIO 3B: Subtle Privilege (No Header Markers) ---
+  - type: "thread"
+    description: "(S3) Subtle privilege consultation without obvious markers"
+    base_filename: "S3B_subtle_privilege_thread"
+    llm_settings:
+      temperature: 0.4  # Signal: Lower temp for consistency
+    prompts:
+      - prompt_templates:
+          - "Draft an email from Linda Martinez (Compliance Officer) to Thomas Harper (GC) with subject 'Need your advice on audit findings'. Linda asks Thomas for confidential legal advice about whether the hospital is required to self-disclose the upcoding and fraud findings to HHS-OIG. She's getting pressure from CFO to handle internally. DO NOT use the words 'privileged', 'confidential', or 'attorney-client' in the subject line. The body should make it clear Linda is seeking legal counsel from Thomas in his capacity as General Counsel."
+      - prompt_templates:
+          - "Draft Thomas Harper's reply providing legal advice about OIG self-disclosure protocols. He mentions that this conversation is protected by attorney-client privilege. Provides specific legal analysis citing OIG Self-Disclosure Protocol and explaining that hospitals with systematic fraud often benefit from voluntary disclosure versus being discovered by government. Notes that False Claims Act penalties are reduced for entities that self-report. Cites past cases. Strongly advises Linda to document all discussions. Suggests they discuss further in person given the sensitive nature. Tone: legal guidance on compliance strategy."
+
+  # --- SCENARIO 3C: Privilege by Recipient (Email to GC) ---
+  - type: "thread"
+    description: "(S3) Business email to General Counsel becomes privileged"
+    base_filename: "S3C_privilege_by_recipient"
+    llm_settings:
+      temperature: 0.4  # Signal: Lower temp for consistency
+    prompts:
+      - prompt_templates:
+          - "Draft an email from Dr. Marcus Chen to Thomas Harper (GC) with subject 'Question about billing practices in my department'. Dr. Chen explains that he's been receiving pressure from Susan Walsh and Richard Brennan to code his patient encounters more aggressively. He asks Thomas for guidance on whether these practices raise any legal concerns. Mentions he's uncomfortable but has been going along with it. The tone is business-casual, seeking advice from the GC."
+      - prompt_templates:
+          - "Draft Thomas Harper's reply stating this communication is attorney-client privileged. He provides legal analysis that the practices Dr. Chen describes appear to constitute Medicare fraud under False Claims Act. Explains that Dr. Chen could face personal liability including exclusion from Medicare, civil penalties, and potentially criminal prosecution if he knowingly submits false claims. Strongly advises Dr. Chen to stop these practices immediately and document that he raised concerns. Recommends meeting in person to discuss. Tone: legal counsel warning physician of serious liability."
+
+  # --- SCENARIO 3D: Mixed Privilege Thread (Becomes Privileged Mid-Thread) ---
+  - type: "thread"
+    description: "(S3) Email thread starts non-privileged, becomes privileged mid-conversation"
+    base_filename: "S3D_mixed_privilege_thread"
+    llm_settings:
+      temperature: 0.4  # Signal: Lower temp for consistency
+    prompts:
+      - prompt_templates:
+          - "Draft an email from Jennifer Taylor (Coding Auditor) to Susan Walsh (Billing Director) and Richard Brennan (CFO) with subject 'Final audit report - coding compliance review' attaching her audit findings showing systematic upcoding. This is routine business communication, no legal tone. She requests meeting to discuss corrective action plan."
+      - prompt_templates:
+          - "Draft Richard Brennan's reply adding Thomas Harper (GC) to the thread, saying 'Tom, can you review these audit findings from a legal risk perspective? I want to understand our potential exposure before we respond.'"
+      - prompt_templates:
+          - "Draft Thomas Harper's reply (keeping all recipients) with subject line changed to 'Re: Final audit report - ATTORNEY-CLIENT PRIVILEGED'. Thomas provides legal analysis stating that audit findings show evidence of systematic False Claims Act violations. He states this communication is now protected by privilege. Provides analysis of potential damages and recommends immediate corrective action. Advises limiting further written discussion and scheduling privileged meeting with external counsel."
+
+  # --- SCENARIO 4: Patient Scheduling Emails ---
+  - type: "standalone"
+    description: "(S4) Patient scheduling emails"
+    base_filename: "noise_patient_scheduling"
+    llm_settings:
+      temperature: 0.95  # Noise: Higher temp for variety
+    near_duplicate_probability: 0.15
+    prompt_variables:
+      topic:
+        - "appointment reminder confirmation"
+        - "reschedule request from patient"
+        - "follow-up appointment scheduling"
+        - "new patient intake scheduling"
+        - "specialist referral appointment"
+        - "surgery pre-op appointment"
+        - "lab work appointment scheduling"
+        - "imaging study scheduling (MRI/CT)"
+        - "physical therapy appointment"
+        - "post-discharge follow-up"
+        - "annual wellness visit reminder"
+        - "vaccination appointment scheduling"
+        - "patient no-show notification"
+        - "same-day appointment request"
+        - "telemedicine appointment setup"
+        - "pediatric well-child visit"
+        - "appointment cancellation notification"
+        - "wait list notification for earlier appointment"
+        - "insurance authorization delay affecting scheduling"
+        - "provider schedule change requiring reschedule"
+    prompts:
+      - prompt_templates:
+          - "Draft a routine patient scheduling email between Riverside Regional Medical Center staff members regarding '{topic}'. Invent specific patient names (first name only for privacy), dates, times, and relevant clinical details to make the email sound authentic. Keep it professional and HIPAA-appropriate."
+
+  # --- SCENARIO 5: Staff Meeting Announcements ---
+  - type: "standalone"
+    description: "(S5) Staff meeting announcements"
+    base_filename: "noise_staff_meetings"
+    llm_settings:
+      temperature: 0.95  # Noise: Higher temp for variety
+    prompt_variables:
+      topic:
+        - "monthly all-staff meeting agenda"
+        - "department huddle reminder"
+        - "quality improvement committee meeting"
+        - "medical staff credentialing meeting"
+        - "nursing unit council meeting"
+        - "infection control committee"
+        - "safety committee meeting"
+        - "code blue training session"
+        - "annual compliance training (routine)"
+        - "electronic health record update training"
+        - "patient satisfaction improvement workshop"
+        - "grand rounds presentation"
+        - "morbidity and mortality conference"
+        - "journal club meeting"
+        - "interdisciplinary care team meeting"
+        - "new hire orientation schedule"
+        - "annual skills competency training"
+    prompts:
+      - prompt_templates:
+          - "Draft a routine meeting announcement from a Riverside Regional Medical Center staff member regarding '{topic}'. Include specific meeting details (date, time, location, agenda items) to make it sound authentic."
+
+  # --- SCENARIO 6: Medical Supply Orders ---
+  - type: "standalone"
+    description: "(S6) Medical supply orders"
+    base_filename: "noise_medical_supplies"
+    llm_settings:
+      temperature: 0.95  # Noise: Higher temp for variety
+    prompt_variables:
+      topic:
+        - "PPE supply reorder (masks, gowns, gloves)"
+        - "surgical instrument set request"
+        - "medication inventory alert"
+        - "contrast dye order for radiology"
+        - "IV supplies running low"
+        - "wound care dressing supplies"
+        - "laboratory reagent order"
+        - "oxygen tank delivery schedule"
+        - "defibrillator pad replacement"
+        - "suture kit restocking"
+        - "catheter supply request"
+        - "bandage and gauze bulk order"
+    prompts:
+      - prompt_templates:
+          - "Draft a routine medical supply order or inventory email between Riverside Regional Medical Center staff members regarding '{topic}'. Include specific quantities and product names."
+
+  # --- SCENARIO 7: HR and Payroll Communications ---
+  - type: "standalone"
+    description: "(S7) HR/payroll communications"
+    base_filename: "noise_hr_payroll"
+    llm_settings:
+      temperature: 0.95  # Noise: Higher temp for variety
+    prompt_variables:
+      topic:
+        - "timesheet submission reminder"
+        - "benefits enrollment deadline"
+        - "PTO request approval"
+        - "shift swap request"
+        - "on-call schedule assignment"
+        - "new hire paperwork completion"
+        - "performance review scheduling"
+        - "continuing education credit documentation"
+        - "license renewal reminder (RN, MD)"
+        - "employee handbook acknowledgment"
+        - "family medical leave request"
+        - "retirement plan contribution update"
+    prompts:
+      - prompt_templates:
+          - "Draft a routine HR or payroll email between Riverside Regional Medical Center staff members regarding '{topic}'."
+
+  # --- SCENARIO 8: IT Helpdesk Tickets ---
+  - type: "standalone"
+    description: "(S8) IT helpdesk tickets"
+    base_filename: "noise_it_helpdesk"
+    llm_settings:
+      temperature: 0.95  # Noise: Higher temp for variety
+    prompt_variables:
+      issue:
+        - "Epic/Cerner login failure"
+        - "PACS imaging system slow performance"
+        - "printer not connecting in nursing station"
+        - "password reset request"
+        - "new employee computer setup"
+        - "VPN connection issues"
+        - "email not syncing on mobile device"
+        - "software installation request"
+        - "computer running slow"
+        - "wireless mouse not working"
+    prompts:
+      - prompt_templates:
+          - "Draft a brief IT helpdesk ticket or support request email between Riverside Regional Medical Center staff members regarding: {issue}."
+
+  # --- SCENARIO 9: Facility Maintenance ---
+  - type: "standalone"
+    description: "(S9) Facility maintenance"
+    base_filename: "noise_facility_maintenance"
+    llm_settings:
+      temperature: 0.95  # Noise: Higher temp for variety
+    prompt_variables:
+      topic:
+        - "HVAC system temperature complaints"
+        - "elevator maintenance schedule"
+        - "plumbing issue in patient bathroom"
+        - "parking lot lighting repair"
+        - "roof leak in west wing"
+        - "generator testing notification"
+        - "fire alarm system inspection"
+        - "door lock malfunction"
+        - "flooring replacement project"
+    prompts:
+      - prompt_templates:
+          - "Draft a routine facility maintenance email between Riverside Regional Medical Center staff members regarding '{topic}'."
+
+  # --- SCENARIO 10: Clinical Case Discussions ---
+  - type: "standalone"
+    description: "(S10) Clinical case discussions"
+    base_filename: "noise_clinical_cases"
+    llm_settings:
+      temperature: 0.95  # Noise: Higher temp for variety
+    prompt_variables:
+      topic:
+        - "complex patient case consultation"
+        - "discharge planning coordination"
+        - "medication reconciliation question"
+        - "imaging study interpretation question"
+        - "specialist referral coordination"
+        - "lab result follow-up"
+        - "patient care plan discussion"
+        - "interdisciplinary team update"
+    prompts:
+      - prompt_templates:
+          - "Draft a routine clinical case discussion email between Riverside Regional Medical Center clinical staff regarding '{topic}'."
+
+  # --- SCENARIO 11: Training Reminders ---
+  - type: "standalone"
+    description: "(S11) Training reminders"
+    base_filename: "noise_training_reminders"
+    llm_settings:
+      temperature: 0.95  # Noise: Higher temp for variety
+    prompt_variables:
+      training:
+        - "ACLS certification renewal due"
+        - "BLS certification expiring soon"
+        - "PALS training registration"
+        - "infection control annual competency"
+        - "medication administration safety training"
+        - "fall prevention education"
+        - "restraint use and documentation training"
+        - "sepsis recognition training"
+    prompts:
+      - prompt_templates:
+          - "Draft a training reminder email at Riverside Regional Medical Center regarding '{training}'."
+
+  # --- SCENARIO 12: Personal/Non-Work Emails ---
+  - type: "standalone"
+    description: "(S12) Personal, non-work emails"
+    base_filename: "noise_personal"
+    llm_settings:
+      temperature: 0.95  # Noise: Higher temp for variety
+    prompt_variables:
+      employee_pool: ["Jessica Martinez", "Sarah Mitchell", "Mark Johnson", "Sandra Phillips", "Melissa Carter", "Daniel White", "Christina Lee"]
+      topic:
+        - "potluck lunch signup"
+        - "baby shower planning"
+        - "retirement party organization"
+        - "coffee run group order"
+        - "weekend hiking trip discussion"
+        - "birthday card for coworker"
+        - "recipe sharing"
+        - "restaurant recommendation request"
+        - "carpool coordination"
+        - "thank you note for coverage"
+    prompts:
+      - prompt_templates:
+          - "Draft a clearly personal email between {sender} and {recipient} at Riverside Regional Medical Center about {topic}."
+
+  # --- SCENARIO 13: Meeting Scheduling ---
+  - type: "standalone"
+    description: "(S13) Meeting scheduling back-and-forth"
+    base_filename: "noise_meeting_scheduling"
+    llm_settings:
+      temperature: 0.95  # Noise: Higher temp for variety
+    prompt_variables:
+      employee_pool: ["Rachel Adams", "Laura Harrison", "Michelle Baker", "Elizabeth Moore", "Jennifer Taylor"]
+      topic:
+        - "proposing times for next week's meeting"
+        - "asking to reschedule Friday meeting"
+        - "confirming attendance at meeting"
+        - "requesting conference room booking"
+        - "running late to meeting notification"
+    prompts:
+      - prompt_templates:
+          - "Draft a brief meeting scheduling email from {sender} to {recipient} about {topic}."
+
+  # --- SCENARIO 14: Quality Improvement Activities ---
+  - type: "standalone"
+    description: "(S14) Quality improvement activities"
+    base_filename: "noise_quality_improvement"
+    llm_settings:
+      temperature: 0.95  # Noise: Higher temp for variety
+    prompt_variables:
+      topic:
+        - "patient satisfaction survey results"
+        - "infection rate monitoring report"
+        - "readmission rate analysis"
+        - "medication error prevention initiative"
+        - "fall prevention program update"
+        - "pain management quality metrics"
+        - "door-to-balloon time improvement"
+    prompts:
+      - prompt_templates:
+          - "Draft a routine quality improvement email at Riverside Regional Medical Center regarding '{topic}'."
+
+  # --- SCENARIO 15: Vendor Communications (Legitimate) ---
+  - type: "standalone"
+    description: "(S15) Vendor communications (legitimate)"
+    base_filename: "noise_vendor_communications"
+    llm_settings:
+      temperature: 0.95  # Noise: Higher temp for variety
+    prompt_variables:
+      topic:
+        - "pharmacy vendor order confirmation"
+        - "linen service delivery schedule"
+        - "food service catering order"
+        - "waste management pickup schedule"
+        - "lab equipment calibration appointment"
+        - "office supply order confirmation"
+        - "software license renewal"
+    prompts:
+      - prompt_templates:
+          - "Draft a routine vendor communication email from Riverside Regional Medical Center staff regarding '{topic}'. This is a legitimate vendor relationship, NOT related to kickback scheme."
+
+  # --- SCENARIO 16: Ultra-Mundane Office Trivia ---
+  - type: "standalone"
+    description: "(S16) Ultra-mundane office trivia"
+    base_filename: "noise_office_trivia"
+    llm_settings:
+      temperature: 1.0  # Maximum variety for mundane topics
+    prompt_variables:
+      employee_pool: ["Sandra Phillips", "Mark Johnson", "Jessica Martinez", "Melissa Carter", "Daniel White", "Christina Lee"]
+      topic:
+        - "Leftover donuts in breakroom"
+        - "Coffee machine not working"
+        - "AC is too cold"
+        - "Who left dishes in sink"
+        - "Lost jacket in staff lounge"
+        - "Birthday cake for coworker"
+        - "Fridge cleanout Friday"
+        - "Someone parked in my spot"
+        - "Found keys in hallway"
+        - "Thermostat complaint"
+        - "Printer jammed"
+        - "WiFi slow"
+    prompts:
+      - prompt_templates:
+          - "Draft a very brief (1-2 sentences) email from {sender} to {recipient} about: {topic}. Keep it casual and mundane."
+
+  # --- SCENARIO 17: IT System Issues (Mundane) ---
+  - type: "standalone"
+    description: "(S17) IT system issues (mundane support requests)"
+    base_filename: "noise_it_issues_mundane"
+    llm_settings:
+      temperature: 1.0  # Maximum variety for mundane topics
+    prompt_variables:
+      employee_pool: ["Brian Cooper", "Michelle Washington", "Robert Hayes", "Angela Kim", "Andrew Scott"]
+      issue:
+        - "Can't login to timesheet system"
+        - "VPN keeps disconnecting"
+        - "Mouse battery dead"
+        - "Need access to shared folder"
+        - "Computer running slow"
+        - "Forgot password"
+        - "Screen went black"
+        - "Keyboard not working"
+        - "Outlook not syncing"
+    prompts:
+      - prompt_templates:
+          - "Draft a brief (1-2 sentences) IT support request email from {sender} to {recipient} about: {issue}."
+
+  # --- SCENARIO 18: Micro-Collaborations ---
+  - type: "standalone"
+    description: "(S18) Ultra-brief micro-collaboration messages"
+    base_filename: "noise_micro_collab"
+    llm_settings:
+      temperature: 1.0  # Maximum variety for mundane topics
+    prompt_variables:
+      employee_pool: ["Nicole Thompson", "Christopher Bell", "Amanda Rogers", "Lisa Campbell", "Robert Dixon", "Steven Clark"]
+      task:
+        - "Did you see this"
+        - "Quick question"
+        - "Thoughts on attached"
+        - "Can you review"
+        - "Need your input"
+        - "FYI"
+        - "Looping you in"
+        - "Heads up"
+        - "Just checking in"
+        - "Following up"
+    prompts:
+      - prompt_templates:
+          - "Draft an extremely brief (5-10 words max) email from {sender} to {recipient} with subject line based on: '{task}'. Body should be minimal, like 'See below' or 'Thoughts?' or just 'FYI'."
+
+# ===================================================================
+# DUPLICATE NOISE SCENARIOS FOR SIGNAL/NOISE RATIO TUNING
+# ===================================================================
+# These are duplicates of S4 (Patient Scheduling) to increase noise frequency
+# and achieve target signal-to-noise ratio appropriate for realistic dataset.
+# ===================================================================
+
+  # --- S4 Duplicate 1 (using YAML anchor reference) ---
+  - &noise_s4_template
+    type: "standalone"
+    description: "(S4) Patient scheduling emails - duplicate 1"
+    base_filename: "noise_patient_scheduling_dup1"
+    llm_settings:
+      temperature: 0.95
+    near_duplicate_probability: 0.15
+    prompt_variables:
+      topic:
+        - "appointment reminder confirmation"
+        - "reschedule request from patient"
+        - "follow-up appointment scheduling"
+        - "new patient intake scheduling"
+        - "specialist referral appointment"
+        - "surgery pre-op appointment"
+        - "lab work appointment scheduling"
+        - "imaging study scheduling (MRI/CT)"
+        - "physical therapy appointment"
+        - "post-discharge follow-up"
+    prompts:
+      - prompt_templates:
+          - "Draft a routine patient scheduling email between Riverside Regional Medical Center staff members regarding '{topic}'. Invent specific patient names (first name only for privacy), dates, times, and relevant clinical details. Keep it professional and HIPAA-appropriate."
+
+  # --- S4 Duplicate 2 ---
+  - <<: *noise_s4_template
+    base_filename: "noise_patient_scheduling_dup2"
+
+  # --- S4 Duplicate 3 ---
+  - <<: *noise_s4_template
+    base_filename: "noise_patient_scheduling_dup3"
+
+  # --- S4 Duplicate 4 ---
+  - <<: *noise_s4_template
+    base_filename: "noise_patient_scheduling_dup4"
